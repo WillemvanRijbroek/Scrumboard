@@ -1,0 +1,2229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="StoryInsert">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="sprintId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="externalId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="storyTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="statusId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="estimate" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="backcolor" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="y" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="tag" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryInsertResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="StoryInsertResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryUpdateDetails">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="sprintId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="externalId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="storyTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="statusId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="estimate" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="backcolor" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="y" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="tag" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryUpdateDetailsResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="StoryUpdateStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="statusId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryUpdateStatusResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="StoryRemove">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryRemoveResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="StoryGetByExternalId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="sprintId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="externalId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryGetByExternalIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StoryGetByExternalIdResult" type="tns:Story" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Story">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BO">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="ExternalId" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="SprintId" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="StoryTypeId" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Estimate" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="StatusId" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="X" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Y" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="BackColor" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Tag" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="ClosedDate" type="s:dateTime" />
+              <s:element minOccurs="1" maxOccurs="1" name="IsBurndownEnabled" type="s:boolean" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="BO" abstract="true" />
+      <s:element name="StoryGetSprintStories">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="sprintId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryGetSprintStoriesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StoryGetSprintStoriesResult" type="tns:ArrayOfStory" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfStory">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Story" nillable="true" type="tns:Story" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="StoryGetPanelStories">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="sprintId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="storyTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="statusId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryGetPanelStoriesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StoryGetPanelStoriesResult" type="tns:ArrayOfStory" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SprintInsert">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="layoutId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="teamId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="startDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="target" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SprintInsertResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SprintInsertResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SprintUpdate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="layoutId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="teamId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="startDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="target" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SprintUpdateResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SprintGet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="sprintId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SprintGetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SprintGetResult" type="tns:Sprint" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Sprint">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BO">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="LayoutId" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="TeamId" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
+              <s:element minOccurs="1" maxOccurs="1" name="TargetDate" type="s:dateTime" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="SprintSelectAll">
+        <s:complexType />
+      </s:element>
+      <s:element name="SprintSelectAllResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SprintSelectAllResult" type="tns:ArrayOfSprint" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfSprint">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Sprint" nillable="true" type="tns:Sprint" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SprintSelectByTeam">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="teamId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SprintSelectByTeamResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SprintSelectByTeamResult" type="tns:ArrayOfSprint" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StateSelectAll">
+        <s:complexType />
+      </s:element>
+      <s:element name="StateSelectAllResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StateSelectAllResult" type="tns:ArrayOfState" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfState">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="State" nillable="true" type="tns:State" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="State">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BO">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="IsInitial" type="s:boolean" />
+              <s:element minOccurs="1" maxOccurs="1" name="IsFinal" type="s:boolean" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="StateGet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StateGetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StateGetResult" type="tns:State" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryTypeSelectAll">
+        <s:complexType />
+      </s:element>
+      <s:element name="StoryTypeSelectAllResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StoryTypeSelectAllResult" type="tns:ArrayOfStoryType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfStoryType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="StoryType" nillable="true" type="tns:StoryType" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="StoryType">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BO">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="DefaultBackColor" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="BurnDownEnabled" type="s:boolean" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="StoryTypeGet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryTypeGetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StoryTypeGetResult" type="tns:StoryType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LayoutSelectAll">
+        <s:complexType />
+      </s:element>
+      <s:element name="LayoutSelectAllResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LayoutSelectAllResult" type="tns:ArrayOfLayout" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfLayout">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Layout" nillable="true" type="tns:Layout" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Layout">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BO">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="TeamId" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="TotalColumns" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="TotalRows" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="FontSize" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="StoryWidth" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="StoryHeight" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="LayoutInsert">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="totalColumns" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="totalRows" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="fontSize" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="storyWidth" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="storyHeight" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LayoutInsertResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="LayoutInsertResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LayoutUpdate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="totalColumns" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="totalRows" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="fontSize" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="storyWidth" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="storyHeight" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LayoutUpdateResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="LayoutGet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LayoutGetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LayoutGetResult" type="tns:Layout" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LayoutPanelSelectByLayout">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="layoutId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LayoutPanelSelectByLayoutResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LayoutPanelSelectByLayoutResult" type="tns:ArrayOfPanel" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfPanel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Panel" nillable="true" type="tns:Panel" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Panel">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BO">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="LayoutId" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="StateId" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="StoryTypeId" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Column" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Row" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Heigth" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Width" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="StateName" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="StoryTypeName" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="LayoutPanelGet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LayoutPanelGetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LayoutPanelGetResult" type="tns:Panel" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LayoutPanelInsert">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="layoutId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="stateId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="title" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="storyTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="column" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="row" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="height" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="width" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LayoutPanelInsertResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="LayoutPanelInsertResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LayoutPanelUpdate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="stateId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="title" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="storyTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="column" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="row" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="height" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="width" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LayoutPanelUpdateResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="LayoutPanelRemove">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LayoutPanelRemoveResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="TeamSelectAll">
+        <s:complexType />
+      </s:element>
+      <s:element name="TeamSelectAllResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TeamSelectAllResult" type="tns:ArrayOfTeam" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfTeam">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Team" nillable="true" type="tns:Team" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Team">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BO">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="TeamGet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamGetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TeamGetResult" type="tns:Team" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamInsert">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamInsertResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="TeamInsertResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamUpdate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamUpdateResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="TeamRemove">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamRemoveResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="TeamAssignMember">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="teamId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="teamMemberId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamAssignMemberResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="TeamDeassignMember">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="teamId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="teamMemberId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamDeassignMemberResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="TeamMemberSelectAll">
+        <s:complexType />
+      </s:element>
+      <s:element name="TeamMemberSelectAllResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TeamMemberSelectAllResult" type="tns:ArrayOfTeamMember" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfTeamMember">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="TeamMember" nillable="true" type="tns:TeamMember" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="TeamMember">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BO">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="FocusFactor" type="s:decimal" />
+              <s:element minOccurs="1" maxOccurs="1" name="AvailabilityFactor" type="s:decimal" />
+              <s:element minOccurs="1" maxOccurs="1" name="NormalWorkingHours" type="s:decimal" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="TeamMemberSelectByTeam">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="teamId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamMemberSelectByTeamResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TeamMemberSelectByTeamResult" type="tns:ArrayOfTeamMember" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamMemberGet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamMemberGetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TeamMemberGetResult" type="tns:TeamMember" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamMemberInsert">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="focusFactor" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="availabilityFactor" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="normalWorkingHours" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamMemberInsertResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="TeamMemberInsertResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamMemberUpdate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="focusFactor" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="availabilityFactor" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="normalWorkingHours" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamMemberUpdateResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="TeamMemberRemove">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamMemberRemoveResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="TeamGetNonWorkingHours">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="teamMemberId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamGetNonWorkingHoursResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TeamGetNonWorkingHoursResult" type="tns:ArrayOfNonWorkingHours" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfNonWorkingHours">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="NonWorkingHours" nillable="true" type="tns:NonWorkingHours" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="NonWorkingHours">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BO">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="TeamMemberId" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Day" type="s:dateTime" />
+              <s:element minOccurs="1" maxOccurs="1" name="Hours" type="s:decimal" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="TeamGetNonWorkingHoursAtDay">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="teamMemberId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="day" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamGetNonWorkingHoursAtDayResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TeamGetNonWorkingHoursAtDayResult" type="tns:ArrayOfNonWorkingHours" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamInsertNonWorkingHours">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="teamMemberId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="day" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="hours" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamInsertNonWorkingHoursResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="TeamInsertNonWorkingHoursResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamUpdateNonWorkingHours">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="teamMemberId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="day" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="hours" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamUpdateNonWorkingHoursResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="TeamRemoveNonWorkingHours">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TeamRemoveNonWorkingHoursResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="TodoInsert">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="storyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="estimate" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="backcolor" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="y" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TodoInsertResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="TodoInsertResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TodoUpdate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="storyId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="estimate" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="backcolor" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="y" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TodoUpdateResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="TodoRemove">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TodoRemoveResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="TodoGet">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TodoGetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TodoGetResult" type="tns:Todo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Todo">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BO">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="StoryId" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Estimate" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="BackColor" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="X" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Y" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="TodoSelect">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="storyId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TodoSelectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TodoSelectResult" type="tns:ArrayOfTodo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfTodo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Todo" nillable="true" type="tns:Todo" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="StoryInsertSoapIn">
+    <wsdl:part name="parameters" element="tns:StoryInsert" />
+  </wsdl:message>
+  <wsdl:message name="StoryInsertSoapOut">
+    <wsdl:part name="parameters" element="tns:StoryInsertResponse" />
+  </wsdl:message>
+  <wsdl:message name="StoryUpdateDetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:StoryUpdateDetails" />
+  </wsdl:message>
+  <wsdl:message name="StoryUpdateDetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:StoryUpdateDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="StoryUpdateStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:StoryUpdateStatus" />
+  </wsdl:message>
+  <wsdl:message name="StoryUpdateStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:StoryUpdateStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="StoryRemoveSoapIn">
+    <wsdl:part name="parameters" element="tns:StoryRemove" />
+  </wsdl:message>
+  <wsdl:message name="StoryRemoveSoapOut">
+    <wsdl:part name="parameters" element="tns:StoryRemoveResponse" />
+  </wsdl:message>
+  <wsdl:message name="StoryGetByExternalIdSoapIn">
+    <wsdl:part name="parameters" element="tns:StoryGetByExternalId" />
+  </wsdl:message>
+  <wsdl:message name="StoryGetByExternalIdSoapOut">
+    <wsdl:part name="parameters" element="tns:StoryGetByExternalIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="StoryGetSprintStoriesSoapIn">
+    <wsdl:part name="parameters" element="tns:StoryGetSprintStories" />
+  </wsdl:message>
+  <wsdl:message name="StoryGetSprintStoriesSoapOut">
+    <wsdl:part name="parameters" element="tns:StoryGetSprintStoriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="StoryGetPanelStoriesSoapIn">
+    <wsdl:part name="parameters" element="tns:StoryGetPanelStories" />
+  </wsdl:message>
+  <wsdl:message name="StoryGetPanelStoriesSoapOut">
+    <wsdl:part name="parameters" element="tns:StoryGetPanelStoriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="SprintInsertSoapIn">
+    <wsdl:part name="parameters" element="tns:SprintInsert" />
+  </wsdl:message>
+  <wsdl:message name="SprintInsertSoapOut">
+    <wsdl:part name="parameters" element="tns:SprintInsertResponse" />
+  </wsdl:message>
+  <wsdl:message name="SprintUpdateSoapIn">
+    <wsdl:part name="parameters" element="tns:SprintUpdate" />
+  </wsdl:message>
+  <wsdl:message name="SprintUpdateSoapOut">
+    <wsdl:part name="parameters" element="tns:SprintUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="SprintGetSoapIn">
+    <wsdl:part name="parameters" element="tns:SprintGet" />
+  </wsdl:message>
+  <wsdl:message name="SprintGetSoapOut">
+    <wsdl:part name="parameters" element="tns:SprintGetResponse" />
+  </wsdl:message>
+  <wsdl:message name="SprintSelectAllSoapIn">
+    <wsdl:part name="parameters" element="tns:SprintSelectAll" />
+  </wsdl:message>
+  <wsdl:message name="SprintSelectAllSoapOut">
+    <wsdl:part name="parameters" element="tns:SprintSelectAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="SprintSelectByTeamSoapIn">
+    <wsdl:part name="parameters" element="tns:SprintSelectByTeam" />
+  </wsdl:message>
+  <wsdl:message name="SprintSelectByTeamSoapOut">
+    <wsdl:part name="parameters" element="tns:SprintSelectByTeamResponse" />
+  </wsdl:message>
+  <wsdl:message name="StateSelectAllSoapIn">
+    <wsdl:part name="parameters" element="tns:StateSelectAll" />
+  </wsdl:message>
+  <wsdl:message name="StateSelectAllSoapOut">
+    <wsdl:part name="parameters" element="tns:StateSelectAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="StateGetSoapIn">
+    <wsdl:part name="parameters" element="tns:StateGet" />
+  </wsdl:message>
+  <wsdl:message name="StateGetSoapOut">
+    <wsdl:part name="parameters" element="tns:StateGetResponse" />
+  </wsdl:message>
+  <wsdl:message name="StoryTypeSelectAllSoapIn">
+    <wsdl:part name="parameters" element="tns:StoryTypeSelectAll" />
+  </wsdl:message>
+  <wsdl:message name="StoryTypeSelectAllSoapOut">
+    <wsdl:part name="parameters" element="tns:StoryTypeSelectAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="StoryTypeGetSoapIn">
+    <wsdl:part name="parameters" element="tns:StoryTypeGet" />
+  </wsdl:message>
+  <wsdl:message name="StoryTypeGetSoapOut">
+    <wsdl:part name="parameters" element="tns:StoryTypeGetResponse" />
+  </wsdl:message>
+  <wsdl:message name="LayoutSelectAllSoapIn">
+    <wsdl:part name="parameters" element="tns:LayoutSelectAll" />
+  </wsdl:message>
+  <wsdl:message name="LayoutSelectAllSoapOut">
+    <wsdl:part name="parameters" element="tns:LayoutSelectAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="LayoutInsertSoapIn">
+    <wsdl:part name="parameters" element="tns:LayoutInsert" />
+  </wsdl:message>
+  <wsdl:message name="LayoutInsertSoapOut">
+    <wsdl:part name="parameters" element="tns:LayoutInsertResponse" />
+  </wsdl:message>
+  <wsdl:message name="LayoutUpdateSoapIn">
+    <wsdl:part name="parameters" element="tns:LayoutUpdate" />
+  </wsdl:message>
+  <wsdl:message name="LayoutUpdateSoapOut">
+    <wsdl:part name="parameters" element="tns:LayoutUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="LayoutGetSoapIn">
+    <wsdl:part name="parameters" element="tns:LayoutGet" />
+  </wsdl:message>
+  <wsdl:message name="LayoutGetSoapOut">
+    <wsdl:part name="parameters" element="tns:LayoutGetResponse" />
+  </wsdl:message>
+  <wsdl:message name="LayoutPanelSelectByLayoutSoapIn">
+    <wsdl:part name="parameters" element="tns:LayoutPanelSelectByLayout" />
+  </wsdl:message>
+  <wsdl:message name="LayoutPanelSelectByLayoutSoapOut">
+    <wsdl:part name="parameters" element="tns:LayoutPanelSelectByLayoutResponse" />
+  </wsdl:message>
+  <wsdl:message name="LayoutPanelGetSoapIn">
+    <wsdl:part name="parameters" element="tns:LayoutPanelGet" />
+  </wsdl:message>
+  <wsdl:message name="LayoutPanelGetSoapOut">
+    <wsdl:part name="parameters" element="tns:LayoutPanelGetResponse" />
+  </wsdl:message>
+  <wsdl:message name="LayoutPanelInsertSoapIn">
+    <wsdl:part name="parameters" element="tns:LayoutPanelInsert" />
+  </wsdl:message>
+  <wsdl:message name="LayoutPanelInsertSoapOut">
+    <wsdl:part name="parameters" element="tns:LayoutPanelInsertResponse" />
+  </wsdl:message>
+  <wsdl:message name="LayoutPanelUpdateSoapIn">
+    <wsdl:part name="parameters" element="tns:LayoutPanelUpdate" />
+  </wsdl:message>
+  <wsdl:message name="LayoutPanelUpdateSoapOut">
+    <wsdl:part name="parameters" element="tns:LayoutPanelUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="LayoutPanelRemoveSoapIn">
+    <wsdl:part name="parameters" element="tns:LayoutPanelRemove" />
+  </wsdl:message>
+  <wsdl:message name="LayoutPanelRemoveSoapOut">
+    <wsdl:part name="parameters" element="tns:LayoutPanelRemoveResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamSelectAllSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamSelectAll" />
+  </wsdl:message>
+  <wsdl:message name="TeamSelectAllSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamSelectAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamGetSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamGet" />
+  </wsdl:message>
+  <wsdl:message name="TeamGetSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamGetResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamInsertSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamInsert" />
+  </wsdl:message>
+  <wsdl:message name="TeamInsertSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamInsertResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamUpdateSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamUpdate" />
+  </wsdl:message>
+  <wsdl:message name="TeamUpdateSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamRemoveSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamRemove" />
+  </wsdl:message>
+  <wsdl:message name="TeamRemoveSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamRemoveResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamAssignMemberSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamAssignMember" />
+  </wsdl:message>
+  <wsdl:message name="TeamAssignMemberSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamAssignMemberResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamDeassignMemberSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamDeassignMember" />
+  </wsdl:message>
+  <wsdl:message name="TeamDeassignMemberSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamDeassignMemberResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamMemberSelectAllSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamMemberSelectAll" />
+  </wsdl:message>
+  <wsdl:message name="TeamMemberSelectAllSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamMemberSelectAllResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamMemberSelectByTeamSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamMemberSelectByTeam" />
+  </wsdl:message>
+  <wsdl:message name="TeamMemberSelectByTeamSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamMemberSelectByTeamResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamMemberGetSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamMemberGet" />
+  </wsdl:message>
+  <wsdl:message name="TeamMemberGetSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamMemberGetResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamMemberInsertSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamMemberInsert" />
+  </wsdl:message>
+  <wsdl:message name="TeamMemberInsertSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamMemberInsertResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamMemberUpdateSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamMemberUpdate" />
+  </wsdl:message>
+  <wsdl:message name="TeamMemberUpdateSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamMemberUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamMemberRemoveSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamMemberRemove" />
+  </wsdl:message>
+  <wsdl:message name="TeamMemberRemoveSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamMemberRemoveResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamGetNonWorkingHoursSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamGetNonWorkingHours" />
+  </wsdl:message>
+  <wsdl:message name="TeamGetNonWorkingHoursSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamGetNonWorkingHoursResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamGetNonWorkingHoursAtDaySoapIn">
+    <wsdl:part name="parameters" element="tns:TeamGetNonWorkingHoursAtDay" />
+  </wsdl:message>
+  <wsdl:message name="TeamGetNonWorkingHoursAtDaySoapOut">
+    <wsdl:part name="parameters" element="tns:TeamGetNonWorkingHoursAtDayResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamInsertNonWorkingHoursSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamInsertNonWorkingHours" />
+  </wsdl:message>
+  <wsdl:message name="TeamInsertNonWorkingHoursSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamInsertNonWorkingHoursResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamUpdateNonWorkingHoursSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamUpdateNonWorkingHours" />
+  </wsdl:message>
+  <wsdl:message name="TeamUpdateNonWorkingHoursSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamUpdateNonWorkingHoursResponse" />
+  </wsdl:message>
+  <wsdl:message name="TeamRemoveNonWorkingHoursSoapIn">
+    <wsdl:part name="parameters" element="tns:TeamRemoveNonWorkingHours" />
+  </wsdl:message>
+  <wsdl:message name="TeamRemoveNonWorkingHoursSoapOut">
+    <wsdl:part name="parameters" element="tns:TeamRemoveNonWorkingHoursResponse" />
+  </wsdl:message>
+  <wsdl:message name="TodoInsertSoapIn">
+    <wsdl:part name="parameters" element="tns:TodoInsert" />
+  </wsdl:message>
+  <wsdl:message name="TodoInsertSoapOut">
+    <wsdl:part name="parameters" element="tns:TodoInsertResponse" />
+  </wsdl:message>
+  <wsdl:message name="TodoUpdateSoapIn">
+    <wsdl:part name="parameters" element="tns:TodoUpdate" />
+  </wsdl:message>
+  <wsdl:message name="TodoUpdateSoapOut">
+    <wsdl:part name="parameters" element="tns:TodoUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="TodoRemoveSoapIn">
+    <wsdl:part name="parameters" element="tns:TodoRemove" />
+  </wsdl:message>
+  <wsdl:message name="TodoRemoveSoapOut">
+    <wsdl:part name="parameters" element="tns:TodoRemoveResponse" />
+  </wsdl:message>
+  <wsdl:message name="TodoGetSoapIn">
+    <wsdl:part name="parameters" element="tns:TodoGet" />
+  </wsdl:message>
+  <wsdl:message name="TodoGetSoapOut">
+    <wsdl:part name="parameters" element="tns:TodoGetResponse" />
+  </wsdl:message>
+  <wsdl:message name="TodoSelectSoapIn">
+    <wsdl:part name="parameters" element="tns:TodoSelect" />
+  </wsdl:message>
+  <wsdl:message name="TodoSelectSoapOut">
+    <wsdl:part name="parameters" element="tns:TodoSelectResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ScrumboardSoap">
+    <wsdl:operation name="StoryInsert">
+      <wsdl:input message="tns:StoryInsertSoapIn" />
+      <wsdl:output message="tns:StoryInsertSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StoryUpdateDetails">
+      <wsdl:input message="tns:StoryUpdateDetailsSoapIn" />
+      <wsdl:output message="tns:StoryUpdateDetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StoryUpdateStatus">
+      <wsdl:input message="tns:StoryUpdateStatusSoapIn" />
+      <wsdl:output message="tns:StoryUpdateStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StoryRemove">
+      <wsdl:input message="tns:StoryRemoveSoapIn" />
+      <wsdl:output message="tns:StoryRemoveSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StoryGetByExternalId">
+      <wsdl:input message="tns:StoryGetByExternalIdSoapIn" />
+      <wsdl:output message="tns:StoryGetByExternalIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StoryGetSprintStories">
+      <wsdl:input message="tns:StoryGetSprintStoriesSoapIn" />
+      <wsdl:output message="tns:StoryGetSprintStoriesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StoryGetPanelStories">
+      <wsdl:input message="tns:StoryGetPanelStoriesSoapIn" />
+      <wsdl:output message="tns:StoryGetPanelStoriesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SprintInsert">
+      <wsdl:input message="tns:SprintInsertSoapIn" />
+      <wsdl:output message="tns:SprintInsertSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SprintUpdate">
+      <wsdl:input message="tns:SprintUpdateSoapIn" />
+      <wsdl:output message="tns:SprintUpdateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SprintGet">
+      <wsdl:input message="tns:SprintGetSoapIn" />
+      <wsdl:output message="tns:SprintGetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SprintSelectAll">
+      <wsdl:input message="tns:SprintSelectAllSoapIn" />
+      <wsdl:output message="tns:SprintSelectAllSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SprintSelectByTeam">
+      <wsdl:input message="tns:SprintSelectByTeamSoapIn" />
+      <wsdl:output message="tns:SprintSelectByTeamSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StateSelectAll">
+      <wsdl:input message="tns:StateSelectAllSoapIn" />
+      <wsdl:output message="tns:StateSelectAllSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StateGet">
+      <wsdl:input message="tns:StateGetSoapIn" />
+      <wsdl:output message="tns:StateGetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StoryTypeSelectAll">
+      <wsdl:input message="tns:StoryTypeSelectAllSoapIn" />
+      <wsdl:output message="tns:StoryTypeSelectAllSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="StoryTypeGet">
+      <wsdl:input message="tns:StoryTypeGetSoapIn" />
+      <wsdl:output message="tns:StoryTypeGetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LayoutSelectAll">
+      <wsdl:input message="tns:LayoutSelectAllSoapIn" />
+      <wsdl:output message="tns:LayoutSelectAllSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LayoutInsert">
+      <wsdl:input message="tns:LayoutInsertSoapIn" />
+      <wsdl:output message="tns:LayoutInsertSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LayoutUpdate">
+      <wsdl:input message="tns:LayoutUpdateSoapIn" />
+      <wsdl:output message="tns:LayoutUpdateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LayoutGet">
+      <wsdl:input message="tns:LayoutGetSoapIn" />
+      <wsdl:output message="tns:LayoutGetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LayoutPanelSelectByLayout">
+      <wsdl:input message="tns:LayoutPanelSelectByLayoutSoapIn" />
+      <wsdl:output message="tns:LayoutPanelSelectByLayoutSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LayoutPanelGet">
+      <wsdl:input message="tns:LayoutPanelGetSoapIn" />
+      <wsdl:output message="tns:LayoutPanelGetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LayoutPanelInsert">
+      <wsdl:input message="tns:LayoutPanelInsertSoapIn" />
+      <wsdl:output message="tns:LayoutPanelInsertSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LayoutPanelUpdate">
+      <wsdl:input message="tns:LayoutPanelUpdateSoapIn" />
+      <wsdl:output message="tns:LayoutPanelUpdateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LayoutPanelRemove">
+      <wsdl:input message="tns:LayoutPanelRemoveSoapIn" />
+      <wsdl:output message="tns:LayoutPanelRemoveSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamSelectAll">
+      <wsdl:input message="tns:TeamSelectAllSoapIn" />
+      <wsdl:output message="tns:TeamSelectAllSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamGet">
+      <wsdl:input message="tns:TeamGetSoapIn" />
+      <wsdl:output message="tns:TeamGetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamInsert">
+      <wsdl:input message="tns:TeamInsertSoapIn" />
+      <wsdl:output message="tns:TeamInsertSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamUpdate">
+      <wsdl:input message="tns:TeamUpdateSoapIn" />
+      <wsdl:output message="tns:TeamUpdateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamRemove">
+      <wsdl:input message="tns:TeamRemoveSoapIn" />
+      <wsdl:output message="tns:TeamRemoveSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamAssignMember">
+      <wsdl:input message="tns:TeamAssignMemberSoapIn" />
+      <wsdl:output message="tns:TeamAssignMemberSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamDeassignMember">
+      <wsdl:input message="tns:TeamDeassignMemberSoapIn" />
+      <wsdl:output message="tns:TeamDeassignMemberSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberSelectAll">
+      <wsdl:input message="tns:TeamMemberSelectAllSoapIn" />
+      <wsdl:output message="tns:TeamMemberSelectAllSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberSelectByTeam">
+      <wsdl:input message="tns:TeamMemberSelectByTeamSoapIn" />
+      <wsdl:output message="tns:TeamMemberSelectByTeamSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberGet">
+      <wsdl:input message="tns:TeamMemberGetSoapIn" />
+      <wsdl:output message="tns:TeamMemberGetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberInsert">
+      <wsdl:input message="tns:TeamMemberInsertSoapIn" />
+      <wsdl:output message="tns:TeamMemberInsertSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberUpdate">
+      <wsdl:input message="tns:TeamMemberUpdateSoapIn" />
+      <wsdl:output message="tns:TeamMemberUpdateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberRemove">
+      <wsdl:input message="tns:TeamMemberRemoveSoapIn" />
+      <wsdl:output message="tns:TeamMemberRemoveSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamGetNonWorkingHours">
+      <wsdl:input message="tns:TeamGetNonWorkingHoursSoapIn" />
+      <wsdl:output message="tns:TeamGetNonWorkingHoursSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamGetNonWorkingHoursAtDay">
+      <wsdl:input message="tns:TeamGetNonWorkingHoursAtDaySoapIn" />
+      <wsdl:output message="tns:TeamGetNonWorkingHoursAtDaySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamInsertNonWorkingHours">
+      <wsdl:input message="tns:TeamInsertNonWorkingHoursSoapIn" />
+      <wsdl:output message="tns:TeamInsertNonWorkingHoursSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamUpdateNonWorkingHours">
+      <wsdl:input message="tns:TeamUpdateNonWorkingHoursSoapIn" />
+      <wsdl:output message="tns:TeamUpdateNonWorkingHoursSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TeamRemoveNonWorkingHours">
+      <wsdl:input message="tns:TeamRemoveNonWorkingHoursSoapIn" />
+      <wsdl:output message="tns:TeamRemoveNonWorkingHoursSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TodoInsert">
+      <wsdl:input message="tns:TodoInsertSoapIn" />
+      <wsdl:output message="tns:TodoInsertSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TodoUpdate">
+      <wsdl:input message="tns:TodoUpdateSoapIn" />
+      <wsdl:output message="tns:TodoUpdateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TodoRemove">
+      <wsdl:input message="tns:TodoRemoveSoapIn" />
+      <wsdl:output message="tns:TodoRemoveSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TodoGet">
+      <wsdl:input message="tns:TodoGetSoapIn" />
+      <wsdl:output message="tns:TodoGetSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TodoSelect">
+      <wsdl:input message="tns:TodoSelectSoapIn" />
+      <wsdl:output message="tns:TodoSelectSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ScrumboardSoap" type="tns:ScrumboardSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="StoryInsert">
+      <soap:operation soapAction="http://tempuri.org/StoryInsert" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoryUpdateDetails">
+      <soap:operation soapAction="http://tempuri.org/StoryUpdateDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoryUpdateStatus">
+      <soap:operation soapAction="http://tempuri.org/StoryUpdateStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoryRemove">
+      <soap:operation soapAction="http://tempuri.org/StoryRemove" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoryGetByExternalId">
+      <soap:operation soapAction="http://tempuri.org/StoryGetByExternalId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoryGetSprintStories">
+      <soap:operation soapAction="http://tempuri.org/StoryGetSprintStories" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoryGetPanelStories">
+      <soap:operation soapAction="http://tempuri.org/StoryGetPanelStories" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SprintInsert">
+      <soap:operation soapAction="http://tempuri.org/SprintInsert" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SprintUpdate">
+      <soap:operation soapAction="http://tempuri.org/SprintUpdate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SprintGet">
+      <soap:operation soapAction="http://tempuri.org/SprintGet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SprintSelectAll">
+      <soap:operation soapAction="http://tempuri.org/SprintSelectAll" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SprintSelectByTeam">
+      <soap:operation soapAction="http://tempuri.org/SprintSelectByTeam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StateSelectAll">
+      <soap:operation soapAction="http://tempuri.org/StateSelectAll" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StateGet">
+      <soap:operation soapAction="http://tempuri.org/StateGet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoryTypeSelectAll">
+      <soap:operation soapAction="http://tempuri.org/StoryTypeSelectAll" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoryTypeGet">
+      <soap:operation soapAction="http://tempuri.org/StoryTypeGet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutSelectAll">
+      <soap:operation soapAction="http://tempuri.org/LayoutSelectAll" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutInsert">
+      <soap:operation soapAction="http://tempuri.org/LayoutInsert" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutUpdate">
+      <soap:operation soapAction="http://tempuri.org/LayoutUpdate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutGet">
+      <soap:operation soapAction="http://tempuri.org/LayoutGet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutPanelSelectByLayout">
+      <soap:operation soapAction="http://tempuri.org/LayoutPanelSelectByLayout" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutPanelGet">
+      <soap:operation soapAction="http://tempuri.org/LayoutPanelGet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutPanelInsert">
+      <soap:operation soapAction="http://tempuri.org/LayoutPanelInsert" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutPanelUpdate">
+      <soap:operation soapAction="http://tempuri.org/LayoutPanelUpdate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutPanelRemove">
+      <soap:operation soapAction="http://tempuri.org/LayoutPanelRemove" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamSelectAll">
+      <soap:operation soapAction="http://tempuri.org/TeamSelectAll" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamGet">
+      <soap:operation soapAction="http://tempuri.org/TeamGet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamInsert">
+      <soap:operation soapAction="http://tempuri.org/TeamInsert" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamUpdate">
+      <soap:operation soapAction="http://tempuri.org/TeamUpdate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamRemove">
+      <soap:operation soapAction="http://tempuri.org/TeamRemove" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamAssignMember">
+      <soap:operation soapAction="http://tempuri.org/TeamAssignMember" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamDeassignMember">
+      <soap:operation soapAction="http://tempuri.org/TeamDeassignMember" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberSelectAll">
+      <soap:operation soapAction="http://tempuri.org/TeamMemberSelectAll" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberSelectByTeam">
+      <soap:operation soapAction="http://tempuri.org/TeamMemberSelectByTeam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberGet">
+      <soap:operation soapAction="http://tempuri.org/TeamMemberGet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberInsert">
+      <soap:operation soapAction="http://tempuri.org/TeamMemberInsert" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberUpdate">
+      <soap:operation soapAction="http://tempuri.org/TeamMemberUpdate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberRemove">
+      <soap:operation soapAction="http://tempuri.org/TeamMemberRemove" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamGetNonWorkingHours">
+      <soap:operation soapAction="http://tempuri.org/TeamGetNonWorkingHours" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamGetNonWorkingHoursAtDay">
+      <soap:operation soapAction="http://tempuri.org/TeamGetNonWorkingHoursAtDay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamInsertNonWorkingHours">
+      <soap:operation soapAction="http://tempuri.org/TeamInsertNonWorkingHours" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamUpdateNonWorkingHours">
+      <soap:operation soapAction="http://tempuri.org/TeamUpdateNonWorkingHours" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamRemoveNonWorkingHours">
+      <soap:operation soapAction="http://tempuri.org/TeamRemoveNonWorkingHours" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TodoInsert">
+      <soap:operation soapAction="http://tempuri.org/TodoInsert" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TodoUpdate">
+      <soap:operation soapAction="http://tempuri.org/TodoUpdate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TodoRemove">
+      <soap:operation soapAction="http://tempuri.org/TodoRemove" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TodoGet">
+      <soap:operation soapAction="http://tempuri.org/TodoGet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TodoSelect">
+      <soap:operation soapAction="http://tempuri.org/TodoSelect" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ScrumboardSoap12" type="tns:ScrumboardSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="StoryInsert">
+      <soap12:operation soapAction="http://tempuri.org/StoryInsert" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoryUpdateDetails">
+      <soap12:operation soapAction="http://tempuri.org/StoryUpdateDetails" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoryUpdateStatus">
+      <soap12:operation soapAction="http://tempuri.org/StoryUpdateStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoryRemove">
+      <soap12:operation soapAction="http://tempuri.org/StoryRemove" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoryGetByExternalId">
+      <soap12:operation soapAction="http://tempuri.org/StoryGetByExternalId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoryGetSprintStories">
+      <soap12:operation soapAction="http://tempuri.org/StoryGetSprintStories" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoryGetPanelStories">
+      <soap12:operation soapAction="http://tempuri.org/StoryGetPanelStories" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SprintInsert">
+      <soap12:operation soapAction="http://tempuri.org/SprintInsert" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SprintUpdate">
+      <soap12:operation soapAction="http://tempuri.org/SprintUpdate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SprintGet">
+      <soap12:operation soapAction="http://tempuri.org/SprintGet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SprintSelectAll">
+      <soap12:operation soapAction="http://tempuri.org/SprintSelectAll" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SprintSelectByTeam">
+      <soap12:operation soapAction="http://tempuri.org/SprintSelectByTeam" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StateSelectAll">
+      <soap12:operation soapAction="http://tempuri.org/StateSelectAll" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StateGet">
+      <soap12:operation soapAction="http://tempuri.org/StateGet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoryTypeSelectAll">
+      <soap12:operation soapAction="http://tempuri.org/StoryTypeSelectAll" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoryTypeGet">
+      <soap12:operation soapAction="http://tempuri.org/StoryTypeGet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutSelectAll">
+      <soap12:operation soapAction="http://tempuri.org/LayoutSelectAll" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutInsert">
+      <soap12:operation soapAction="http://tempuri.org/LayoutInsert" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutUpdate">
+      <soap12:operation soapAction="http://tempuri.org/LayoutUpdate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutGet">
+      <soap12:operation soapAction="http://tempuri.org/LayoutGet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutPanelSelectByLayout">
+      <soap12:operation soapAction="http://tempuri.org/LayoutPanelSelectByLayout" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutPanelGet">
+      <soap12:operation soapAction="http://tempuri.org/LayoutPanelGet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutPanelInsert">
+      <soap12:operation soapAction="http://tempuri.org/LayoutPanelInsert" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutPanelUpdate">
+      <soap12:operation soapAction="http://tempuri.org/LayoutPanelUpdate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LayoutPanelRemove">
+      <soap12:operation soapAction="http://tempuri.org/LayoutPanelRemove" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamSelectAll">
+      <soap12:operation soapAction="http://tempuri.org/TeamSelectAll" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamGet">
+      <soap12:operation soapAction="http://tempuri.org/TeamGet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamInsert">
+      <soap12:operation soapAction="http://tempuri.org/TeamInsert" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamUpdate">
+      <soap12:operation soapAction="http://tempuri.org/TeamUpdate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamRemove">
+      <soap12:operation soapAction="http://tempuri.org/TeamRemove" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamAssignMember">
+      <soap12:operation soapAction="http://tempuri.org/TeamAssignMember" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamDeassignMember">
+      <soap12:operation soapAction="http://tempuri.org/TeamDeassignMember" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberSelectAll">
+      <soap12:operation soapAction="http://tempuri.org/TeamMemberSelectAll" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberSelectByTeam">
+      <soap12:operation soapAction="http://tempuri.org/TeamMemberSelectByTeam" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberGet">
+      <soap12:operation soapAction="http://tempuri.org/TeamMemberGet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberInsert">
+      <soap12:operation soapAction="http://tempuri.org/TeamMemberInsert" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberUpdate">
+      <soap12:operation soapAction="http://tempuri.org/TeamMemberUpdate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamMemberRemove">
+      <soap12:operation soapAction="http://tempuri.org/TeamMemberRemove" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamGetNonWorkingHours">
+      <soap12:operation soapAction="http://tempuri.org/TeamGetNonWorkingHours" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamGetNonWorkingHoursAtDay">
+      <soap12:operation soapAction="http://tempuri.org/TeamGetNonWorkingHoursAtDay" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamInsertNonWorkingHours">
+      <soap12:operation soapAction="http://tempuri.org/TeamInsertNonWorkingHours" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamUpdateNonWorkingHours">
+      <soap12:operation soapAction="http://tempuri.org/TeamUpdateNonWorkingHours" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TeamRemoveNonWorkingHours">
+      <soap12:operation soapAction="http://tempuri.org/TeamRemoveNonWorkingHours" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TodoInsert">
+      <soap12:operation soapAction="http://tempuri.org/TodoInsert" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TodoUpdate">
+      <soap12:operation soapAction="http://tempuri.org/TodoUpdate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TodoRemove">
+      <soap12:operation soapAction="http://tempuri.org/TodoRemove" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TodoGet">
+      <soap12:operation soapAction="http://tempuri.org/TodoGet" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TodoSelect">
+      <soap12:operation soapAction="http://tempuri.org/TodoSelect" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Scrumboard">
+    <wsdl:port name="ScrumboardSoap" binding="tns:ScrumboardSoap">
+      <soap:address location="http://localhost:8031/Scrumboard.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ScrumboardSoap12" binding="tns:ScrumboardSoap12">
+      <soap12:address location="http://localhost:8031/Scrumboard.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
