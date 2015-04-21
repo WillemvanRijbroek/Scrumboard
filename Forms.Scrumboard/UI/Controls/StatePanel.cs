@@ -190,28 +190,43 @@ namespace ScrumBoard.UI.Controls
         }
         public void AutoAlignStories()
         {
+            if (Controls.Count == 2)
+            {
+                Console.WriteLine();
+            }
             int i = 0;
             bool first = true;
             int lastLeft = 2;
             int lastTop = hasTitle ? 30 : 2;
-            //if (Controls.Count > 12)
-            //{
-            //    Console.Write("");
-            //}
+            SortedList<String, StickyStory> sortedStories = new SortedList<string, StickyStory>();
             foreach (Control control in Controls)
             {
                 if (control is StickyStory)
                 {
-                    Story story = ((StickyStory)control).Story;
+                    StickyStory st = (StickyStory)control;
+                    sortedStories.Add(st.Story.ExternalId + "_" + st.Story.Id, st);
+                }
+            }
 
-                    if ((lastLeft + 2 + (2 * control.Width)) < Width)
+            IEnumerator<KeyValuePair<String, StickyStory>> enuma = sortedStories.GetEnumerator();
+            enuma.MoveNext();
+            StickyStory stickyStory = enuma.Current.Value;
+
+            while (stickyStory != null)
+            {
+
+                if (stickyStory != null)
+                {
+                    Story story = stickyStory.Story;
+
+                    if ((lastLeft + 2 + (2 * stickyStory.Width)) < Width)
                     {
-                        lastLeft = lastLeft + 2 + control.Width;
-                        control.Top = lastTop + this.AutoScrollPosition.Y;
-                        control.Left = lastLeft + this.AutoScrollPosition.X;
+                        lastLeft = lastLeft + 2 + stickyStory.Width;
+                        stickyStory.Top = lastTop + this.AutoScrollPosition.Y;
+                        stickyStory.Left = lastLeft + this.AutoScrollPosition.X;
                         if (first)
                         {
-                            control.Left = 2 + this.AutoScrollPosition.X;
+                            stickyStory.Left = 2 + this.AutoScrollPosition.X;
                             first = false;
                             lastLeft = 2;
                         }
@@ -221,16 +236,18 @@ namespace ScrumBoard.UI.Controls
                         lastLeft = 2;
                         i++;
                         if (hasTitle)
-                            lastTop = 30 + (i * control.Height);
+                            lastTop = 30 + (i * stickyStory.Height);
                         else
-                            lastTop = 2 + (i * control.Height);
-                        control.Top = lastTop + this.AutoScrollPosition.Y;
-                        control.Left = lastLeft + this.AutoScrollPosition.X;
-                        
+                            lastTop = 2 + (i * stickyStory.Height);
+                        stickyStory.Top = lastTop + this.AutoScrollPosition.Y;
+                        stickyStory.Left = lastLeft + this.AutoScrollPosition.X;
+
                     }
-                    Console.WriteLine(story.ExternalId + " (" + control.Top + ":" + control.Left + ")");
-                    ((StickyStory)control).SavePosition();
+                    Console.WriteLine(story.ExternalId + " (" + stickyStory.Top + ":" + stickyStory.Left + ")");
+                    stickyStory.SavePosition();
                 }
+                enuma.MoveNext();
+                stickyStory = enuma.Current.Value;
             }
         }
 

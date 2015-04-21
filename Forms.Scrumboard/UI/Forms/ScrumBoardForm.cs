@@ -221,6 +221,7 @@ namespace ScrumBoard.UI.Forms
             {
                 if (Controls[i] is StatePanel)
                 {
+                    ((StatePanel)Controls[i]).RefreshStories();
                     ((StatePanel)Controls[i]).AutoResize();
                 }
                 else if (Controls[i] is Burndown)
