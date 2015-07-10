@@ -55,6 +55,18 @@ namespace ScrumboardWebService
             return new Story().Select(sprintId);
         }
 
+        /// <summary>
+        /// Retrieves a list of sprint stories that are changed after the modified date
+        /// </summary>
+        /// <param name="sprintId"></param>
+        /// <param name="modified"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public List<Story> StoryGetSprintModifiedStories(int sprintId, DateTime modified)
+        {
+            return new Story().Select(sprintId, modified);
+        }
+
         [WebMethod]
         public List<Story> StoryGetPanelStories(int sprintId, int storyTypeId, int statusId)
         {
@@ -64,17 +76,15 @@ namespace ScrumboardWebService
 
         #region Sprint
         [WebMethod]
-        public int SprintInsert(int layoutId, int teamId, String name, DateTime startDate, DateTime target)
+        public int SprintInsert(int layoutId, int teamId, String name, DateTime startDate, DateTime target, int velocity, int focusFactor)
         {
-            return new Sprint().Insert(layoutId, teamId, name, startDate, target);
+            return new Sprint().Insert(layoutId, teamId, name, startDate, target, velocity, focusFactor);
         }
-
         [WebMethod]
-        public void SprintUpdate(int id, int layoutId, int teamId, String name, DateTime startDate, DateTime target)
+        public void SprintUpdate(int id, int layoutId, int teamId, String name, DateTime startDate, DateTime target, int velocity, int focusFactor)
         {
-            new Sprint().Update(id, layoutId, teamId, name, startDate, target);
+            new Sprint().Update(id, layoutId, teamId, name, startDate, target, velocity, focusFactor);
         }
-
         [WebMethod]
         public Sprint SprintGet(int sprintId)
         {
@@ -112,6 +122,16 @@ namespace ScrumboardWebService
         {
             return new State().Get(id);
         }
+        [WebMethod]
+        public int StateInsert(String name, Boolean isInitial, Boolean isFinal)
+        {
+            return new State().Insert(name, isInitial, isFinal);
+        }
+        [WebMethod]
+        public void StateUpdate(int id, String name, Boolean isInitial, Boolean isFinal)
+        {
+            new State().Update(id, name, isInitial, isFinal);
+        }
         #endregion
 
         #region Story type
@@ -124,6 +144,16 @@ namespace ScrumboardWebService
         public StoryType StoryTypeGet(int id)
         {
             return new StoryType().Get(id);
+        }
+        [WebMethod]
+        public int StoryTypeInsert(String name, int defaultBackColor, Boolean isBurnDownEnabled)
+        {
+            return new StoryType().Insert(name, defaultBackColor, isBurnDownEnabled);
+        }
+        [WebMethod]
+        public void StoryTypeUpdate(int id, String name, int defaultBackColor, Boolean isBurnDownEnabled)
+        {
+            new StoryType().Update(id, name, defaultBackColor, isBurnDownEnabled);
         }
         #endregion
 
@@ -209,87 +239,6 @@ namespace ScrumboardWebService
         {
             new Team().Remove(id);
         }
-        [WebMethod]
-        public void TeamAssignMember(int teamId, int teamMemberId)
-        {
-            new Team().AssignTeamMember(teamId, teamMemberId);
-        }
-        [WebMethod]
-        public void TeamDeassignMember(int teamId, int teamMemberId)
-        {
-            new Team().DeassignTeamMember(teamId, teamMemberId);
-        }
-        #endregion
-
-        #region TeamMember
-        [WebMethod]
-        public List<TeamMember> TeamMemberSelectAll()
-        {
-            return new TeamMember().Select();
-        }
-        [WebMethod]
-        public List<TeamMember> TeamMemberSelectByTeam(int teamId)
-        {
-            return new TeamMember().Select(teamId);
-        }
-
-        [WebMethod]
-        public TeamMember TeamMemberGet(int id)
-        {
-            return new TeamMember().Get(id);
-        }
-        [WebMethod]
-        public String TeamMemberTestInsert(String name, String userName, String focusFactor, String availabilityFactor, String normalWorkingHours)
-        {
-            CultureInfo ci = new CultureInfo("en-US");
-            return Decimal.Parse(focusFactor, ci).ToString(ci) + " " + availabilityFactor + " " + normalWorkingHours;
-        }
-        [WebMethod]
-        public int TeamMemberInsert(String name, String userName, String focusFactor, String availabilityFactor, String normalWorkingHours)
-        {
-            CultureInfo ci =  new CultureInfo("en-US");
-            return new TeamMember().Insert(name, userName, Decimal.Parse(focusFactor, ci), Decimal.Parse(availabilityFactor,ci), Decimal.Parse(normalWorkingHours, ci));
-        }
-        [WebMethod]
-        public void TeamMemberUpdate(int id, String name, String userName, String focusFactor, String availabilityFactor, String normalWorkingHours)
-        {
-            CultureInfo ci = new CultureInfo("en-US");
-            new TeamMember().Update(id, name, userName, Decimal.Parse(focusFactor, ci), Decimal.Parse(availabilityFactor, ci), Decimal.Parse(normalWorkingHours, ci));
-        }
-        [WebMethod]
-        public void TeamMemberRemove(int id)
-        {
-            new TeamMember().Remove(id);
-        }
-
-        [WebMethod]
-        public List<NonWorkingHours> TeamGetNonWorkingHours(int teamMemberId)
-        {
-            return new NonWorkingHours().Select(teamMemberId);
-        }
-
-        [WebMethod]
-        public List<NonWorkingHours> TeamGetNonWorkingHoursAtDay(int teamMemberId, DateTime day)
-        {
-            return new NonWorkingHours().Select(teamMemberId, day);
-        }
-
-        [WebMethod]
-        public int TeamInsertNonWorkingHours(int teamMemberId, DateTime day, String hours)
-        {
-            return new NonWorkingHours().Insert(teamMemberId, day, Decimal.Parse(hours));
-        }
-
-        [WebMethod]
-        public void TeamUpdateNonWorkingHours(int id, int teamMemberId, DateTime day, String hours)
-        {
-            new NonWorkingHours().Update(id, teamMemberId, day, Decimal.Parse(hours));
-        }
-        [WebMethod]
-        public void TeamRemoveNonWorkingHours(int id)
-        {
-            new NonWorkingHours().Remove(id);
-        }
         #endregion
 
         #region Todo's
@@ -320,61 +269,5 @@ namespace ScrumboardWebService
         }
         #endregion
 
-        #region Authentication
-        //[WebMethod]
-        //public bool Login(string userName, string password)
-        //{
-        //    TeamMember user = new TeamMember().Get(userName);
-
-        //    if (user != null)
-        //    {
-        //        // Issue the authentication key to the client
-        //        FormsAuthentication.SetAuthCookie(userName, false);
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
-
-        //[WebMethod]
-        //public void LogOut()
-        //{
-        //    // Deprive client of the authentication key
-        //    FormsAuthentication.SignOut();
-        //}
-
-        //[WebMethod]
-        //public TeamMember CurrentTeamMember()
-        //{
-        //if (!string.IsNullOrEmpty(Thread.CurrentPrincipal.Identity.Name))
-        //{
-        //    return new TeamMember().Get(Thread.CurrentPrincipal.Identity.Name); ;
-        //}
-        //    return null;
-        //}
-        //private int teamId = -1;
-        //private int CurrentTeamId
-        //{
-        //    get
-        //    {
-        //        //if (teamId == -1 && CurrentTeamMember() != null)
-        //        //{
-        //        //    teamId = CurrentTeamMember().TeamId;
-        //        //}
-        //        return teamId;
-        //    }
-        //}
-        //[WebMethod]
-        //public string WhoAmI()
-        //{
-        //    if (CurrentTeamMember() != null)
-        //    {
-        //        return CurrentTeamMember().Name;
-        //    }
-        //    return null;
-        //}
-        #endregion
     }
 }

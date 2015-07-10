@@ -17,15 +17,19 @@ namespace ScrumBoard.UI.Forms
         public Options()
         {
             InitializeComponent();
-            txtEstimate.Text = Config.DefaultEstimate.ToString();
+            numEstimate.Minimum = 0;
+            numEstimate.Maximum = Int32.MaxValue;
+            numEstimate.Value = Config.DefaultEstimate;
             txtIssueTrackingURL.Text = Config.IssueTrackingSystemURL;
             chkViewModus.Checked = Config.ViewOnly;
             chkEditDetails.Checked = Config.AutoEditDetails;
             btnColor.BackColor = Color.FromArgb(Config.DefaultBackColor);
             btnTodoBackColor.BackColor = Color.FromArgb(Config.DefaultTodoBackColor);
-            cmbStoryType.Items.Add("Planned");
-            cmbStoryType.Items.Add("Unplanned");
-            cmbStoryType.Items.Add("Bonus");
+
+            cmbStoryType.Items.Clear();
+            cmbStoryType.DisplayMember = "Name";
+            cmbStoryType.ValueMember = "Id";
+            cmbStoryType.DataSource = client.StoryTypeSelectAll();
             cmbStoryType.Text = Config.DefaultStoryType;
             cmbTeam.Items.Clear();
             cmbTeam.DisplayMember = "Name";
@@ -34,8 +38,11 @@ namespace ScrumBoard.UI.Forms
             cmbTeam.SelectedValue = Config.MyTeam;
             refreshLayouts();
             refreshTeams();
+            refreshStoryStates();
+            refreshStoryTypes();
         }
 
+        #region Events
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Close();
@@ -45,7 +52,7 @@ namespace ScrumBoard.UI.Forms
         {
             try
             {
-                Config.DefaultEstimate = Int32.Parse(txtEstimate.Text);
+                Config.DefaultEstimate = (int)numEstimate.Value;
             }
             catch { }
             Config.DefaultBackColor = btnColor.BackColor.ToArgb();
@@ -57,15 +64,9 @@ namespace ScrumBoard.UI.Forms
             Config.MyTeam = (int)cmbTeam.SelectedValue;
             Close();
         }
+        #endregion
 
-        private void btnColor_Click(object sender, EventArgs e)
-        {
-            if (colorDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                btnColor.BackColor = colorDialog1.Color;
-            }
-        }
-
+        #region Layouts
         private void btnAddLayout_Click(object sender, EventArgs e)
         {
             LayoutDefinition f = new LayoutDefinition();
@@ -106,6 +107,9 @@ namespace ScrumBoard.UI.Forms
         {
             refreshLayouts();
         }
+        #endregion
+
+        #region Teams
         private void refreshTeams()
         {
             ScrumboardService.Team[] teams = client.TeamSelectAll();
@@ -117,6 +121,7 @@ namespace ScrumBoard.UI.Forms
                 lvwTeams.Items.Add(it);
             }
         }
+
         private void btnEditTeam_Click(object sender, EventArgs e)
         {
             if (lvwTeams.SelectedItems.Count == 1)
@@ -156,7 +161,87 @@ namespace ScrumBoard.UI.Forms
                 }
             }
         }
+        #endregion
 
+        #region Story States
+        private void refreshStoryStates()
+        {
+            ScrumboardService.State[] states = client.StateSelectAll();
+            lvwStates.Items.Clear();
+            foreach (ScrumboardService.State state in states)
+            {
+                ListViewItem it = new ListViewItem(state.Name);
+                it.Tag = state.Id;
+                lvwStates.Items.Add(it);
+            }
+        }
+        private void btnNewStatus_Click(object sender, EventArgs e)
+        {
+            StatusDetail f = new StatusDetail();
+            f.ShowDialog(this);
+            refreshStoryStates();
+        }
+
+        private void btnEditStatus_Click(object sender, EventArgs e)
+        {
+            if (lvwStates.SelectedItems.Count == 1)
+            {
+                ScrumboardService.State t =
+                    client.StateGet((int)lvwStates.SelectedItems[0].Tag);
+                if (t != null)
+                {
+                    StatusDetail f = new StatusDetail();
+                    f.State = t;
+                    f.ShowDialog(this);
+                    refreshStoryStates();
+                }
+            }
+        }
+        #endregion
+
+        #region Story Types
+        private void refreshStoryTypes()
+        {
+            ScrumboardService.StoryType[] types = client.StoryTypeSelectAll();
+            lvwStoryTypes.Items.Clear();
+            foreach (ScrumboardService.StoryType type in types)
+            {
+                ListViewItem it = new ListViewItem(type.Name);
+                it.Tag = type.Id;
+                lvwStoryTypes.Items.Add(it);
+            }
+        }
+        private void btnNewStoryType_Click(object sender, EventArgs e)
+        {
+            StoryTypeDetail f = new StoryTypeDetail();
+            f.ShowDialog(this);
+            refreshStoryTypes();
+        }
+        private void btnEditStoryType_Click(object sender, EventArgs e)
+        {
+            if (lvwStoryTypes.SelectedItems.Count == 1)
+            {
+                ScrumboardService.StoryType t =
+                    client.StoryTypeGet((int)lvwStoryTypes.SelectedItems[0].Tag);
+                if (t != null)
+                {
+                    StoryTypeDetail f = new StoryTypeDetail();
+                    f.StoryType = t;
+                    f.ShowDialog(this);
+                    refreshStoryTypes();
+                }
+            }
+        }
+        #endregion
+
+        #region Story
+        private void btnColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                btnColor.BackColor = colorDialog1.Color;
+            }
+        }
         private void btnTodoBackColor_Click(object sender, EventArgs e)
         {
             if (colorDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -164,5 +249,7 @@ namespace ScrumBoard.UI.Forms
                 btnTodoBackColor.BackColor = colorDialog1.Color;
             }
         }
+        #endregion
+
     }
 }

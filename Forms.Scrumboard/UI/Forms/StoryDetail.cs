@@ -89,23 +89,32 @@ namespace ScrumBoard.UI.Forms
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            if (s != null)
+            try
             {
-                s.SprintId = Config.ActiveSprint;
-                s.ExternalId = txtId.Text;
-                s.StoryTypeId = StoryTypeId;
-                s.Description = txtDescription.Text;
-                s.Estimate = Int32.Parse(txtEstimate.Text);
-                s.Tag = txtTag.Text;
-                s.BackColor = btnColor.BackColor.ToArgb();
-                s.Save();
+                if (s != null)
+                {
+                    s.SprintId = Config.ActiveSprint;
+                    s.ExternalId = txtId.Text;
+                    s.StoryTypeId = StoryTypeId;
+                    s.Description = txtDescription.Text;
+                    s.Estimate = Int32.Parse(txtEstimate.Text);
+                    s.Tag = txtTag.Text;
+                    s.BackColor = btnColor.BackColor.ToArgb();
+                    s.Save();
+                }
+                else
+                {
+                    s = new Story(txtId.Text, Config.ActiveSprint, StoryTypeId, txtDescription.Text, Int32.Parse(txtEstimate.Text), state, btnColor.BackColor.ToArgb(), 30, 30, txtTag.Text);
+                    s.Save();
+                }
+                this.Close();
             }
-            else
+            catch (PendingChangeException ex)
             {
-                s = new Story(txtId.Text, Config.ActiveSprint, StoryTypeId, txtDescription.Text, Int32.Parse(txtEstimate.Text), state, btnColor.BackColor.ToArgb(), 30, 30, txtTag.Text);
-                s.Save();
+                MessageBox.Show(this, "Story is already changed by someone else, please retry");
             }
-            this.Close();
+            
+            
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

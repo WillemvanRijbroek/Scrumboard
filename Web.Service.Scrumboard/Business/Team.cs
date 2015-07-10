@@ -100,16 +100,5 @@ namespace ScrumboardWebService.Business
             executeScalar(sql);
         }
 
-        public void AssignTeamMember(int teamId, int teamMemberId)
-        {
-            String sql = String.Format("INSERT INTO TeamMembers (TeamId, TeamMemberId) VALUES ({0}, {1})", teamId, teamMemberId);
-            executeInsert(sql);
-        }
-
-        public void DeassignTeamMember(int teamId, int teamMemberId)
-        {
-            String sql = String.Format("DELETE FROM TeamMembers WHERE TeamId={0} AND TeamMemberId={1}", teamId, teamMemberId);
-            executeInsert(sql);
-        }
     }
 }

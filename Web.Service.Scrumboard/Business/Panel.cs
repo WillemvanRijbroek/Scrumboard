@@ -112,8 +112,8 @@ namespace ScrumboardWebService.Business
 
         public void Update(int id, int stateId, String title, int storyTypeId, int column, int row, int height, int width)
         {
-            String sql = String.Format("UPDATE Panel SET title = '{1}', storyTypeId = {2}, [column] = {3}, row = {4}, height = {5}, width = {6} WHERE id = {0}"
-                , id, asSQLStringValue(title), storyTypeId, column, row, height, width);
+            String sql = String.Format("UPDATE Panel SET title = '{1}', storyTypeId = {2}, [column] = {3}, row = {4}, height = {5}, width = {6}, stateID={7} WHERE id = {0}"
+                , id, asSQLStringValue(title), storyTypeId, column, row, height, width, stateId);
             executeScalar(sql);
         }
 

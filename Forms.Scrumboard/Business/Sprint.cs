@@ -35,6 +35,8 @@ namespace ScrumBoard.Business
                 StartDate = sprint.StartDate;
                 TargetDate = sprint.TargetDate;
                 TeamId = sprint.TeamId;
+                Velocity = sprint.Velocity;
+                FocusFactor = sprint.FocusFactor;
                 layout = client.LayoutGet(LayoutId);
                 panels = client.LayoutPanelSelectByLayout(LayoutId);
                 SprintTeam = client.TeamGet(sprint.TeamId);
@@ -48,9 +50,11 @@ namespace ScrumBoard.Business
                 TargetDate = DateTime.MinValue;
                 layout = null;
                 panels = null;
+                Velocity = 0;
+                FocusFactor = 0;
                 SprintTeam = new ScrumBoard.ScrumboardService.Team();
             }
-            
+
         }
 
         public ScrumboardService.Layout Layout
@@ -66,6 +70,16 @@ namespace ScrumBoard.Business
             {
                 return panels;
             }
+        }
+
+        public decimal BurndownRateOfDay(DateTime dt)
+        {
+            if (FocusFactor > 0 && Velocity > 0 && dt.DayOfWeek != DayOfWeek.Saturday && dt.DayOfWeek != DayOfWeek.Sunday)
+            {
+                decimal factor = ((decimal)FocusFactor) / 100;
+                return factor * ((decimal)Velocity);
+            }
+            return 0;
         }
 
         public void ImportStories(FileInfo sprintFile)
@@ -117,7 +131,7 @@ namespace ScrumBoard.Business
                         sw.Write(s.Description);
                         sw.Write(",");
                         sw.Write(s.Estimate);
-                        
+
                         sw.Write(",");
                         if (s.ClosedDate != null && s.ClosedDate > DateTime.MinValue)
                             sw.Write(s.ClosedDate);
@@ -143,7 +157,7 @@ namespace ScrumBoard.Business
             }
             return "";
         }
-        
-        
+
+
     }
 }

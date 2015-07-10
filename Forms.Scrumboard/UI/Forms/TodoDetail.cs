@@ -13,8 +13,7 @@ namespace ScrumBoard.UI.Forms
 {
     public partial class TodoDetail : Form
     {
-        ScrumboardService.ScrumboardSoapClient client = ServiceConn.getClient();
-        private ScrumBoard.ScrumboardService.Todo s;
+         private ScrumBoard.ScrumboardService.Todo todo;
 
         public TodoDetail()
         {
@@ -42,23 +41,23 @@ namespace ScrumBoard.UI.Forms
                     btnColor.BackColor = Color.FromArgb(value.BackColor);
                 }
                 catch { }
-                s = value;
+                todo = value;
             }
         }
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            if (s != null)
+            if (todo != null)
             {
-                s.StoryId = this.StoryId;
-                s.Description = txtDescription.Text.Replace("'", "''");
-                s.Estimate = Int32.Parse(txtEstimate.Text);
-                s.BackColor = btnColor.BackColor.ToArgb();
-                client.TodoUpdate(s.Id, s.StoryId, s.Description, s.Estimate, s.BackColor, s.X, s.Y);
+                todo.StoryId = this.StoryId;
+                todo.Description = txtDescription.Text.Replace("'", "''");
+                todo.Estimate = Int32.Parse(txtEstimate.Text);
+                todo.BackColor = btnColor.BackColor.ToArgb();
+                Data.getInstance().TodoUpdate(todo);
             }
             else
             {
-                client.TodoInsert(StoryId, txtDescription.Text.Replace("'", "''"), Int32.Parse(txtEstimate.Text), btnColor.BackColor.ToArgb(), 30, 30);
+                Data.getInstance().TodoInsert(StoryId, txtDescription.Text.Replace("'", "''"), Int32.Parse(txtEstimate.Text), btnColor.BackColor.ToArgb(), 30, 30);
             }
             this.Close();
         }

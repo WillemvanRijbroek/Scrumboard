@@ -14,7 +14,7 @@ namespace ScrumBoard.UI.Controls
 {
     public partial class StickyTodo : StickyNote
     {
-        private ScrumBoard.ScrumboardService.Todo s;
+        private ScrumBoard.ScrumboardService.Todo todo;
         
 
         public StickyTodo(ScrumboardService.Layout layout, Mover mover)
@@ -51,19 +51,18 @@ namespace ScrumBoard.UI.Controls
         private void Edit()
         {
             TodoDetail form = new TodoDetail();
-            form.Todo = s;
+            form.Todo = todo;
             form.ShowDialog();
-            Todo = s;
-            //((ScrumBoard.UI.Forms.ScrumBoardForm)this.Parent.Parent).RefreshStories();
+            Todo = todo;
+            ((ScrumBoard.UI.Forms.ScrumBoardForm)this.Parent.Parent).ModifiedTodo(this);
         }
 
         private void Remove()
         {
-            if (MessageBox.Show(this, string.Format("Are you sure to remove todo '{0}'?", s.Description), "Question", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show(this, string.Format("Are you sure to remove todo '{0}'?", todo.Description), "Question", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                ScrumboardService.ScrumboardSoapClient client = ServiceConn.getClient();
-                client.TodoRemove(s.Id);
-                ((ScrumBoard.UI.Forms.ScrumBoardForm)this.Parent.Parent).RemovedTodo(this);
+                Data.getInstance().TodoRemove(todo);
+                ((ScrumBoard.UI.Forms.ScrumBoardForm)this.Parent.Parent).ModifiedTodo(this);
             }
         }
 
@@ -77,8 +76,8 @@ namespace ScrumBoard.UI.Controls
                 value.BackColor = this.BackColor.ToArgb();
                 txtEstimate.BackColor = this.BackColor;
                 txtDescription.BackColor = this.BackColor;
-                s = value;
-                Location = new Point(s.X, s.Y);
+                todo = value;
+                Location = new Point(todo.X, todo.Y);
                 initMenus();
             }
         }

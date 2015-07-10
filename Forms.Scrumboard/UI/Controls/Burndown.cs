@@ -14,9 +14,8 @@ namespace ScrumBoard.UI.Controls
 {
     public partial class Burndown : UserControl
     {
-        ScrumboardSoapClient client;
-        ScrumBoard.Business.Sprint sprint;
-        ScrumBoard.Business.Team team;
+        private ScrumboardSoapClient client;
+        private ScrumBoard.Business.Sprint sprint;
         private ScrumboardService.Panel panel;
         private ScrumboardService.Layout layout;
 
@@ -44,48 +43,46 @@ namespace ScrumBoard.UI.Controls
             Width = width;
         }
 
-        private decimal CalculatePlanned(DateTime dt, decimal hours)
+        private decimal CalculatePlanned(DateTime dt, decimal storyPoints)
         {
-            if (team != null)
+            decimal points = storyPoints;
+            if (sprint != null)
             {
-                hours -= team.getBurndownRate(dt);
+                points -= sprint.BurndownRateOfDay(dt);
             }
-            else
-            {
-                hours -= 8;
-            }
-            if (hours < 0)
-                hours = 0;
-            return hours;
+            if (points < 0)
+                points = 0;
+            return points;
         }
 
-        private decimal CalculateExpected(DateTime dt, decimal hours, Story[] stories)
+        private decimal CalculateExpected(DateTime dt, decimal storyPoints, Story[] stories)
         {
             if (dt <= DateTime.Now)
-                return CalculateRealized(dt, hours, stories);
+                return CalculateRealized(dt, storyPoints, stories);
             else
             {
-                return CalculatePlanned(dt, hours);
+                return CalculatePlanned(dt, storyPoints);
             }
         }
 
-        private decimal CalculateRealized(DateTime dt, decimal hours, Story[] stories)
+        private decimal CalculateRealized(DateTime dt, decimal storyPoints, Story[] stories)
         {
+            decimal points = storyPoints;
             foreach (Story s in stories)
             {
                 if (s.IsBurndownEnabled)
                 {
-                    if (s.ClosedDate != null && s.ClosedDate.Date.Equals(dt.Date))
+                    if (s.ClosedDate != null && s.ClosedDate.Date.Equals(dt.Date) && !s.IsRemoved)
                     {
-                        hours -= s.Estimate;
+                        points -= s.Estimate;
                     }
                 }
             }
-            if (hours < 0)
-                hours = 0;
-            return hours;
+            if (points < 0)
+                points = 0;
+            return points;
         }
-        private DataTable CreateTable(DateTime startDate)
+        private DataTable CreateTable(DateTime startDate, DateTime tillDate)
         {
             if (client == null)
             {
@@ -108,7 +105,7 @@ namespace ScrumBoard.UI.Controls
             decimal rel = pln;
             decimal exp = pln;
             decimal today = pln;
-            while (exp > 0)
+            while (exp > 0 && dt < tillDate)
             {
                 if (dt.Date.Equals(DateTime.Now.Date))
                     table.Rows.Add(new object[] { dt.ToShortDateString(), pln, rel, exp, today });
@@ -135,16 +132,14 @@ namespace ScrumBoard.UI.Controls
         {
 
             sprint = new ScrumBoard.Business.Sprint(Config.ActiveSprint);
-            team = new Business.Team(sprint);
             burndownChart.Titles.Clear();
-            burndownChart.Titles.Add("Burndown of sprint: " + sprint.Name + " Target: " + sprint.TargetDate.ToShortDateString());
+            burndownChart.Titles.Add("Burndown " + sprint.Name + " Target: " + sprint.TargetDate.ToShortDateString());
             burndownChart.Titles[0].Font = new Font(burndownChart.Titles[0].Font.FontFamily, 14, FontStyle.Bold);
-
             DateTime dt = sprint.StartDate;
 
             DataSet ds = new DataSet();
-
-            ds.Tables.Add(CreateTable(dt));
+            DateTime endDate = sprint.TargetDate.AddDays(7);
+            ds.Tables.Add(CreateTable(dt, endDate));
 
             burndownChart.DataSource = ds.Tables[0].DefaultView;
 
@@ -155,6 +150,7 @@ namespace ScrumBoard.UI.Controls
             pln.ChartType = SeriesChartType.Line;
             pln.ToolTip = "Planned";
             pln.LegendText = "Planned";
+            pln.XValueType = ChartValueType.Date;
             //pln.BorderWidth = 2;
 
             Series exp = burndownChart.Series.Add("Expected");
@@ -163,6 +159,7 @@ namespace ScrumBoard.UI.Controls
             exp.ChartType = SeriesChartType.Line;
             exp.ToolTip = "Expected";
             exp.LegendText = "Expected";
+            exp.XValueType = ChartValueType.Date;
             //exp.BorderWidth = 2;
 
             Series rea = burndownChart.Series.Add("Realized");
@@ -171,6 +168,7 @@ namespace ScrumBoard.UI.Controls
             rea.ChartType = SeriesChartType.Line;
             rea.ToolTip = "Realized";
             rea.LegendText = "Realized";
+            rea.XValueType = ChartValueType.Date;
             //rea.BorderWidth = 2;
 
             Series today = burndownChart.Series.Add("Today");
@@ -180,6 +178,7 @@ namespace ScrumBoard.UI.Controls
             today.BorderWidth = 0;
             today.ToolTip = "Today";
             today.LegendText = "Today";
+            today.XValueType = ChartValueType.Date;
             today.CustomProperties = "PointWidth=0.1";
 
             burndownChart.DataBind();

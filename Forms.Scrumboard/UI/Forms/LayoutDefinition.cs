@@ -19,12 +19,14 @@ namespace ScrumBoard.UI.Forms
         public LayoutDefinition()
         {
             InitializeComponent();
-            lvwPanels.Columns.Add("Title");
-            lvwPanels.Columns.Add("Story type");
-            lvwPanels.Columns.Add("Story status");
+            lvwPanels.Columns.Add("Sort", 0);
+            lvwPanels.Columns.Add("Title",110);
+            lvwPanels.Columns.Add("Story type", 110);
+            lvwPanels.Columns.Add("Story status",110);
             lvwPanels.Columns.Add("Column");
             lvwPanels.Columns.Add("Row");
-
+            lvwPanels.Columns.Add("Width");
+            lvwPanels.Columns.Add("Height");
         }
 
         public ScrumboardService.Layout LayoutDef
@@ -51,13 +53,16 @@ namespace ScrumBoard.UI.Forms
                 ScrumboardService.Panel[] panels = client.LayoutPanelSelectByLayout(layout.Id);
                 foreach (ScrumboardService.Panel panel in panels)
                 {
-                    ListViewItem item = new ListViewItem(panel.Title);
+                    String sortkey = panel.Row.ToString() + "_" + panel.Column.ToString();
+                    ListViewItem item = new ListViewItem(sortkey);
                     item.Tag = panel.Id;
+                    item.SubItems.Add(new ListViewItem.ListViewSubItem(item, panel.Title));
                     item.SubItems.Add(new ListViewItem.ListViewSubItem(item, panel.StoryTypeName));
                     item.SubItems.Add(new ListViewItem.ListViewSubItem(item, panel.StateName));
                     item.SubItems.Add(new ListViewItem.ListViewSubItem(item, panel.Column.ToString()));
                     item.SubItems.Add(new ListViewItem.ListViewSubItem(item, panel.Row.ToString()));
-
+                    item.SubItems.Add(new ListViewItem.ListViewSubItem(item, panel.Width.ToString()));
+                    item.SubItems.Add(new ListViewItem.ListViewSubItem(item, panel.Heigth.ToString()));
                     lvwPanels.Items.Add(item);
 
                     if (!"Burndown".Equals(panel.Title))

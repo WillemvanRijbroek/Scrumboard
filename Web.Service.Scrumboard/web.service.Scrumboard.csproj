@@ -69,14 +69,12 @@
     <Compile Include="Business\BO.cs" />
     <Compile Include="Business\Todo.cs" />
     <Compile Include="Business\Layout.cs" />
-    <Compile Include="Business\NonWorkingHours.cs" />
     <Compile Include="Business\Panel.cs" />
     <Compile Include="Business\Sprint.cs" />
     <Compile Include="Business\State.cs" />
     <Compile Include="Business\Story.cs" />
     <Compile Include="Business\StoryType.cs" />
     <Compile Include="Business\Team.cs" />
-    <Compile Include="Business\TeamMember.cs" />
     <Compile Include="Common\Config.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scrumboard.asmx.cs">

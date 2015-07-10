@@ -87,7 +87,7 @@ namespace ScrumBoard.UI.Controls
                 st.Width = layout.StoryWidth;
                 st.Height = layout.StoryHeight;
                 Controls.Add(st);
-                Console.WriteLine("Dimensions: " + st.Width + ":" + st.Height);
+                // Console.WriteLine("Dimensions: " + st.Width + ":" + st.Height);
                 ScrumBoard.ScrumboardService.Todo[] todos = story.getTodos();
                 if (todos != null)
                 {
@@ -169,6 +169,7 @@ namespace ScrumBoard.UI.Controls
                     }
                 }
             }
+
         }
 
 
@@ -243,7 +244,7 @@ namespace ScrumBoard.UI.Controls
                         stickyStory.Left = lastLeft + this.AutoScrollPosition.X;
 
                     }
-                    Console.WriteLine(story.ExternalId + " (" + stickyStory.Top + ":" + stickyStory.Left + ")");
+                    //   Console.WriteLine(story.ExternalId + " (" + stickyStory.Top + ":" + stickyStory.Left + ")");
                     stickyStory.SavePosition();
                 }
                 enuma.MoveNext();

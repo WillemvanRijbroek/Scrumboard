@@ -51,7 +51,7 @@ namespace ScrumboardWebService.Business
         {
             StoryType item = null;
 
-            String sql = String.Format("SELECT Id, Name, DefaultBackColor, BurnDownEnabled  FROM StoryType WHERE Id = {0})", id);
+            String sql = String.Format("SELECT Id, Name, DefaultBackColor, BurnDownEnabled  FROM StoryType WHERE Id = {0}", id);
             OpenConnection();
             try
             {
@@ -80,32 +80,23 @@ namespace ScrumboardWebService.Business
             return item;
         }
 
-        //public int Insert(int teamId, String name, int totalColumns, int totalRows, int fontSize, int storyWidth, int storyHeight)
-        //{
-        //    String sql = "";
-        //    if (teamId >= 0)
-        //    {
-        //        sql = String.Format("INSERT INTO Layout (TeamId, Name, TotalColumns, TotalRows, FontSize, StoryWidth, StoryHeight) VALUES ({6}, '{0}', {1}, {2}, {3}, {4}, {5})",
-        //            asSQLStringValue(name), totalColumns, totalRows, fontSize, storyWidth, storyHeight, teamId);
-        //    }
-        //    else
-        //    {
-        //        sql = String.Format("INSERT INTO Layout (Name, TotalColumns, TotalRows, FontSize, StoryWidth, StoryHeight) VALUES ('{0}', {1}, {2}, {3}, {4}, {5})",
-        //            asSQLStringValue(name), totalColumns, totalRows, fontSize, storyWidth, storyHeight);
-        //    }
-        //    Object rt = executeInsert(sql);
-        //    int newId = -1;
-        //    if (rt != null && Int32.TryParse(rt.ToString(), out newId))
-        //        return newId;
+        public int Insert(String name, int defaultBackColor, Boolean isBurnDownEnabled)
+        {
+            String sql = "";
+            sql = String.Format("INSERT INTO StoryType (Name, DefaultBackColor, BurnDownEnabled) VALUES ('{0}', {1}, {2})", asSQLStringValue(name), defaultBackColor, isBurnDownEnabled?"1":"0");
+            Object rt = executeInsert(sql);
+            int newId = -1;
+            if (rt != null && Int32.TryParse(rt.ToString(), out newId))
+                return newId;
+            return -1;
+        }
 
-        //    return -1;
-        //}
-
-        //public void Update(int id, String name, int totalColumns, int totalRows, int fontSize, int storyWidth, int storyHeight)
-        //{
-        //    String sql = String.Format("UPDATE Layout SET name = '{1}', TotalColumns = {2}, TotalRows = {3}, FontSize = {4}, StoryWidth = {5}, StoryHeight = {6} WHERE id = {0}", id, asSQLStringValue(name), totalColumns, totalRows, fontSize, storyWidth, storyHeight);
-        //    executeScalar(sql);
-        //}
+        public void Update(int id, String name, int defaultBackColor, Boolean isBurnDownEnabled)
+        {
+            String sql = String.Format("UPDATE StoryType SET name = '{1}', DefaultBackColor = {2}, BurnDownEnabled = {3} WHERE id = {0}",
+                                        id, asSQLStringValue(name), defaultBackColor, isBurnDownEnabled ? "1" : "0");
+            executeScalar(sql);
+        }
 
     }
 

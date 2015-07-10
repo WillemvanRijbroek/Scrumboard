@@ -32,6 +32,14 @@ namespace ScrumBoard.UI.Forms
             cmbTeam.DisplayMember = "Name";
             cmbTeam.ValueMember = "Id";
             cmbTeam.DataSource = client.TeamSelectAll();
+
+            numFocusFactor.Value = 0;
+            numFocusFactor.Minimum = 0;
+            numFocusFactor.Maximum = 100;
+
+            numVelocity.Minimum = 0;
+            numVelocity.Maximum = Int32.MaxValue;
+            numVelocity.Value = 0;
         }
 
         public Sprint Sprint
@@ -46,10 +54,11 @@ namespace ScrumBoard.UI.Forms
                 catch (Exception ex) { Console.WriteLine(ex.Message); }
                 cmbLayout.SelectedValue = value.LayoutId;
                 cmbTeam.SelectedValue = value.TeamId;
+                numVelocity.Value = value.Velocity;
+                numFocusFactor.Value = value.FocusFactor;
             }
             get
             {
-
                 return s;
             }
         }
@@ -63,11 +72,13 @@ namespace ScrumBoard.UI.Forms
                 s.TargetDate = dtTarget.Value.Date;
                 s.LayoutId = (int)cmbLayout.SelectedValue;
                 s.TeamId = (int)cmbTeam.SelectedValue;
-                client.SprintUpdate(s.Id, s.LayoutId, s.TeamId, s.Name, s.StartDate, s.TargetDate);
+                s.Velocity = (int)numVelocity.Value;
+                s.FocusFactor = (int)numFocusFactor.Value;
+                client.SprintUpdate(s.Id, s.LayoutId, s.TeamId, s.Name, s.StartDate, s.TargetDate, s.Velocity,s.FocusFactor);
             }
             else
             {
-                Config.ActiveSprint = client.SprintInsert((int)cmbLayout.SelectedValue, (int)cmbTeam.SelectedValue, txtName.Text, dtStartdate.Value.Date, dtTarget.Value.Date);
+                Config.ActiveSprint = client.SprintInsert((int)cmbLayout.SelectedValue, (int)cmbTeam.SelectedValue, txtName.Text, dtStartdate.Value.Date, dtTarget.Value.Date, (int)numVelocity.Value, (int)numFocusFactor.Value);
             }
             this.Close();
         }

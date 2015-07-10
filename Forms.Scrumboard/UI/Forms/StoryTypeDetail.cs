@@ -11,24 +11,27 @@ using ScrumBoard.Common;
 
 namespace ScrumBoard.UI.Forms
 {
-    public partial class TeamDetail : Form
+    public partial class StoryTypeDetail : Form
     {
         ScrumboardService.ScrumboardSoapClient client = ServiceConn.getClient();
-        Team s;
+        StoryType s;
 
-        public TeamDetail()
+        public StoryTypeDetail()
         {
             InitializeComponent();
 
         }
 
-        public Team Team
+        public StoryType StoryType
         {
             set
             {
                 s = value;
                 if (s != null)
+                {
                     txtName.Text = value.Name;
+                    chkBurndownEnabled.Checked = value.BurnDownEnabled;
+                }
             }
             get
             {
@@ -41,11 +44,12 @@ namespace ScrumBoard.UI.Forms
             if (s != null)
             {
                 s.Name = txtName.Text;
-                client.TeamUpdate(s.Id, s.Name);
+                s.BurnDownEnabled = chkBurndownEnabled.Checked;
+                client.StoryTypeUpdate(s.Id, s.Name, -256, s.BurnDownEnabled);
             }
             else
             {
-                client.TeamInsert(txtName.Text);
+                client.StoryTypeInsert(txtName.Text, -256, chkBurndownEnabled.Checked);
             }
             this.Close();
         }

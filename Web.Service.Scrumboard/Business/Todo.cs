@@ -59,7 +59,7 @@ namespace ScrumboardWebService.Business
 
                     s.Id = rdr.GetInt32(0);
                     s.StoryId = rdr.GetInt32(1);
-                    s.Description = rdr.GetString(2);
+                    s.Description = HttpUtility.HtmlDecode(rdr.GetString(2));
                     s.Estimate = rdr.GetInt32(3);
                     s.BackColor = rdr.GetInt32(4);
                     s.X = rdr.GetInt32(5);
@@ -95,7 +95,7 @@ namespace ScrumboardWebService.Business
 
                     s.Id = rdr.GetInt32(0);
                     s.StoryId = rdr.GetInt32(1);
-                    s.Description = rdr.GetString(2);
+                    s.Description = HttpUtility.HtmlDecode(rdr.GetString(2));
                     s.Estimate = rdr.GetInt32(3);
                     s.BackColor = rdr.GetInt32(4);
                     s.X = rdr.GetInt32(5);

@@ -65,7 +65,7 @@
             this.autoRefreshToolStripMenuItem,
             this.burndownChartToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(170, 258);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(170, 280);
             // 
             // importSprintToolStripMenuItem
             // 
@@ -145,7 +145,6 @@
             this.autoRefreshToolStripMenuItem.Name = "autoRefreshToolStripMenuItem";
             this.autoRefreshToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.autoRefreshToolStripMenuItem.Text = "Auto Refresh On";
-            this.autoRefreshToolStripMenuItem.Visible = false;
             this.autoRefreshToolStripMenuItem.Click += new System.EventHandler(this.autoRefreshToolStripMenuItem_Click);
             // 
             // burndownChartToolStripMenuItem

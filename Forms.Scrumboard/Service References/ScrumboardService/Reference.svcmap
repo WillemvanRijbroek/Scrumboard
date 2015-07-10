@@ -18,11 +18,11 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:8031/Scrumboard.asmx" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:49340/Scrumboard.asmx" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Scrumboard.wsdl" MetadataType="Wsdl" ID="9f649c9e-640b-430b-8f80-c9f3f7e22d51" SourceId="1" SourceUrl="http://localhost:8031/Scrumboard.asmx?wsdl" />
-    <MetadataFile FileName="Scrumboard.disco" MetadataType="Disco" ID="4276d5ec-01f1-4d6d-82f4-4c1d285fd386" SourceId="1" SourceUrl="http://localhost:8031/Scrumboard.asmx?disco" />
+    <MetadataFile FileName="Scrumboard1.wsdl" MetadataType="Wsdl" ID="ae3c4499-9146-4768-a7c0-79c988419b07" SourceId="1" SourceUrl="http://localhost:49340/Scrumboard.asmx?wsdl" />
+    <MetadataFile FileName="Scrumboard1.disco" MetadataType="Disco" ID="a15316dc-9ef6-43bf-b1c3-2073960b50e9" SourceId="1" SourceUrl="http://localhost:49340/Scrumboard.asmx?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

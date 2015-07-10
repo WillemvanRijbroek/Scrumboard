@@ -219,6 +219,7 @@
             // 
             // lvwPanels
             // 
+            this.lvwPanels.AllowColumnReorder = true;
             this.lvwPanels.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lvwPanels.FullRowSelect = true;
@@ -226,6 +227,7 @@
             this.lvwPanels.MultiSelect = false;
             this.lvwPanels.Name = "lvwPanels";
             this.lvwPanels.Size = new System.Drawing.Size(532, 166);
+            this.lvwPanels.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvwPanels.TabIndex = 6;
             this.lvwPanels.UseCompatibleStateImageBehavior = false;
             this.lvwPanels.View = System.Windows.Forms.View.Details;

@@ -70,9 +70,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Business\Team.cs" />
-    <Compile Include="Business\Member.cs" />
     <Compile Include="Common\Config.cs" />
+    <Compile Include="Common\Data.cs" />
+    <Compile Include="Common\PendingChangeException.cs" />
     <Compile Include="Common\ServiceConn.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -114,29 +114,29 @@
     <Compile Include="UI\Forms\BurndownGraph.Designer.cs">
       <DependentUpon>BurndownGraph.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Forms\StatusDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\StatusDetail.Designer.cs">
+      <DependentUpon>StatusDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Forms\StoryTypeDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Forms\StoryTypeDetail.Designer.cs">
+      <DependentUpon>StoryTypeDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Forms\TodoDetail.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\Forms\TodoDetail.Designer.cs">
       <DependentUpon>TodoDetail.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Forms\TeamMemberDetail.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Forms\TeamMemberDetail.Designer.cs">
-      <DependentUpon>TeamMemberDetail.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Forms\TeamDetail.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\Forms\TeamDetail.Designer.cs">
       <DependentUpon>TeamDetail.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Forms\TeamMemberSelect.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Forms\TeamMemberSelect.Designer.cs">
-      <DependentUpon>TeamMemberSelect.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Forms\LayoutDefinition.cs">
       <SubType>Form</SubType>
@@ -215,17 +215,17 @@
     <EmbeddedResource Include="UI\Forms\BurndownGraph.resx">
       <DependentUpon>BurndownGraph.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\StatusDetail.resx">
+      <DependentUpon>StatusDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Forms\StoryTypeDetail.resx">
+      <DependentUpon>StoryTypeDetail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\TodoDetail.resx">
       <DependentUpon>TodoDetail.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Forms\TeamMemberDetail.resx">
-      <DependentUpon>TeamMemberDetail.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\TeamDetail.resx">
       <DependentUpon>TeamDetail.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Forms\TeamMemberSelect.resx">
-      <DependentUpon>TeamMemberSelect.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Forms\LayoutDefinition.resx">
       <DependentUpon>LayoutDefinition.cs</DependentUpon>
@@ -265,9 +265,6 @@
     <None Include="Service References\ScrumboardService\ScrumBoard.ScrumboardService.Layout.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ScrumboardService\ScrumBoard.ScrumboardService.NonWorkingHours.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Service References\ScrumboardService\ScrumBoard.ScrumboardService.Panel.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -286,13 +283,10 @@
     <None Include="Service References\ScrumboardService\ScrumBoard.ScrumboardService.Team.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ScrumboardService\ScrumBoard.ScrumboardService.TeamMember.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Service References\ScrumboardService\ScrumBoard.ScrumboardService.Todo.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ScrumboardService\Scrumboard.wsdl" />
+    <None Include="Service References\ScrumboardService\Scrumboard1.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\ScrumboardService\" />
@@ -336,7 +330,7 @@
     <Content Include="icon\icon.jpg.ico" />
     <Content Include="icon\paper.jpg" />
     <Content Include="icon\scrumboard.ico" />
-    <None Include="Service References\ScrumboardService\Scrumboard.disco" />
+    <None Include="Service References\ScrumboardService\Scrumboard1.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

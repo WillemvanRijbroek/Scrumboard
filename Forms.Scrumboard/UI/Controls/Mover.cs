@@ -31,7 +31,7 @@ namespace ScrumBoard.UI.Controls
         {
             if (Location.X != loc.X || Location.Y != loc.Y)
             {
-                Console.WriteLine(" Override location");
+               // Console.WriteLine(" Override location");
                 this.Location = loc;
             }
             else

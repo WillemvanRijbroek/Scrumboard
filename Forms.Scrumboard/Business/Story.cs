@@ -10,7 +10,8 @@ namespace ScrumBoard.Business
 {
     public class Story : ScrumboardService.Story
     {
-        ScrumboardService.ScrumboardSoapClient client = ServiceConn.getClient();
+        private bool isDirty = false;
+        private bool isStatusDirty = false;
 
         public const String PLANNED = "Planned";
         public const String UNPLANNED = "Unplanned";
@@ -22,13 +23,17 @@ namespace ScrumBoard.Business
             ExternalId = externalId;
             SprintId = sprintId;
             StoryTypeId = storyTypeId;
+            StoryTypeId = storyTypeId;
             Description = description;
             Estimate = estimate;
             StatusId = statusId;
+            lastStatusId = statusId;
             X = x;
             Y = y;
             BackColor = backcolor;
             Tag = tag;
+            isDirty = false;
+            isStatusDirty = false;
         }
 
         public Story(int id, String externalId, int sprintId, int storyTypeId, String description, int estimate, int statusId, int backcolor, int x, int y, String tag)
@@ -37,15 +42,68 @@ namespace ScrumBoard.Business
             ExternalId = externalId;
             SprintId = sprintId;
             StoryTypeId = storyTypeId;
+            lastStoryTypeId = storyTypeId;
             Description = description;
             Estimate = estimate;
             StatusId = statusId;
+            lastStatusId = statusId;
             X = x;
             Y = y;
             BackColor = backcolor;
             Tag = tag;
+            isDirty = false;
+            isStatusDirty = false;
         }
 
+        private int lastStoryTypeId;
+        public new int StoryTypeId
+        {
+            get
+            {
+                return base.StoryTypeId;
+            }
+            set
+            {
+                if (base.StoryTypeId != value && !isDirty)
+                {
+                    lastStoryTypeId = StoryTypeId;
+                    isDirty = true;
+                }
+                base.StoryTypeId = value;
+
+            }
+        }
+        private int lastStatusId;
+        public new int StatusId
+        {
+            get
+            {
+                return base.StatusId;
+            }
+            set
+            {
+                if (base.StatusId != value && !isStatusDirty)
+                {
+                    lastStatusId = StatusId;
+                    isStatusDirty = true;
+                }
+                base.StatusId = value;
+            }
+        }
+        public int LastStoryTypeId
+        {
+            get
+            {
+                return lastStoryTypeId;
+            }
+        }
+        public int LastStatusId
+        {
+            get
+            {
+                return lastStatusId;
+            }
+        }
         public Boolean IsPlanned
         {
             get
@@ -67,13 +125,15 @@ namespace ScrumBoard.Business
             {
                 if (Id == -1)
                 {
-                    Id = client.StoryInsert(SprintId, ExternalId, StoryTypeId, StatusId, Description.Replace("'", "''"), Estimate, BackColor, X, Y, Tag.Replace("'", "''"));
+                    Id = Data.getInstance().StoryInsert(SprintId, ExternalId, StoryTypeId, StatusId, Description.Replace("'", "''"), Estimate, BackColor, X, Y, Tag.Replace("'", "''"));
                 }
                 else
                 {
                     //(int id, int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag
-                    client.StoryUpdateDetails(Id, SprintId, ExternalId, StoryTypeId, StatusId, Description.Replace("'", "''"), Estimate, BackColor, X, Y, Tag.Replace("'", "''"));
+                    Data.getInstance().StoryUpdateDetails(this);
                 }
+                isDirty = false;
+                isStatusDirty = false;
             }
         }
 
@@ -83,7 +143,7 @@ namespace ScrumBoard.Business
             {
                 if (Id != -1)
                 {
-                    client.StoryRemove(Id);
+                    Data.getInstance().StoryRemove(this);
                     return true;
                 }
             }
@@ -92,43 +152,17 @@ namespace ScrumBoard.Business
 
         public static Story Get(String externalId)
         {
-            Story st = null;
-            ScrumboardService.ScrumboardSoapClient client = ServiceConn.getClient();
-            ScrumboardService.Story s = client.StoryGetByExternalId(Config.ActiveSprint, externalId);
-            if (s != null)
-            {
-                st = new Story(s.Id, s.ExternalId, s.SprintId, s.StoryTypeId, s.Description, s.Estimate, s.StatusId, s.BackColor, s.X, s.Y, s.Tag);
-            }
-            return st;
-        }
-        public static SortedList<int, Story> getStories()
-        {
-            ScrumboardService.ScrumboardSoapClient client = ServiceConn.getClient();
-            ScrumboardService.Story[] stories = client.StoryGetSprintStories(Config.ActiveSprint);
-            SortedList<int, Story> list = new SortedList<int, Story>();
-            foreach (ScrumboardService.Story s in stories)
-            {
-                list.Add(s.Id, new Story(s.Id, s.ExternalId, s.SprintId, s.StoryTypeId, s.Description, s.Estimate, s.StatusId, s.BackColor, s.X, s.Y, s.Tag));
-            }
-            return list;
+            return Data.getInstance().getStoryByExternalId(externalId);
         }
 
         public static SortedList<int, Story> getStories(int storyTypeId, int statusId)
         {
-            ScrumboardService.ScrumboardSoapClient client = ServiceConn.getClient();
-            ScrumboardService.Story[] stories = client.StoryGetPanelStories(Config.ActiveSprint, storyTypeId, statusId);
-            SortedList<int, Story> list = new SortedList<int, Story>();
-            foreach (ScrumboardService.Story s in stories)
-            {
-                list.Add(s.Id, new Story(s.Id, s.ExternalId, s.SprintId, s.StoryTypeId, s.Description, s.Estimate, s.StatusId, s.BackColor, s.X, s.Y, s.Tag));
-            }
-            
-            return list;
+            return Data.getInstance().getStories(storyTypeId, statusId);
         }
-        
+
         public ScrumBoard.ScrumboardService.Todo[] getTodos()
         {
-            return client.TodoSelect(this.Id);
+            return Data.getInstance().getStoryTodos(this.Id);
         }
     }
 }

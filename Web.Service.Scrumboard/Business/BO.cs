@@ -98,7 +98,7 @@ namespace ScrumboardWebService.Business
         protected String asSQLStringValue(String userInput)
         {
             // prevend sql injection here
-            return userInput;
+            return HttpUtility.HtmlEncode(userInput);
         }
         protected String asSQLDateValue(DateTime userInput)
         {

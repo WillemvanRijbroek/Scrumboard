@@ -37,7 +37,7 @@ namespace ScrumBoard.UI.Controls
         {
             InitializeComponent();
             initMenus();
-            Console.WriteLine("Fontsize: " + layout.FontSize);
+            // Console.WriteLine("Fontsize: " + layout.FontSize);
             lblId.Font = new Font(lblId.Font.FontFamily, layout.FontSize);
             txtEstimate.Font = new Font(txtEstimate.Font.FontFamily, layout.FontSize);
             txtDescription.Font = new Font(txtDescription.Font.FontFamily, layout.FontSize);
@@ -92,6 +92,7 @@ namespace ScrumBoard.UI.Controls
             form.Story = s;
             form.ShowDialog();
             Story = s;
+            ((ScrumBoard.UI.Forms.ScrumBoardForm)this.Parent.Parent).RefreshStory(this);
         }
 
         protected override void SetMoving(bool moving)
@@ -113,14 +114,23 @@ namespace ScrumBoard.UI.Controls
             s.Y = Mover.Top - movedToPanel.Top;
             if (s.X < 0) s.X = 0;
             if (s.Y < 0) s.Y = 0;
-            s.Save();
+            try
+            {
+                s.Save();
+            }
+            catch (PendingChangeException e)
+            {
+                MessageBox.Show(this, "Story is already changed by someone else, please retry");
+            }
+            ((ScrumBoard.UI.Forms.ScrumBoardForm)movedToPanel.Parent).RefreshStory(this);
+
             if (Config.AutoEditDetails)
             {
                 StoryDetail form = new StoryDetail();
                 form.Story = s;
                 form.ShowDialog();
                 Story = s;
-                movedToPanel.AddOrUpdateStory(s);
+                ((ScrumBoard.UI.Forms.ScrumBoardForm)movedToPanel.Parent).RefreshStory(this);
             }
         }
 
@@ -144,7 +154,18 @@ namespace ScrumBoard.UI.Controls
             {
                 s.X = x;
                 s.Y = y;
-                s.Save();
+                try
+                {
+                    s.Save();
+                }
+                catch (PendingChangeException e)
+                {
+                    
+                }
+                if (this.Parent != null)
+                {
+                    ((ScrumBoard.UI.Forms.ScrumBoardForm)this.Parent.Parent).RefreshStory(this);
+                }
             }
         }
 
@@ -191,7 +212,7 @@ namespace ScrumBoard.UI.Controls
             TodoDetail form = new TodoDetail();
             form.StoryId = s.Id;
             form.ShowDialog();
-            ((ScrumBoard.UI.Forms.ScrumBoardForm)this.Parent.Parent).RefreshStory(this);
+            ((ScrumBoard.UI.Forms.ScrumBoardForm)this.Parent.Parent).ModifiedTodo(null);
         }
 
         private void lblId_MouseHover(object sender, EventArgs e)

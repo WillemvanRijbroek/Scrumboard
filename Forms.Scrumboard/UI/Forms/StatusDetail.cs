@@ -11,24 +11,28 @@ using ScrumBoard.Common;
 
 namespace ScrumBoard.UI.Forms
 {
-    public partial class TeamDetail : Form
+    public partial class StatusDetail : Form
     {
         ScrumboardService.ScrumboardSoapClient client = ServiceConn.getClient();
-        Team s;
+        State s;
 
-        public TeamDetail()
+        public StatusDetail()
         {
             InitializeComponent();
 
         }
 
-        public Team Team
+        public State State
         {
             set
             {
                 s = value;
                 if (s != null)
+                {
                     txtName.Text = value.Name;
+                    chkInitialState.Checked = value.IsInitial;
+                    chkFinalState.Checked = value.IsFinal;
+                }
             }
             get
             {
@@ -41,11 +45,13 @@ namespace ScrumBoard.UI.Forms
             if (s != null)
             {
                 s.Name = txtName.Text;
-                client.TeamUpdate(s.Id, s.Name);
+                s.IsInitial = chkInitialState.Checked;
+                s.IsFinal = chkFinalState.Checked;
+                client.StateUpdate(s.Id, s.Name, s.IsInitial, s.IsFinal);
             }
             else
             {
-                client.TeamInsert(txtName.Text);
+                client.StateInsert(txtName.Text, chkInitialState.Checked, chkFinalState.Checked);
             }
             this.Close();
         }

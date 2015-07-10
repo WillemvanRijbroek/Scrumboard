@@ -15,7 +15,7 @@ namespace ScrumboardWebService.Business
         public int Insert(String name, Boolean isInitial, Boolean isFinal)
         {
             String sql = String.Format("INSERT INTO State (Name, IsInitial, IsFinal) VALUES ('{0}', {1}, {2})",
-                asSQLStringValue(name), isInitial, isFinal);
+                asSQLStringValue(name), isInitial ? "1" : "0", isFinal ? "1" : "0");
             Object rt = executeInsert(sql);
             int newId = -1;
             if (rt != null && Int32.TryParse(rt.ToString(), out newId))
@@ -26,7 +26,7 @@ namespace ScrumboardWebService.Business
 
         public void Update(int id, String name, Boolean isInitial, Boolean isFinal)
         {
-            String sql = String.Format("UPDATE State SET Name = '{1}', IsInitial = {2}, IsFinal = {3} WHERE id = {0}", id, asSQLStringValue(name), isInitial, isFinal);
+            String sql = String.Format("UPDATE State SET Name = '{1}', IsInitial = {2}, IsFinal = {3} WHERE id = {0}", id, asSQLStringValue(name), isInitial ? "1" : "0", isFinal ? "1" : "0");
             executeScalar(sql);
         }
 
@@ -70,7 +70,7 @@ namespace ScrumboardWebService.Business
         {
             State item = null;
 
-            String sql = String.Format("SELECT id,name,isinitial,isfinal FROM STATE WHERE Id = {0})", id);
+            String sql = String.Format("SELECT id,name,isinitial,isfinal FROM STATE WHERE Id = {0}", id);
             OpenConnection();
             try
             {
