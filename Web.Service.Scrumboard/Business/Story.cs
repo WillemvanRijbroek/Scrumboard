@@ -52,6 +52,12 @@ namespace ScrumboardWebService.Business
             executeScalar(sql);
         }
 
+        public void MarkModified(int id)
+        {
+            String sql = String.Format("UPDATE Story SET modified = GetDate() WHERE id = {0}", id);
+            executeScalar(sql);
+        }
+
         public void Remove(int id)
         {
             String sql = String.Format("UPDATE Story SET removed = 1, modified = GetDate() WHERE id = {0}", id);
@@ -97,15 +103,15 @@ namespace ScrumboardWebService.Business
 
                     s.Id = rdr.GetInt32(0);
                     s.SprintId = rdr.GetInt32(1);
-                    s.ExternalId = HttpUtility.HtmlDecode(rdr.GetString(2));
+                    s.ExternalId = fromSQLStringValue(rdr.GetString(2));
                     s.StoryTypeId = rdr.GetInt32(3);
                     s.StatusId = rdr.GetInt32(4);
-                    s.Description = HttpUtility.HtmlDecode(rdr.GetString(5));
+                    s.Description = fromSQLStringValue(rdr.GetString(5));
                     s.Estimate = rdr.GetInt32(6);
                     s.BackColor = rdr.GetInt32(7);
                     s.X = rdr.GetInt32(8);
                     s.Y = rdr.GetInt32(9);
-                    s.Tag = HttpUtility.HtmlDecode(rdr.GetString(10));
+                    s.Tag = fromSQLStringValue(rdr.GetString(10));
                     if (!rdr.IsDBNull(11))
                         s.ClosedDate = rdr.GetDateTime(11);
                     //if (!rdr.IsDBNull(12))
@@ -161,15 +167,15 @@ namespace ScrumboardWebService.Business
 
                     s.Id = rdr.GetInt32(0);
                     s.SprintId = rdr.GetInt32(1);
-                    s.ExternalId = HttpUtility.HtmlDecode(rdr.GetString(2));
+                    s.ExternalId = fromSQLStringValue(rdr.GetString(2));
                     s.StoryTypeId = rdr.GetInt32(3);
                     s.StatusId = rdr.GetInt32(4);
-                    s.Description = HttpUtility.HtmlDecode(rdr.GetString(5));
+                    s.Description = fromSQLStringValue(rdr.GetString(5));
                     s.Estimate = rdr.GetInt32(6);
                     s.BackColor = rdr.GetInt32(7);
                     s.X = rdr.GetInt32(8);
                     s.Y = rdr.GetInt32(9);
-                    s.Tag = HttpUtility.HtmlDecode(rdr.GetString(10));
+                    s.Tag = fromSQLStringValue(rdr.GetString(10));
                     if (!rdr.IsDBNull(11))
                         s.ClosedDate = rdr.GetDateTime(11);
                     //if (!rdr.IsDBNull(12))
@@ -219,15 +225,15 @@ namespace ScrumboardWebService.Business
 
                     s.Id = rdr.GetInt32(0);
                     s.SprintId = rdr.GetInt32(1);
-                    s.ExternalId = HttpUtility.HtmlDecode(rdr.GetString(2));
+                    s.ExternalId = fromSQLStringValue(rdr.GetString(2));
                     s.StoryTypeId = rdr.GetInt32(3);
                     s.StatusId = rdr.GetInt32(4);
-                    s.Description = HttpUtility.HtmlDecode(rdr.GetString(5));
+                    s.Description = fromSQLStringValue(rdr.GetString(5));
                     s.Estimate = rdr.GetInt32(6);
                     s.BackColor = rdr.GetInt32(7);
                     s.X = rdr.GetInt32(8);
                     s.Y = rdr.GetInt32(9);
-                    s.Tag = HttpUtility.HtmlDecode(rdr.GetString(10));
+                    s.Tag = fromSQLStringValue(rdr.GetString(10));
                     if (!rdr.IsDBNull(11))
                         s.ClosedDate = rdr.GetDateTime(11);
                     if (!rdr.IsDBNull(12))

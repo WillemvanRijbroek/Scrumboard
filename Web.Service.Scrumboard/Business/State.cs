@@ -48,7 +48,7 @@ namespace ScrumboardWebService.Business
                     State item = new State();
 
                     item.Id = rdr.GetInt32(0);
-                    item.Name = rdr.GetString(1);
+                    item.Name = fromSQLStringValue( rdr.GetString(1));
                     item.IsInitial = rdr.GetBoolean(2);
                     item.IsFinal = rdr.GetBoolean(3);
 
@@ -85,7 +85,7 @@ namespace ScrumboardWebService.Business
                     item = new State();
 
                     item.Id = rdr.GetInt32(0);
-                    item.Name = rdr.GetString(1);
+                    item.Name = fromSQLStringValue(rdr.GetString(1));
                     item.IsInitial = rdr.GetBoolean(2);
                     item.IsFinal = rdr.GetBoolean(3);
                 }

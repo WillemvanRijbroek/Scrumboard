@@ -56,7 +56,7 @@ namespace ScrumboardWebService.Business
                     sprint.Id = rdr.GetInt32(0);
                     sprint.LayoutId = rdr.GetInt32(1);
                     sprint.TeamId = rdr.GetInt32(2);
-                    sprint.Name = rdr.GetString(3);
+                    sprint.Name = fromSQLStringValue(rdr.GetString(3));
                     sprint.TargetDate = rdr.GetDateTime(4);
                     sprint.StartDate = rdr.GetDateTime(5);
                     if (!rdr.IsDBNull(6))
@@ -94,7 +94,7 @@ namespace ScrumboardWebService.Business
                     s.Id = rdr.GetInt32(0);
                     s.LayoutId = rdr.GetInt32(1);
                     s.TeamId = rdr.GetInt32(2);
-                    s.Name = rdr.GetString(3);
+                    s.Name = fromSQLStringValue(rdr.GetString(3));
                     s.TargetDate = rdr.GetDateTime(4);
                     s.StartDate = rdr.GetDateTime(5);
                     if (!rdr.IsDBNull(6))
@@ -132,7 +132,7 @@ namespace ScrumboardWebService.Business
                     s.Id = rdr.GetInt32(0);
                     s.LayoutId = rdr.GetInt32(1);
                     s.TeamId = rdr.GetInt32(2);
-                    s.Name = rdr.GetString(3);
+                    s.Name = fromSQLStringValue(rdr.GetString(3));
                     s.TargetDate = rdr.GetDateTime(4);
                     s.StartDate = rdr.GetDateTime(5);
                     if (!rdr.IsDBNull(6))

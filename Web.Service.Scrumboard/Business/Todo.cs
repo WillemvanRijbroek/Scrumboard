@@ -20,6 +20,7 @@ namespace ScrumboardWebService.Business
             String sql = String.Format("INSERT INTO Todo (StoryID, Description, Estimate, Backcolor, X, Y) VALUES ({0}, '{1}',{2},{3},{4},{5})",
                 storyId, asSQLStringValue(description), estimate, backcolor, x, y);
             Object rt = executeInsert(sql);
+            new Story().MarkModified(storyId);
             int newId = -1;
             if (rt != null && Int32.TryParse(rt.ToString(), out newId))
             {
@@ -32,12 +33,18 @@ namespace ScrumboardWebService.Business
         {
             String sql = String.Format("UPDATE Todo SET storyId = {1}, description = '{2}', estimate = {3}, backcolor = {4}, x = {5}, y = {6} WHERE id = {0}", id, storyId, asSQLStringValue(description), estimate, backcolor, x, y);
             executeScalar(sql);
+            new Story().MarkModified(storyId);
         }
 
         public void Remove(int id)
         {
-            String sql = String.Format("UPDATE Todo SET removed = 1 WHERE id = {0}", id);
-            executeScalar(sql);
+            Todo t = Get(id);
+            if (t != null)
+            {
+                String sql = String.Format("UPDATE Todo SET removed = 1 WHERE id = {0}", id);
+                executeScalar(sql);
+                new Story().MarkModified(t.StoryId);
+            }
         }
 
         public List<Todo> Select(int storyId)
@@ -59,7 +66,7 @@ namespace ScrumboardWebService.Business
 
                     s.Id = rdr.GetInt32(0);
                     s.StoryId = rdr.GetInt32(1);
-                    s.Description = HttpUtility.HtmlDecode(rdr.GetString(2));
+                    s.Description = fromSQLStringValue(rdr.GetString(2));
                     s.Estimate = rdr.GetInt32(3);
                     s.BackColor = rdr.GetInt32(4);
                     s.X = rdr.GetInt32(5);
@@ -95,7 +102,7 @@ namespace ScrumboardWebService.Business
 
                     s.Id = rdr.GetInt32(0);
                     s.StoryId = rdr.GetInt32(1);
-                    s.Description = HttpUtility.HtmlDecode(rdr.GetString(2));
+                    s.Description = fromSQLStringValue(rdr.GetString(2));
                     s.Estimate = rdr.GetInt32(3);
                     s.BackColor = rdr.GetInt32(4);
                     s.X = rdr.GetInt32(5);

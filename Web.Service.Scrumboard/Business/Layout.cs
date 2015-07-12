@@ -35,7 +35,7 @@ namespace ScrumboardWebService.Business
                     Layout layout = new Layout();
 
                     layout.Id = rdr.GetInt32(0);
-                    layout.Name = rdr.GetString(1);
+                    layout.Name =fromSQLStringValue( rdr.GetString(1));
                     layout.TotalColumns = rdr.GetInt32(2);
                     layout.TotalRows = rdr.GetInt32(3);
                     layout.FontSize = rdr.GetInt32(4);
@@ -72,7 +72,7 @@ namespace ScrumboardWebService.Business
                     layout = new Layout();
 
                     layout.Id = rdr.GetInt32(0);
-                    layout.Name = rdr.GetString(1);
+                    layout.Name = fromSQLStringValue(rdr.GetString(1));
                     layout.TotalColumns = rdr.GetInt32(2);
                     layout.TotalRows = rdr.GetInt32(3);
                     layout.FontSize = rdr.GetInt32(4);

@@ -100,6 +100,12 @@ namespace ScrumboardWebService.Business
             // prevend sql injection here
             return HttpUtility.HtmlEncode(userInput);
         }
+
+        protected String fromSQLStringValue(String dbValue)
+        {
+            return HttpUtility.HtmlDecode(dbValue);
+        }
+
         protected String asSQLDateValue(DateTime userInput)
         {
             return userInput.ToString("yyyy-MM-dd HH:mm:ss");

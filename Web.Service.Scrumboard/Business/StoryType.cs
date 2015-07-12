@@ -31,7 +31,7 @@ namespace ScrumboardWebService.Business
                     StoryType item = new StoryType();
 
                     item.Id = rdr.GetInt32(0);
-                    item.Name = rdr.GetString(1);
+                    item.Name = fromSQLStringValue(rdr.GetString(1));
                     item.DefaultBackColor = rdr.GetInt32(2);
                     item.BurnDownEnabled = rdr.GetBoolean(3);
 
@@ -66,7 +66,7 @@ namespace ScrumboardWebService.Business
                     item = new StoryType();
 
                     item.Id = rdr.GetInt32(0);
-                    item.Name = rdr.GetString(1);
+                    item.Name = fromSQLStringValue(rdr.GetString(1));
                     item.DefaultBackColor = rdr.GetInt32(2);
                     item.BurnDownEnabled = rdr.GetBoolean(3);
                 }

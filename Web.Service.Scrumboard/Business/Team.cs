@@ -28,7 +28,7 @@ namespace ScrumboardWebService.Business
                     Team s = new Team();
 
                     s.Id = rdr.GetInt32(0);
-                    s.Name = rdr.GetString(1);
+                    s.Name = fromSQLStringValue(rdr.GetString(1));
 
                     lst.Add(s);
                 }
@@ -61,7 +61,7 @@ namespace ScrumboardWebService.Business
                 {
                     s = new Team();
                     s.Id = rdr.GetInt32(0);
-                    s.Name = rdr.GetString(1);
+                    s.Name = fromSQLStringValue(rdr.GetString(1));
                 }
                 rdr.Close();
             }

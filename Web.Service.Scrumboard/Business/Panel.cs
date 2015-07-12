@@ -39,10 +39,10 @@ namespace ScrumboardWebService.Business
                     item.Id = rdr.GetInt32(0);
                     item.LayoutId = rdr.GetInt32(1);
                     item.StateId = rdr.GetInt32(2);
-                    item.StateName = rdr.GetString(3);
-                    item.Title = rdr.GetString(4);
+                    item.StateName = fromSQLStringValue(rdr.GetString(3));
+                    item.Title = fromSQLStringValue(rdr.GetString(4));
                     item.StoryTypeId = rdr.GetInt32(5);
-                    item.StoryTypeName = rdr.GetString(6);
+                    item.StoryTypeName = fromSQLStringValue(rdr.GetString(6));
                     item.Column = rdr.GetInt32(7);
                     item.Row = rdr.GetInt32(8);
                     item.Heigth = rdr.GetInt32(9);
@@ -79,10 +79,10 @@ namespace ScrumboardWebService.Business
                     item.Id = rdr.GetInt32(0);
                     item.LayoutId = rdr.GetInt32(1);
                     item.StateId = rdr.GetInt32(2);
-                    item.StateName = rdr.GetString(3);
-                    item.Title = rdr.GetString(4);
+                    item.StateName = fromSQLStringValue(rdr.GetString(3));
+                    item.Title = fromSQLStringValue(rdr.GetString(4));
                     item.StoryTypeId = rdr.GetInt32(5);
-                    item.StoryTypeName = rdr.GetString(6);
+                    item.StoryTypeName = fromSQLStringValue(rdr.GetString(6));
                     item.Column = rdr.GetInt32(7);
                     item.Row = rdr.GetInt32(8);
                     item.Heigth = rdr.GetInt32(9);
