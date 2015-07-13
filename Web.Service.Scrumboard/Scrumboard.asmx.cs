@@ -21,26 +21,26 @@ namespace ScrumboardWebService
     {
         #region Story
         [WebMethod]
-        public int StoryInsert(int sprintId, String externalId, int storyTypeId, int statusId, String description, int estimate, int backcolor, int x, int y, String tag)
+        public Story StoryInsert(int sprintId, String externalId, int storyTypeId, int statusId, String description, int estimate, int backcolor, int x, int y, String tag)
         {
             return new Story().Insert(sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
         }
         [WebMethod]
-        public void StoryUpdateDetails(int id, int sprintId, String externalId, int storyTypeId, int statusId, String description, int estimate, int backcolor, int x, int y, String tag)
+        public Story StoryUpdateDetails(int id, int sprintId, String externalId, int storyTypeId, int statusId, String description, int estimate, int backcolor, int x, int y, String tag)
         {
-            new Story().Update(id, sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
+            return new Story().Update(id, sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
         }
 
         [WebMethod]
-        public void StoryUpdateStatus(int id, int statusId)
+        public Story StoryUpdateStatus(int id, int statusId)
         {
-            new Story().Update(id, statusId);
+            return new Story().Update(id, statusId);
         }
 
         [WebMethod]
-        public void StoryRemove(int id)
+        public Story StoryRemove(int id)
         {
-            new Story().Remove(id);
+            return new Story().Remove(id);
         }
 
         [WebMethod]
@@ -243,19 +243,19 @@ namespace ScrumboardWebService
 
         #region Todo's
         [WebMethod]
-        public int TodoInsert(int storyId, String description, int estimate, int backcolor, int x, int y)
+        public Todo TodoInsert(int storyId, String description, int estimate, int backcolor, int x, int y)
         {
             return new Todo().Insert(storyId, description, estimate, backcolor, x, y);
         }
         [WebMethod]
-        public void TodoUpdate(int id, int storyId, String description, int estimate, int backcolor, int x, int y)
+        public Todo TodoUpdate(int id, int storyId, String description, int estimate, int backcolor, int x, int y)
         {
-            new Todo().Update(id, storyId, description, estimate, backcolor, x, y);
+            return new Todo().Update(id, storyId, description, estimate, backcolor, x, y);
         }
         [WebMethod]
-        public void TodoRemove(int id)
+        public Todo TodoRemove(int id)
         {
-            new Todo().Remove(id);
+            return new Todo().Remove(id);
         }
         [WebMethod]
         public Todo TodoGet(int id)

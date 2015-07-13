@@ -17,7 +17,7 @@ namespace ScrumBoard.Business
         public const String UNPLANNED = "Unplanned";
         public const String BONUS = "Bonus";
 
-        public Story(String externalId, int sprintId, int storyTypeId, String description, int estimate, int statusId, int backcolor, int x, int y, String tag)
+        public Story(String externalId, int sprintId, int storyTypeId, String description, int estimate, int statusId, int backcolor, int x, int y, String tag, DateTime modified)
         {
             Id = -1;
             ExternalId = externalId;
@@ -32,11 +32,12 @@ namespace ScrumBoard.Business
             Y = y;
             BackColor = backcolor;
             Tag = tag;
+            Modified = modified;
             isDirty = false;
             isStatusDirty = false;
         }
 
-        public Story(int id, String externalId, int sprintId, int storyTypeId, String description, int estimate, int statusId, int backcolor, int x, int y, String tag)
+        public Story(int id, String externalId, int sprintId, int storyTypeId, String description, int estimate, int statusId, int backcolor, int x, int y, String tag, DateTime modified)
         {
             Id = id;
             ExternalId = externalId;
@@ -51,6 +52,7 @@ namespace ScrumBoard.Business
             Y = y;
             BackColor = backcolor;
             Tag = tag;
+            Modified = modified;
             isDirty = false;
             isStatusDirty = false;
         }
@@ -125,12 +127,16 @@ namespace ScrumBoard.Business
             {
                 if (Id == -1)
                 {
-                    Id = Data.getInstance().StoryInsert(SprintId, ExternalId, StoryTypeId, StatusId, Description.Replace("'", "''"), Estimate, BackColor, X, Y, Tag.Replace("'", "''"));
+                    ScrumboardService.Story s = Data.getInstance().StoryInsert(SprintId, ExternalId, StoryTypeId, StatusId, Description.Replace("'", "''"), Estimate, BackColor, X, Y, Tag.Replace("'", "''"));
+                    this.Modified = s.Modified;
+                    this.IsRemoved = s.IsRemoved;
                 }
                 else
                 {
                     //(int id, int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag
-                    Data.getInstance().StoryUpdateDetails(this);
+                    ScrumboardService.Story s = Data.getInstance().StoryUpdateDetails(this);
+                    this.Modified = s.Modified;
+                    this.IsRemoved = s.IsRemoved;
                 }
                 isDirty = false;
                 isStatusDirty = false;

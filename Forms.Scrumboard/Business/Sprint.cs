@@ -101,7 +101,7 @@ namespace ScrumBoard.Business
                         String desc = inf[1];
                         int estimate = Config.DefaultEstimate;
                         Int32.TryParse(inf[2], out estimate);
-                        Story s = new Story(extId, Id, 1, desc, estimate, 1, Config.DefaultBackColor, 30, 30, "");
+                        Story s = new Story(extId, Id, 1, desc, estimate, 1, Config.DefaultBackColor, 30, 30, "", DateTime.MinValue);
                         s.Save();
                         // }
                     }

@@ -14,43 +14,40 @@ namespace ScrumboardWebService.Business
         public int BackColor { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
+        public DateTime Modified { get; set; }
+        public Boolean IsRemoved { get; set; }
 
-        public int Insert(int storyId, String description, int estimate, int backcolor, int x, int y)
+        public Todo Insert(int storyId, String description, int estimate, int backcolor, int x, int y)
         {
-            String sql = String.Format("INSERT INTO Todo (StoryID, Description, Estimate, Backcolor, X, Y) VALUES ({0}, '{1}',{2},{3},{4},{5})",
+            String sql = String.Format("INSERT INTO Todo (StoryID, Description, Estimate, Backcolor, X, Y, modified) VALUES ({0}, '{1}',{2},{3},{4},{5}, getDate())",
                 storyId, asSQLStringValue(description), estimate, backcolor, x, y);
             Object rt = executeInsert(sql);
-            new Story().MarkModified(storyId);
             int newId = -1;
             if (rt != null && Int32.TryParse(rt.ToString(), out newId))
             {
-                return newId;
+                return Get(newId);
             }
-            return -1;
+            return null;
         }
 
-        public void Update(int id, int storyId, String description, int estimate, int backcolor, int x, int y)
+        public Todo Update(int id, int storyId, String description, int estimate, int backcolor, int x, int y)
         {
-            String sql = String.Format("UPDATE Todo SET storyId = {1}, description = '{2}', estimate = {3}, backcolor = {4}, x = {5}, y = {6} WHERE id = {0}", id, storyId, asSQLStringValue(description), estimate, backcolor, x, y);
+            String sql = String.Format("UPDATE Todo SET storyId = {1}, description = '{2}', estimate = {3}, backcolor = {4}, x = {5}, y = {6}, modified = getDate() WHERE id = {0}", id, storyId, asSQLStringValue(description), estimate, backcolor, x, y);
             executeScalar(sql);
-            new Story().MarkModified(storyId);
+            return Get(id);
         }
 
-        public void Remove(int id)
+        public Todo Remove(int id)
         {
-            Todo t = Get(id);
-            if (t != null)
-            {
-                String sql = String.Format("UPDATE Todo SET removed = 1 WHERE id = {0}", id);
-                executeScalar(sql);
-                new Story().MarkModified(t.StoryId);
-            }
+            String sql = String.Format("UPDATE Todo SET removed = 1 WHERE id = {0}", id);
+            executeScalar(sql);
+            return Get(id);
         }
 
         public List<Todo> Select(int storyId)
         {
             List<Todo> lst = new List<Todo>();
-            String sql = String.Format("SELECT id, storyid, description, estimate, backcolor, x, y FROM TODO WHERE storyid = {0} and removed <> 1", storyId);
+            String sql = String.Format("SELECT id, storyid, description, estimate, backcolor, x, y, modified FROM TODO WHERE storyid = {0} and removed <> 1", storyId);
             OpenConnection();
             try
             {
@@ -71,6 +68,10 @@ namespace ScrumboardWebService.Business
                     s.BackColor = rdr.GetInt32(4);
                     s.X = rdr.GetInt32(5);
                     s.Y = rdr.GetInt32(6);
+                    if (!rdr.IsDBNull(7))
+                    {
+                        s.Modified = rdr.GetDateTime(7);
+                    }
                     lst.Add(s);
                 }
                 rdr.Close();
@@ -86,7 +87,7 @@ namespace ScrumboardWebService.Business
         public Todo Get(int id)
         {
             Todo s = null;
-            String sql = String.Format("SELECT id, storyid, description, estimate, backcolor, x, y FROM TODO WHERE id = {0} and removed <> 1", id);
+            String sql = String.Format("SELECT id, storyid, description, estimate, backcolor, x, y, modified, removed FROM TODO WHERE id = {0} and removed <> 1", id);
             OpenConnection();
             try
             {
@@ -107,6 +108,11 @@ namespace ScrumboardWebService.Business
                     s.BackColor = rdr.GetInt32(4);
                     s.X = rdr.GetInt32(5);
                     s.Y = rdr.GetInt32(6);
+                    if (!rdr.IsDBNull(7))
+                    {
+                        s.Modified = rdr.GetDateTime(7);
+                    }
+                    s.IsRemoved = (rdr.GetString(8) == "1");
                 }
                 rdr.Close();
             }

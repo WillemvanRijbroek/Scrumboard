@@ -17,19 +17,23 @@ namespace ScrumBoard.ScrumboardService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/StoryInsert", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        int StoryInsert(int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag);
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
+        ScrumBoard.ScrumboardService.Story StoryInsert(int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/StoryUpdateDetails", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        void StoryUpdateDetails(int id, int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag);
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
+        ScrumBoard.ScrumboardService.Story StoryUpdateDetails(int id, int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/StoryUpdateStatus", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        void StoryUpdateStatus(int id, int statusId);
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
+        ScrumBoard.ScrumboardService.Story StoryUpdateStatus(int id, int statusId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/StoryRemove", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        void StoryRemove(int id);
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
+        ScrumBoard.ScrumboardService.Story StoryRemove(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/StoryGetByExternalId", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -189,17 +193,17 @@ namespace ScrumBoard.ScrumboardService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/TodoInsert", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
-        int TodoInsert(int storyId, string description, int estimate, int backcolor, int x, int y);
+        ScrumBoard.ScrumboardService.Todo TodoInsert(int storyId, string description, int estimate, int backcolor, int x, int y);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/TodoUpdate", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
-        void TodoUpdate(int id, int storyId, string description, int estimate, int backcolor, int x, int y);
+        ScrumBoard.ScrumboardService.Todo TodoUpdate(int id, int storyId, string description, int estimate, int backcolor, int x, int y);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/TodoRemove", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
-        void TodoRemove(int id);
+        ScrumBoard.ScrumboardService.Todo TodoRemove(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/TodoGet", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -479,6 +483,10 @@ namespace ScrumBoard.ScrumboardService {
         
         private int yField;
         
+        private System.DateTime modifiedField;
+        
+        private bool isRemovedField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public int Id {
@@ -560,6 +568,30 @@ namespace ScrumBoard.ScrumboardService {
             set {
                 this.yField = value;
                 this.RaisePropertyChanged("Y");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public System.DateTime Modified {
+            get {
+                return this.modifiedField;
+            }
+            set {
+                this.modifiedField = value;
+                this.RaisePropertyChanged("Modified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public bool IsRemoved {
+            get {
+                return this.isRemovedField;
+            }
+            set {
+                this.isRemovedField = value;
+                this.RaisePropertyChanged("IsRemoved");
             }
         }
     }
@@ -1163,20 +1195,20 @@ namespace ScrumBoard.ScrumboardService {
                 base(binding, remoteAddress) {
         }
         
-        public int StoryInsert(int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag) {
+        public ScrumBoard.ScrumboardService.Story StoryInsert(int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag) {
             return base.Channel.StoryInsert(sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
         }
         
-        public void StoryUpdateDetails(int id, int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag) {
-            base.Channel.StoryUpdateDetails(id, sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
+        public ScrumBoard.ScrumboardService.Story StoryUpdateDetails(int id, int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag) {
+            return base.Channel.StoryUpdateDetails(id, sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
         }
         
-        public void StoryUpdateStatus(int id, int statusId) {
-            base.Channel.StoryUpdateStatus(id, statusId);
+        public ScrumBoard.ScrumboardService.Story StoryUpdateStatus(int id, int statusId) {
+            return base.Channel.StoryUpdateStatus(id, statusId);
         }
         
-        public void StoryRemove(int id) {
-            base.Channel.StoryRemove(id);
+        public ScrumBoard.ScrumboardService.Story StoryRemove(int id) {
+            return base.Channel.StoryRemove(id);
         }
         
         public ScrumBoard.ScrumboardService.Story StoryGetByExternalId(int sprintId, string externalId) {
@@ -1303,16 +1335,16 @@ namespace ScrumBoard.ScrumboardService {
             base.Channel.TeamRemove(id);
         }
         
-        public int TodoInsert(int storyId, string description, int estimate, int backcolor, int x, int y) {
+        public ScrumBoard.ScrumboardService.Todo TodoInsert(int storyId, string description, int estimate, int backcolor, int x, int y) {
             return base.Channel.TodoInsert(storyId, description, estimate, backcolor, x, y);
         }
         
-        public void TodoUpdate(int id, int storyId, string description, int estimate, int backcolor, int x, int y) {
-            base.Channel.TodoUpdate(id, storyId, description, estimate, backcolor, x, y);
+        public ScrumBoard.ScrumboardService.Todo TodoUpdate(int id, int storyId, string description, int estimate, int backcolor, int x, int y) {
+            return base.Channel.TodoUpdate(id, storyId, description, estimate, backcolor, x, y);
         }
         
-        public void TodoRemove(int id) {
-            base.Channel.TodoRemove(id);
+        public ScrumBoard.ScrumboardService.Todo TodoRemove(int id) {
+            return base.Channel.TodoRemove(id);
         }
         
         public ScrumBoard.ScrumboardService.Todo TodoGet(int id) {

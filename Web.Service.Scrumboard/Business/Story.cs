@@ -24,7 +24,7 @@ namespace ScrumboardWebService.Business
         public Boolean IsBurndownEnabled { get; set; }
 
 
-        public int Insert(int sprintId, String externalId, int storyTypeId, int statusId, String description, int estimate, int backcolor, int x, int y, String tag)
+        public Story Insert(int sprintId, String externalId, int storyTypeId, int statusId, String description, int estimate, int backcolor, int x, int y, String tag)
         {
             String sql = String.Format("INSERT INTO Story (sprintid, externalid, storytypeid, statusid, description, estimate, backcolor, x, y, tag, modified) VALUES ({0}, '{1}',{2},{3},'{4}',{5},{6},{7},{8},'{9}', GetDate())",
                 sprintId, asSQLStringValue(externalId), storyTypeId, statusId, asSQLStringValue(description), estimate, backcolor, x, y, asSQLStringValue(tag));
@@ -33,35 +33,32 @@ namespace ScrumboardWebService.Business
             if (rt != null && Int32.TryParse(rt.ToString(), out newId))
             {
                 InsertStateTransition(newId, statusId);
-                return newId;
+                return Get(newId);
             }
-            return -1;
+            return null;
         }
 
-        public void Update(int id, int sprintId, String externalId, int storyTypeId, int statusId, String description, int estimate, int backcolor, int x, int y, String tag)
+        public Story Update(int id, int sprintId, String externalId, int storyTypeId, int statusId, String description, int estimate, int backcolor, int x, int y, String tag)
         {
             String sql = String.Format("UPDATE Story SET statusid = {1}, externalid = '{2}', storyTypeId = {3}, description = '{4}', estimate = {5}, backcolor = {6}, x = {7}, y = {8}, tag = '{9}', modified = GetDate() WHERE id = {0}", id, statusId, asSQLStringValue(externalId), storyTypeId, asSQLStringValue(description), estimate, backcolor, x, y, asSQLStringValue(tag));
             InsertStateTransition(id, statusId);
             executeScalar(sql);
+            return Get(id);
         }
 
-        public void Update(int id, int statusId)
+        public Story Update(int id, int statusId)
         {
             String sql = String.Format("UPDATE Story SET statusid = {1}, modified = GetDate() WHERE id = {0}", id, statusId);
             InsertStateTransition(id, statusId);
             executeScalar(sql);
+            return Get(id);
         }
 
-        public void MarkModified(int id)
-        {
-            String sql = String.Format("UPDATE Story SET modified = GetDate() WHERE id = {0}", id);
-            executeScalar(sql);
-        }
-
-        public void Remove(int id)
+        public Story Remove(int id)
         {
             String sql = String.Format("UPDATE Story SET removed = 1, modified = GetDate() WHERE id = {0}", id);
             executeScalar(sql);
+            return Get(id);
         }
 
         public List<Story> Select(int sprintId)
@@ -82,7 +79,7 @@ namespace ScrumboardWebService.Business
                 "WHERE sprintid = {0}", sprintId);
             if (modifiedSince > DateTime.MinValue)
             {
-                sql += " and modified >= '" + asSQLDateValue(modifiedSince)+"'";
+                sql += " and modified >= '" + asSQLDateValue(modifiedSince) + "'";
             }
             else
             {
@@ -189,6 +186,65 @@ namespace ScrumboardWebService.Business
                     {
                         s.Modified = rdr.GetDateTime(13);
                     }
+                }
+                rdr.Close();
+            }
+            catch { throw; }
+            finally
+            {
+                CloseConnection();
+            }
+            return s;
+        }
+
+        private Story Get(int storyId)
+        {
+            Story s = null;
+            String sql = String.Format("SELECT id,sprintid, externalid, storytypeid, statusid, description, estimate, backcolor, x, y, tag, StateHistory.TransitionDate AS ClosedDate, " +
+                "(select 1 from StoryType st WHERE BurnDownEnabled = 1 and ID = StoryTypeId) as IsBurndownEnabled, Modified, Removed " +
+                "FROM STORY LEFT OUTER JOIN StateHistory on StateHistory.StoryId = Story.ID " +
+                "and StateHistory.StateId = Story.StatusID " +
+                "and TransitionDate = (SELECT MAX(TransitionDate) FROM StateHistory WHERE StateHistory.StoryId = Story.ID and StateHistory.StateId = Story.StatusID) " +
+                "and StatusID in (SELECT ID from State where IsFinal=1) " +
+                "WHERE id = {0}", storyId);
+            OpenConnection();
+            try
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandText = sql;
+                cmd.CommandTimeout = conn.ConnectionTimeout;
+                cmd.CommandType = System.Data.CommandType.Text;
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    s = new Story();
+
+                    s.Id = rdr.GetInt32(0);
+                    s.SprintId = rdr.GetInt32(1);
+                    s.ExternalId = fromSQLStringValue(rdr.GetString(2));
+                    s.StoryTypeId = rdr.GetInt32(3);
+                    s.StatusId = rdr.GetInt32(4);
+                    s.Description = fromSQLStringValue(rdr.GetString(5));
+                    s.Estimate = rdr.GetInt32(6);
+                    s.BackColor = rdr.GetInt32(7);
+                    s.X = rdr.GetInt32(8);
+                    s.Y = rdr.GetInt32(9);
+                    s.Tag = fromSQLStringValue(rdr.GetString(10));
+                    if (!rdr.IsDBNull(11))
+                        s.ClosedDate = rdr.GetDateTime(11);
+                    //if (!rdr.IsDBNull(12))
+                    //    s.IsBurndownEnabled = rdr.GetBoolean(12);
+                    if (!rdr.IsDBNull(12))
+                    {
+                        int v = rdr.GetInt32(12);
+                        s.IsBurndownEnabled = (v == 1);
+                    }
+                    if (!rdr.IsDBNull(13))
+                    {
+                        s.Modified = rdr.GetDateTime(13);
+                    }
+                    s.IsRemoved = (rdr.GetString(14)=="1");
                 }
                 rdr.Close();
             }

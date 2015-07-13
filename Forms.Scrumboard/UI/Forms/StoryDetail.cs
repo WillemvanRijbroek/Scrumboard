@@ -104,7 +104,7 @@ namespace ScrumBoard.UI.Forms
                 }
                 else
                 {
-                    s = new Story(txtId.Text, Config.ActiveSprint, StoryTypeId, txtDescription.Text, Int32.Parse(txtEstimate.Text), state, btnColor.BackColor.ToArgb(), 30, 30, txtTag.Text);
+                    s = new Story(txtId.Text, Config.ActiveSprint, StoryTypeId, txtDescription.Text, Int32.Parse(txtEstimate.Text), state, btnColor.BackColor.ToArgb(), 30, 30, txtTag.Text, DateTime.MinValue);
                     s.Save();
                 }
                 this.Close();

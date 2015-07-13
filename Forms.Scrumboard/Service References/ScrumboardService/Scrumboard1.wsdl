@@ -21,63 +21,7 @@
       <s:element name="StoryInsertResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="StoryInsertResult" type="s:int" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="StoryUpdateDetails">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
-            <s:element minOccurs="1" maxOccurs="1" name="sprintId" type="s:int" />
-            <s:element minOccurs="0" maxOccurs="1" name="externalId" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="storyTypeId" type="s:int" />
-            <s:element minOccurs="1" maxOccurs="1" name="statusId" type="s:int" />
-            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="estimate" type="s:int" />
-            <s:element minOccurs="1" maxOccurs="1" name="backcolor" type="s:int" />
-            <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
-            <s:element minOccurs="1" maxOccurs="1" name="y" type="s:int" />
-            <s:element minOccurs="0" maxOccurs="1" name="tag" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="StoryUpdateDetailsResponse">
-        <s:complexType />
-      </s:element>
-      <s:element name="StoryUpdateStatus">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
-            <s:element minOccurs="1" maxOccurs="1" name="statusId" type="s:int" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="StoryUpdateStatusResponse">
-        <s:complexType />
-      </s:element>
-      <s:element name="StoryRemove">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="StoryRemoveResponse">
-        <s:complexType />
-      </s:element>
-      <s:element name="StoryGetByExternalId">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="sprintId" type="s:int" />
-            <s:element minOccurs="0" maxOccurs="1" name="externalId" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="StoryGetByExternalIdResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="StoryGetByExternalIdResult" type="tns:Story" />
+            <s:element minOccurs="0" maxOccurs="1" name="StoryInsertResult" type="tns:Story" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -105,6 +49,74 @@
         </s:complexContent>
       </s:complexType>
       <s:complexType name="BO" abstract="true" />
+      <s:element name="StoryUpdateDetails">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="sprintId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="externalId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="storyTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="statusId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="estimate" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="backcolor" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="y" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="tag" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryUpdateDetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StoryUpdateDetailsResult" type="tns:Story" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryUpdateStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="statusId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryUpdateStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StoryUpdateStatusResult" type="tns:Story" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryRemove">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryRemoveResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StoryRemoveResult" type="tns:Story" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryGetByExternalId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="sprintId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="externalId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StoryGetByExternalIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StoryGetByExternalIdResult" type="tns:Story" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="StoryGetSprintStories">
         <s:complexType>
           <s:sequence>
@@ -660,10 +672,27 @@
       <s:element name="TodoInsertResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="TodoInsertResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="TodoInsertResult" type="tns:Todo" />
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:complexType name="Todo">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BO">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="StoryId" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Estimate" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="BackColor" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="X" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Y" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Modified" type="s:dateTime" />
+              <s:element minOccurs="1" maxOccurs="1" name="IsRemoved" type="s:boolean" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
       <s:element name="TodoUpdate">
         <s:complexType>
           <s:sequence>
@@ -678,7 +707,11 @@
         </s:complexType>
       </s:element>
       <s:element name="TodoUpdateResponse">
-        <s:complexType />
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TodoUpdateResult" type="tns:Todo" />
+          </s:sequence>
+        </s:complexType>
       </s:element>
       <s:element name="TodoRemove">
         <s:complexType>
@@ -688,7 +721,11 @@
         </s:complexType>
       </s:element>
       <s:element name="TodoRemoveResponse">
-        <s:complexType />
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TodoRemoveResult" type="tns:Todo" />
+          </s:sequence>
+        </s:complexType>
       </s:element>
       <s:element name="TodoGet">
         <s:complexType>
@@ -704,21 +741,6 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:complexType name="Todo">
-        <s:complexContent mixed="false">
-          <s:extension base="tns:BO">
-            <s:sequence>
-              <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
-              <s:element minOccurs="1" maxOccurs="1" name="StoryId" type="s:int" />
-              <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
-              <s:element minOccurs="1" maxOccurs="1" name="Estimate" type="s:int" />
-              <s:element minOccurs="1" maxOccurs="1" name="BackColor" type="s:int" />
-              <s:element minOccurs="1" maxOccurs="1" name="X" type="s:int" />
-              <s:element minOccurs="1" maxOccurs="1" name="Y" type="s:int" />
-            </s:sequence>
-          </s:extension>
-        </s:complexContent>
-      </s:complexType>
       <s:element name="TodoSelect">
         <s:complexType>
           <s:sequence>
