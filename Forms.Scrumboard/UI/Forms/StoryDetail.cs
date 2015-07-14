@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ScrumBoard.Business;
 using ScrumBoard.Common;
+using ScrumBoard.ScrumboardService;
 
 namespace ScrumBoard.UI.Forms
 {
@@ -15,15 +16,17 @@ namespace ScrumBoard.UI.Forms
     {
         private int state = 1;
         private Story s;
+        ScrumboardService.ScrumboardSoapClient client = ServiceConn.getClient();
 
         public StoryDetail()
         {
             InitializeComponent();
             btnColor.BackColor = Color.FromArgb(Config.DefaultBackColor);
-            cmbStoryType.Items.Add(Story.PLANNED);
-            cmbStoryType.Items.Add(Story.UNPLANNED);
-            cmbStoryType.Items.Add(Story.BONUS);
-            cmbStoryType.Text = Config.DefaultStoryType;
+            
+            cmbStoryType.ValueMember = "Id";
+            cmbStoryType.DisplayMember = "Name";
+            cmbStoryType.DataSource= client.StoryTypeSelectAll();
+            cmbStoryType.SelectedText = Config.DefaultStoryType;
             txtEstimate.Text = Config.DefaultEstimate.ToString();
             txtId.Enabled = !Config.ViewOnly;
             txtDescription.Enabled = !Config.ViewOnly;
@@ -35,34 +38,7 @@ namespace ScrumBoard.UI.Forms
         }
 
 
-        private int StoryTypeId
-        {
-            get
-            {
-                switch (cmbStoryType.Text)
-                {
-                    case Story.PLANNED:
-                    default:
-                        return 1;
-                    case Story.UNPLANNED:
-                        return 2;
-                    case Story.BONUS:
-                        return 3;
-                }
-            }
-            set
-            {
-                switch (value)
-                {
-                    case 1:
-                        cmbStoryType.Text = Story.PLANNED; break;
-                    case 2:
-                        cmbStoryType.Text = Story.UNPLANNED; break;
-                    case 3:
-                        cmbStoryType.Text = Story.BONUS; break;
-                }
-            }
-        }
+       
 
         public Story Story
         {
@@ -71,7 +47,7 @@ namespace ScrumBoard.UI.Forms
                 txtId.Text = value.ExternalId.ToString();
                 txtEstimate.Text = value.Estimate.ToString();
                 txtDescription.Text = value.Description;
-                StoryTypeId = value.StoryTypeId;
+                cmbStoryType.SelectedValue = value.StoryTypeId;
                 state = value.StatusId;
                 try
                 {
@@ -95,17 +71,16 @@ namespace ScrumBoard.UI.Forms
                 {
                     s.SprintId = Config.ActiveSprint;
                     s.ExternalId = txtId.Text;
-                    s.StoryTypeId = StoryTypeId;
+                    s.StoryTypeId = Int32.Parse((String)cmbStoryType.SelectedValue);
                     s.Description = txtDescription.Text;
                     s.Estimate = Int32.Parse(txtEstimate.Text);
                     s.Tag = txtTag.Text;
                     s.BackColor = btnColor.BackColor.ToArgb();
-                    s.Save();
+                    Data.getInstance().StoryUpdateDetails(s);
                 }
                 else
                 {
-                    s = new Story(txtId.Text, Config.ActiveSprint, StoryTypeId, txtDescription.Text, Int32.Parse(txtEstimate.Text), state, btnColor.BackColor.ToArgb(), 30, 30, txtTag.Text, DateTime.MinValue);
-                    s.Save();
+                    Data.getInstance().StoryInsert(Config.ActiveSprint, txtId.Text, Int32.Parse((String)cmbStoryType.SelectedValue), state, txtDescription.Text, Int32.Parse(txtEstimate.Text), btnColor.BackColor.ToArgb(), 30, 30, txtTag.Text);
                 }
                 this.Close();
             }

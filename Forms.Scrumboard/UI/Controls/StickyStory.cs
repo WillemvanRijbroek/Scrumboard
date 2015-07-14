@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using ScrumBoard.UI.Forms;
 using ScrumBoard.Common;
 using ScrumBoard.Business;
+using ScrumBoard.ScrumboardService;
 
 namespace ScrumBoard.UI.Controls
 {
@@ -54,6 +55,7 @@ namespace ScrumBoard.UI.Controls
             {
                 editToolStripMenuItem.Text = "Edit";
             }
+            mnuAddTodo.Visible = !Config.ViewOnly;
             mnuRemoveStory.Visible = !Config.ViewOnly;
         }
 
@@ -116,7 +118,7 @@ namespace ScrumBoard.UI.Controls
             if (s.Y < 0) s.Y = 0;
             try
             {
-                s.Save();
+                Data.getInstance().StoryUpdateDetails(s);
             }
             catch (PendingChangeException e)
             {
@@ -156,7 +158,7 @@ namespace ScrumBoard.UI.Controls
                 s.Y = y;
                 try
                 {
-                    s.Save();
+                    Data.getInstance().StoryUpdateDetails(s);
                 }
                 catch (PendingChangeException e)
                 {
@@ -200,10 +202,12 @@ namespace ScrumBoard.UI.Controls
 
         private void mnuRemoveStory_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show(this, string.Format("Are you sure to remove story '{0}'?", s.Description), "Question", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (!Config.ViewOnly)
             {
-                if (s.Remove())
-                    ((ScrumBoard.UI.Forms.ScrumBoardForm)this.Parent.Parent).RemovedStory(this);
+                if (MessageBox.Show(this, string.Format("Are you sure to remove story '{0}'?", s.Description), "Question", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    Data.getInstance().StoryRemove(s);
+                }
             }
         }
 

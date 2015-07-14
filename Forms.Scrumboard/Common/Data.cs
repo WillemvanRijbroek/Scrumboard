@@ -9,9 +9,15 @@ namespace ScrumBoard.Common
 
     public class Data
     {
+        public delegate void StoryChangedEventHandler(Story story);
+        public event StoryChangedEventHandler StoryChanged;
+        public delegate void TodoChangedEventHandler(Todo todo);
+        public event TodoChangedEventHandler TodoChanged;
+
         private static Data data = new Data();
         private DateTime lastRefresh = DateTime.MinValue;
-        //private Boolean forceComplete = false;
+
+
         public static Data getInstance()
         {
             return data;
@@ -46,18 +52,6 @@ namespace ScrumBoard.Common
             client.LayoutPanelUpdate(id, stateId, title, storyTypeId, column, row, height, width);
         }
 
-        public ScrumBoard.Business.Story getStoryByExternalId(String externalId)
-        {
-            ScrumBoard.Business.Story st = null;
-            //ScrumboardService.ScrumboardSoapClient client = ServiceConn.getClient();
-            ScrumboardService.Story s = client.StoryGetByExternalId(Config.ActiveSprint, externalId);
-            if (s != null)
-            {
-                st = new ScrumBoard.Business.Story(s.Id, s.ExternalId, s.SprintId, s.StoryTypeId, s.Description, s.Estimate, s.StatusId, s.BackColor, s.X, s.Y, s.Tag, s.Modified);
-            }
-            return st;
-        }
-
         public void clearCaches()
         {
             cachedSprintStories = null;
@@ -83,23 +77,40 @@ namespace ScrumBoard.Common
             return cachedTodos[storyId];
         }
 
-        public int TodoInsert(int storyId, string description, int estimate, int backcolor, int x, int y)
+        public void TodoInsert(Todo todo)
         {
-            if (cachedTodos != null && cachedTodos.ContainsKey(storyId))
-            {
-                cachedTodos.Remove(storyId);
-            }
-            // forceComplete = true;
-            Todo t = client.TodoInsert(storyId, description, estimate, backcolor, x, y);
+            Todo t = client.TodoInsert(todo.StoryId, todo.Description, todo.Estimate, todo.BackColor, todo.X, todo.Y);
             if (t != null)
             {
                 if (t.Modified > lastRefresh)
                 {
                     lastRefresh = t.Modified;
                 }
-                return t.Id;
+                if (cachedTodos != null && cachedTodos.ContainsKey(todo.StoryId))
+                {
+                    Todo[] todos = cachedTodos[t.StoryId];
+                    Todo[] newTodos = null;
+                    if (todos != null)
+                    {
+                        newTodos = new Todo[todos.Length];
+                        for (int i = 0; i < todos.Length; i++)
+                        {
+                            newTodos[i] = todos[i];
+                        }
+                        newTodos[todos.Length] = t;
+                    }
+                    else
+                    {
+                        newTodos = new Todo[1];
+                        newTodos[0] = t;
+                    }
+                    cachedTodos.Add(t.StoryId, newTodos);
+                }
+                if (TodoChanged != null)
+                {
+                    TodoChanged(t);
+                }
             }
-            return -1;
         }
 
         public void TodoUpdate(ScrumBoard.ScrumboardService.Todo todo)
@@ -130,29 +141,22 @@ namespace ScrumBoard.Common
         }
 
 
-        private Dictionary<int, SortedList<int, ScrumBoard.Business.Story>> cachedSprintStories;
+        private Dictionary<int, SortedList<int, Story>> cachedSprintStories;
 
         public Boolean HasPendingChanges()
         {
-            //if (forceComplete)
-            //{
-            //    return true;
-            //}
-            //else
-            //{
             DateTime lastModified = lastRefresh > DateTime.MinValue ? lastRefresh.AddMilliseconds(1000) : lastRefresh;
-            ScrumboardService.Story[] stories = client.StoryGetSprintModifiedStories(Config.ActiveSprint, lastModified);
+            Story[] stories = client.StoryGetSprintModifiedStories(Config.ActiveSprint, lastModified);
             return (stories != null && stories.Length > 0);
-            //}
         }
 
-        public Boolean HasPendingChanges(ScrumBoard.Business.Story story)
+        public Boolean HasPendingChanges(Story story)
         {
             DateTime lastModified = lastRefresh > DateTime.MinValue ? lastRefresh.AddMilliseconds(1000) : lastRefresh;
             ScrumboardService.Story[] stories = client.StoryGetSprintModifiedStories(Config.ActiveSprint, lastModified);
             if (stories != null && stories.Length > 0)
             {
-                foreach (ScrumboardService.Story s in stories)
+                foreach (Story s in stories)
                 {
                     if (s.Id == story.Id && s.Modified > story.Modified)
                     {
@@ -164,24 +168,24 @@ namespace ScrumBoard.Common
 
         }
 
-        private SortedList<int, ScrumBoard.Business.Story> getStories()
+        private SortedList<int, Story> getStories()
         {
             int sprintId = Config.ActiveSprint;
             if (cachedSprintStories == null)
             {
-                cachedSprintStories = new Dictionary<int, SortedList<int, Business.Story>>();
+                cachedSprintStories = new Dictionary<int, SortedList<int, Story>>();
             }
             if (!cachedSprintStories.ContainsKey(sprintId))
             {
-                ScrumboardService.Story[] stories = client.StoryGetSprintStories(Config.ActiveSprint);
-                SortedList<int, ScrumBoard.Business.Story> list = new SortedList<int, ScrumBoard.Business.Story>();
-                foreach (ScrumboardService.Story s in stories)
+                Story[] stories = client.StoryGetSprintStories(Config.ActiveSprint);
+                SortedList<int, Story> list = new SortedList<int, Story>();
+                foreach (Story s in stories)
                 {
                     if (s.Modified > lastRefresh)
                     {
                         lastRefresh = s.Modified;
                     }
-                    list.Add(s.Id, new ScrumBoard.Business.Story(s.Id, s.ExternalId, s.SprintId, s.StoryTypeId, s.Description, s.Estimate, s.StatusId, s.BackColor, s.X, s.Y, s.Tag, s.Modified));
+                    list.Add(s.Id, s);
                 }
                 cachedSprintStories.Add(sprintId, list);
             }
@@ -193,7 +197,7 @@ namespace ScrumBoard.Common
                 stories = client.StoryGetSprintModifiedStories(Config.ActiveSprint, lastModified);
                 if (stories.Length > 0)
                 {
-                    SortedList<int, ScrumBoard.Business.Story> cachedStories = cachedSprintStories[sprintId];
+                    SortedList<int, Story> cachedStories = cachedSprintStories[sprintId];
                     foreach (Story s in stories)
                     {
                         if (s.Modified > lastRefresh)
@@ -207,11 +211,11 @@ namespace ScrumBoard.Common
                         else if (cachedStories.ContainsKey(s.Id))
                         {
                             cachedStories.Remove(s.Id);
-                            cachedStories.Add(s.Id, new Business.Story(s.Id, s.ExternalId, s.SprintId, s.StoryTypeId, s.Description, s.Estimate, s.StatusId, s.BackColor, s.X, s.Y, s.Tag, s.Modified));
+                            cachedStories.Add(s.Id, s);
                         }
                         else
                         {
-                            cachedStories.Add(s.Id, new Business.Story(s.Id, s.ExternalId, s.SprintId, s.StoryTypeId, s.Description, s.Estimate, s.StatusId, s.BackColor, s.X, s.Y, s.Tag, s.Modified));
+                            cachedStories.Add(s.Id, s);
                         }
                     }
                     cachedSprintStories[sprintId] = cachedStories;
@@ -221,11 +225,11 @@ namespace ScrumBoard.Common
         }
 
 
-        public SortedList<int, ScrumBoard.Business.Story> getStories(int storyTypeId, int statusId)
+        public SortedList<int, Story> getStories(int storyTypeId, int statusId)
         {
-            SortedList<int, ScrumBoard.Business.Story> stories = getStories();
-            SortedList<int, ScrumBoard.Business.Story> list = new SortedList<int, Business.Story>();
-            foreach (ScrumBoard.Business.Story story in stories.Values)
+            SortedList<int, Story> stories = getStories();
+            SortedList<int, Story> list = new SortedList<int, Story>();
+            foreach (Story story in stories.Values)
             {
                 if (story.StoryTypeId == storyTypeId && story.StatusId == statusId)
                 {
@@ -249,7 +253,7 @@ namespace ScrumBoard.Common
             return s;
         }
 
-        public Story StoryUpdateDetails(ScrumBoard.Business.Story story)
+        public Story StoryUpdateDetails(Story story)
         {
             // Check if it was updated by anyone else
             if (HasPendingChanges(story))
@@ -265,7 +269,7 @@ namespace ScrumBoard.Common
             return s;
         }
 
-        public void StoryRemove(ScrumBoard.Business.Story story)
+        public void StoryRemove(Story story)
         {
             if (HasPendingChanges(story))
             {

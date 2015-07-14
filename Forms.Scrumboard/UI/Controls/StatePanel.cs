@@ -8,10 +8,11 @@ using System.Text;
 using System.Windows.Forms;
 using ScrumBoard.Business;
 using ScrumBoard.Common;
+using ScrumBoard.ScrumboardService;
 
 namespace ScrumBoard.UI.Controls
 {
-    public partial class StatePanel : Panel
+    public partial class StatePanel : System.Windows.Forms.Panel
     {
         private Dictionary<int, StickyStory> stories;
         private ScrumboardService.Panel panel;
@@ -88,7 +89,7 @@ namespace ScrumBoard.UI.Controls
                 st.Height = layout.StoryHeight;
                 Controls.Add(st);
                 // Console.WriteLine("Dimensions: " + st.Width + ":" + st.Height);
-                ScrumBoard.ScrumboardService.Todo[] todos = story.getTodos();
+                Todo[] todos = Data.getInstance().getStoryTodos(story.Id);
                 if (todos != null)
                 {
                     int x = 10;
@@ -119,12 +120,12 @@ namespace ScrumBoard.UI.Controls
                 {
                     Controls.Remove(std);
                 }
-                ScrumBoard.ScrumboardService.Todo[] todos = story.getTodos();
+                Todo[] todos = Data.getInstance().getStoryTodos(story.Id);
                 if (todos != null)
                 {
                     int x = 10;
                     int y = 10;
-                    foreach (ScrumBoard.ScrumboardService.Todo t in todos)
+                    foreach (Todo t in todos)
                     {
                         StickyTodo std = new StickyTodo(layout, mover);
                         t.X = story.X + x;
@@ -143,7 +144,7 @@ namespace ScrumBoard.UI.Controls
         {
             ClearControls();
             this.stories.Clear();
-            SortedList<int, Story> stories = Story.getStories(panel.StoryTypeId, panel.StateId);
+            SortedList<int, Story> stories = Data.getInstance().getStories(panel.StoryTypeId, panel.StateId);
             IEnumerator<KeyValuePair<int, Story>> enm = stories.GetEnumerator();
             enm.MoveNext();
             Story s = enm.Current.Value;

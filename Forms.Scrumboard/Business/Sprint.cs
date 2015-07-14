@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using ScrumBoard.Common;
+using ScrumBoard.ScrumboardService;
 
 namespace ScrumBoard.Business
 {
@@ -95,15 +96,10 @@ namespace ScrumBoard.Business
                         String line = sr.ReadLine();
                         String[] inf = line.Split('\t');
                         String extId = inf[0];
-                        // Story s = Story.Get(extId);
-                        // if (s == null)
-                        // {
                         String desc = inf[1];
                         int estimate = Config.DefaultEstimate;
                         Int32.TryParse(inf[2], out estimate);
-                        Story s = new Story(extId, Id, 1, desc, estimate, 1, Config.DefaultBackColor, 30, 30, "", DateTime.MinValue);
-                        s.Save();
-                        // }
+                        Data.getInstance().StoryInsert(Id, extId, 1, 1, desc, estimate, Config.DefaultBackColor, 30, 30, "");
                     }
                     sr.Close();
                 }

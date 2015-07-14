@@ -57,7 +57,14 @@ namespace ScrumBoard.UI.Forms
             }
             else
             {
-                Data.getInstance().TodoInsert(StoryId, txtDescription.Text.Replace("'", "''"), Int32.Parse(txtEstimate.Text), btnColor.BackColor.ToArgb(), 30, 30);
+                todo = new ScrumboardService.Todo();
+                todo.StoryId = this.StoryId;
+                todo.Description = txtDescription.Text.Replace("'", "''");
+                todo.Estimate = Int32.Parse(txtEstimate.Text);
+                todo.BackColor = btnColor.BackColor.ToArgb();
+                todo.X = 30;
+                todo.Y = 30;
+                Data.getInstance().TodoInsert( todo);
             }
             this.Close();
         }
