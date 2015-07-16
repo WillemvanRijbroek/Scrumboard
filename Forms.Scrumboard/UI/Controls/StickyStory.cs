@@ -93,8 +93,6 @@ namespace ScrumBoard.UI.Controls
             StoryDetail form = new StoryDetail();
             form.Story = s;
             form.ShowDialog();
-            Story = s;
-            ((ScrumBoard.UI.Forms.ScrumBoardForm)this.Parent.Parent).RefreshStory(this);
         }
 
         protected override void SetMoving(bool moving)
@@ -118,55 +116,49 @@ namespace ScrumBoard.UI.Controls
             if (s.Y < 0) s.Y = 0;
             try
             {
-                Data.getInstance().StoryUpdateDetails(s);
+                Data.getInstance().updateStory(s);
             }
             catch (PendingChangeException e)
             {
                 MessageBox.Show(this, "Story is already changed by someone else, please retry");
             }
-            ((ScrumBoard.UI.Forms.ScrumBoardForm)movedToPanel.Parent).RefreshStory(this);
-
             if (Config.AutoEditDetails)
             {
                 StoryDetail form = new StoryDetail();
                 form.Story = s;
                 form.ShowDialog();
-                Story = s;
-                ((ScrumBoard.UI.Forms.ScrumBoardForm)movedToPanel.Parent).RefreshStory(this);
             }
         }
 
         protected override void NoteLocationChanged(int x, int y, Boolean save)
         {
             base.NoteLocationChanged(x, y, save);
-            int tx = 10;
-            int ty = 10;
+            int tx = Config.TODO_SPACING;
+            int ty = Config.TODO_SPACING;
 
             foreach (StickyTodo std in todos)
             {
                 Point loc = new Point(x + tx, y + ty);
                 std.Location = loc;
                 std.Visible = true;
-                tx += 10;
-                ty += 10;
+                tx += Config.TODO_SPACING;
+                ty += Config.TODO_SPACING;
                 std.Show();
                 std.Refresh();
+                std.BringToFront();
             }
+            BringToFront();
             if (save)
             {
                 s.X = x;
                 s.Y = y;
                 try
                 {
-                    Data.getInstance().StoryUpdateDetails(s);
+                    Data.getInstance().updateStory(s);
                 }
                 catch (PendingChangeException e)
                 {
-                    
-                }
-                if (this.Parent != null)
-                {
-                    ((ScrumBoard.UI.Forms.ScrumBoardForm)this.Parent.Parent).RefreshStory(this);
+                    MessageBox.Show(this, "Story is already changed by someone else, please retry");
                 }
             }
         }
@@ -179,7 +171,11 @@ namespace ScrumBoard.UI.Controls
         private void StickyStory_MouseUp(object sender, MouseEventArgs e)
         {
             onMouseUp(e);
-
+            foreach (StickyTodo std in todos)
+            {
+                std.BringToFront();
+            }
+            BringToFront();
         }
 
         private void StickyStory_MouseMove(object sender, MouseEventArgs e)
@@ -197,7 +193,6 @@ namespace ScrumBoard.UI.Controls
             StoryDetail form = new StoryDetail();
             form.Story = s;
             form.ShowDialog();
-            Story = s;
         }
 
         private void mnuRemoveStory_Click(object sender, EventArgs e)
@@ -206,7 +201,14 @@ namespace ScrumBoard.UI.Controls
             {
                 if (MessageBox.Show(this, string.Format("Are you sure to remove story '{0}'?", s.Description), "Question", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    Data.getInstance().StoryRemove(s);
+                    try
+                    {
+                        Data.getInstance().removeStory(s);
+                    }
+                    catch (PendingChangeException ex)
+                    {
+                        MessageBox.Show(this, "Story is already changed by someone else, please retry");
+                    }
                 }
             }
         }
@@ -216,21 +218,32 @@ namespace ScrumBoard.UI.Controls
             TodoDetail form = new TodoDetail();
             form.StoryId = s.Id;
             form.ShowDialog();
-            ((ScrumBoard.UI.Forms.ScrumBoardForm)this.Parent.Parent).ModifiedTodo(null);
         }
 
         private void lblId_MouseHover(object sender, EventArgs e)
         {
+            foreach (StickyTodo std in todos)
+            {
+                std.BringToFront();
+            }
             this.BringToFront();
         }
 
         private void txtEstimate_MouseHover(object sender, EventArgs e)
         {
+            foreach (StickyTodo std in todos)
+            {
+                std.BringToFront();
+            }
             this.BringToFront();
         }
 
         private void txtDescription_MouseHover(object sender, EventArgs e)
         {
+            foreach (StickyTodo std in todos)
+            {
+                std.BringToFront();
+            }
             this.BringToFront();
         }
 

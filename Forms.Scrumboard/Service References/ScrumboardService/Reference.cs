@@ -25,20 +25,10 @@ namespace ScrumBoard.ScrumboardService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
         ScrumBoard.ScrumboardService.Story StoryUpdateDetails(int id, int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/StoryUpdateStatus", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
-        ScrumBoard.ScrumboardService.Story StoryUpdateStatus(int id, int statusId);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/StoryRemove", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
         ScrumBoard.ScrumboardService.Story StoryRemove(int id);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/StoryGetByExternalId", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
-        ScrumBoard.ScrumboardService.Story StoryGetByExternalId(int sprintId, string externalId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/StoryGetSprintStories", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -49,11 +39,6 @@ namespace ScrumBoard.ScrumboardService {
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
         ScrumBoard.ScrumboardService.Story[] StoryGetSprintModifiedStories(int sprintId, System.DateTime modified);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/StoryGetPanelStories", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
-        ScrumBoard.ScrumboardService.Story[] StoryGetPanelStories(int sprintId, int storyTypeId, int statusId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SprintInsert", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -254,6 +239,8 @@ namespace ScrumBoard.ScrumboardService {
         
         private bool isBurndownEnabledField;
         
+        private Todo[] todosField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
         public int Id {
@@ -433,30 +420,16 @@ namespace ScrumBoard.ScrumboardService {
                 this.RaisePropertyChanged("IsBurndownEnabled");
             }
         }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Todo))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Team))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Panel))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Layout))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(StoryType))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(State))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Sprint))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Story))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.34230")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
-    public abstract partial class BO : object, System.ComponentModel.INotifyPropertyChanged {
         
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Order=15)]
+        public Todo[] Todos {
+            get {
+                return this.todosField;
+            }
+            set {
+                this.todosField = value;
+                this.RaisePropertyChanged("Todos");
             }
         }
     }
@@ -592,6 +565,32 @@ namespace ScrumBoard.ScrumboardService {
             set {
                 this.isRemovedField = value;
                 this.RaisePropertyChanged("IsRemoved");
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Team))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Panel))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Layout))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(StoryType))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(State))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Sprint))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Todo))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Story))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.34230")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
+    public abstract partial class BO : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
@@ -1203,16 +1202,8 @@ namespace ScrumBoard.ScrumboardService {
             return base.Channel.StoryUpdateDetails(id, sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
         }
         
-        public ScrumBoard.ScrumboardService.Story StoryUpdateStatus(int id, int statusId) {
-            return base.Channel.StoryUpdateStatus(id, statusId);
-        }
-        
         public ScrumBoard.ScrumboardService.Story StoryRemove(int id) {
             return base.Channel.StoryRemove(id);
-        }
-        
-        public ScrumBoard.ScrumboardService.Story StoryGetByExternalId(int sprintId, string externalId) {
-            return base.Channel.StoryGetByExternalId(sprintId, externalId);
         }
         
         public ScrumBoard.ScrumboardService.Story[] StoryGetSprintStories(int sprintId) {
@@ -1221,10 +1212,6 @@ namespace ScrumBoard.ScrumboardService {
         
         public ScrumBoard.ScrumboardService.Story[] StoryGetSprintModifiedStories(int sprintId, System.DateTime modified) {
             return base.Channel.StoryGetSprintModifiedStories(sprintId, modified);
-        }
-        
-        public ScrumBoard.ScrumboardService.Story[] StoryGetPanelStories(int sprintId, int storyTypeId, int statusId) {
-            return base.Channel.StoryGetPanelStories(sprintId, storyTypeId, statusId);
         }
         
         public int SprintInsert(int layoutId, int teamId, string name, System.DateTime startDate, System.DateTime target, int velocity, int focusFactor) {

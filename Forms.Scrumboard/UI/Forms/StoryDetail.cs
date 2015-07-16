@@ -71,16 +71,16 @@ namespace ScrumBoard.UI.Forms
                 {
                     s.SprintId = Config.ActiveSprint;
                     s.ExternalId = txtId.Text;
-                    s.StoryTypeId = Int32.Parse((String)cmbStoryType.SelectedValue);
+                    s.StoryTypeId = Int32.Parse(cmbStoryType.SelectedValue.ToString());
                     s.Description = txtDescription.Text;
-                    s.Estimate = Int32.Parse(txtEstimate.Text);
+                    s.Estimate = Decimal.ToInt32(txtEstimate.Value);
                     s.Tag = txtTag.Text;
                     s.BackColor = btnColor.BackColor.ToArgb();
-                    Data.getInstance().StoryUpdateDetails(s);
+                    Data.getInstance().updateStory(s);
                 }
                 else
                 {
-                    Data.getInstance().StoryInsert(Config.ActiveSprint, txtId.Text, Int32.Parse((String)cmbStoryType.SelectedValue), state, txtDescription.Text, Int32.Parse(txtEstimate.Text), btnColor.BackColor.ToArgb(), 30, 30, txtTag.Text);
+                    Data.getInstance().insertStory(Config.ActiveSprint, txtId.Text, Int32.Parse(cmbStoryType.SelectedValue.ToString()), state, txtDescription.Text, Decimal.ToInt32(txtEstimate.Value), btnColor.BackColor.ToArgb(), 30, 30, txtTag.Text);
                 }
                 this.Close();
             }

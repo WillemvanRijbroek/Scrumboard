@@ -9,13 +9,9 @@ namespace ScrumBoard.Common
 
     public class Data
     {
-        public delegate void StoryChangedEventHandler(Story story);
-        public event StoryChangedEventHandler StoryChanged;
-        public delegate void TodoChangedEventHandler(Todo todo);
-        public event TodoChangedEventHandler TodoChanged;
+        public event ScrumBoard.Common.StoryCache.StoryChangedEventHandler StoryChanged;
 
         private static Data data = new Data();
-        private DateTime lastRefresh = DateTime.MinValue;
 
 
         public static Data getInstance()
@@ -24,11 +20,25 @@ namespace ScrumBoard.Common
         }
 
 
+        private DateTime lastRefresh = DateTime.MinValue;
+        private StoryCache storyCache;
         private State[] cacheStates = null;
         private StoryType[] cacheStoryTypes = null;
         ScrumboardSoapClient client = ServiceConn.getClient();
 
-        private Data() { }
+        private Data()
+        {
+            storyCache = new StoryCache();
+            storyCache.StoryChanged += storyCache_StoryChanged;
+        }
+
+        void storyCache_StoryChanged(Story story)
+        {
+            if (StoryChanged != null)
+            {
+                StoryChanged(story);
+            }
+        }
 
         public State[] StateSelectAll()
         {
@@ -52,235 +62,47 @@ namespace ScrumBoard.Common
             client.LayoutPanelUpdate(id, stateId, title, storyTypeId, column, row, height, width);
         }
 
+        
         public void clearCaches()
         {
-            cachedSprintStories = null;
-            cachedTodos = null;
+            storyCache.clear();
             cacheStates = null;
             cacheStoryTypes = null;
         }
 
-
-
-        private Dictionary<int, Todo[]> cachedTodos;
-
-        public Todo[] getStoryTodos(int storyId)
+        public void refreshStories()
         {
-            if (cachedTodos == null)
-            {
-                cachedTodos = new Dictionary<int, Todo[]>();
-            }
-            if (!cachedTodos.ContainsKey(storyId))
-            {
-                cachedTodos.Add(storyId, client.TodoSelect(storyId));
-            }
-            return cachedTodos[storyId];
+            storyCache.update();
         }
 
-        public void TodoInsert(Todo todo)
+        public void insertStory(int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag)
         {
-            Todo t = client.TodoInsert(todo.StoryId, todo.Description, todo.Estimate, todo.BackColor, todo.X, todo.Y);
-            if (t != null)
-            {
-                if (t.Modified > lastRefresh)
-                {
-                    lastRefresh = t.Modified;
-                }
-                if (cachedTodos != null && cachedTodos.ContainsKey(todo.StoryId))
-                {
-                    Todo[] todos = cachedTodos[t.StoryId];
-                    Todo[] newTodos = null;
-                    if (todos != null)
-                    {
-                        newTodos = new Todo[todos.Length];
-                        for (int i = 0; i < todos.Length; i++)
-                        {
-                            newTodos[i] = todos[i];
-                        }
-                        newTodos[todos.Length] = t;
-                    }
-                    else
-                    {
-                        newTodos = new Todo[1];
-                        newTodos[0] = t;
-                    }
-                    cachedTodos.Add(t.StoryId, newTodos);
-                }
-                if (TodoChanged != null)
-                {
-                    TodoChanged(t);
-                }
-            }
+            storyCache.insertStory(sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
         }
 
-        public void TodoUpdate(ScrumBoard.ScrumboardService.Todo todo)
+        public void updateStory(Story story)
         {
-            if (cachedTodos != null && cachedTodos.ContainsKey(todo.StoryId))
-            {
-                cachedTodos.Remove(todo.StoryId);
-            }
-            Todo t = client.TodoUpdate(todo.Id, todo.StoryId, todo.Description, todo.Estimate, todo.BackColor, todo.X, todo.Y);
-            // forceComplete = true;
-            if (t != null && t.Modified > lastRefresh)
-            {
-                lastRefresh = t.Modified;
-            }
+            storyCache.updateStory(story);
         }
 
-        public void TodoRemove(ScrumBoard.ScrumboardService.Todo todo)
+        public void removeStory(Story story)
         {
-            if (cachedTodos != null && cachedTodos.ContainsKey(todo.StoryId))
-            {
-                cachedTodos.Remove(todo.StoryId);
-            }
-            Todo t = client.TodoRemove(todo.Id);
-            if (t != null && t.Modified > lastRefresh)
-            {
-                lastRefresh = t.Modified;
-            }
+            storyCache.removeStory(story);
         }
 
-
-        private Dictionary<int, SortedList<int, Story>> cachedSprintStories;
-
-        public Boolean HasPendingChanges()
+        public void insertTodo(Todo todo)
         {
-            DateTime lastModified = lastRefresh > DateTime.MinValue ? lastRefresh.AddMilliseconds(1000) : lastRefresh;
-            Story[] stories = client.StoryGetSprintModifiedStories(Config.ActiveSprint, lastModified);
-            return (stories != null && stories.Length > 0);
+            storyCache.insertTodo(todo);
         }
 
-        public Boolean HasPendingChanges(Story story)
+        public void updateTodo(ScrumBoard.ScrumboardService.Todo todo)
         {
-            DateTime lastModified = lastRefresh > DateTime.MinValue ? lastRefresh.AddMilliseconds(1000) : lastRefresh;
-            ScrumboardService.Story[] stories = client.StoryGetSprintModifiedStories(Config.ActiveSprint, lastModified);
-            if (stories != null && stories.Length > 0)
-            {
-                foreach (Story s in stories)
-                {
-                    if (s.Id == story.Id && s.Modified > story.Modified)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-
+            storyCache.updateTodo(todo);
         }
 
-        private SortedList<int, Story> getStories()
+        public void removeTodo(ScrumBoard.ScrumboardService.Todo todo)
         {
-            int sprintId = Config.ActiveSprint;
-            if (cachedSprintStories == null)
-            {
-                cachedSprintStories = new Dictionary<int, SortedList<int, Story>>();
-            }
-            if (!cachedSprintStories.ContainsKey(sprintId))
-            {
-                Story[] stories = client.StoryGetSprintStories(Config.ActiveSprint);
-                SortedList<int, Story> list = new SortedList<int, Story>();
-                foreach (Story s in stories)
-                {
-                    if (s.Modified > lastRefresh)
-                    {
-                        lastRefresh = s.Modified;
-                    }
-                    list.Add(s.Id, s);
-                }
-                cachedSprintStories.Add(sprintId, list);
-            }
-            else
-            {
-                // Check if there are any modifications on the server
-                ScrumboardService.Story[] stories = null;
-                DateTime lastModified = lastRefresh > DateTime.MinValue ? lastRefresh : lastRefresh;
-                stories = client.StoryGetSprintModifiedStories(Config.ActiveSprint, lastModified);
-                if (stories.Length > 0)
-                {
-                    SortedList<int, Story> cachedStories = cachedSprintStories[sprintId];
-                    foreach (Story s in stories)
-                    {
-                        if (s.Modified > lastRefresh)
-                        {
-                            lastRefresh = s.Modified;
-                        }
-                        if (s.IsRemoved && cachedStories.ContainsKey(s.Id))
-                        {
-                            cachedStories.Remove(s.Id);
-                        }
-                        else if (cachedStories.ContainsKey(s.Id))
-                        {
-                            cachedStories.Remove(s.Id);
-                            cachedStories.Add(s.Id, s);
-                        }
-                        else
-                        {
-                            cachedStories.Add(s.Id, s);
-                        }
-                    }
-                    cachedSprintStories[sprintId] = cachedStories;
-                }
-            }
-            return cachedSprintStories[sprintId];
-        }
-
-
-        public SortedList<int, Story> getStories(int storyTypeId, int statusId)
-        {
-            SortedList<int, Story> stories = getStories();
-            SortedList<int, Story> list = new SortedList<int, Story>();
-            foreach (Story story in stories.Values)
-            {
-                if (story.StoryTypeId == storyTypeId && story.StatusId == statusId)
-                {
-                    if (story.Modified > lastRefresh)
-                    {
-                        lastRefresh = story.Modified;
-                    }
-                    list.Add(story.Id, story);
-                }
-            }
-            return list;
-        }
-        public Story StoryInsert(int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag)
-        {
-            Story s = client.StoryInsert(sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
-            if (s != null)
-            {
-                // refresh data with all modifications
-                getStories();
-            }
-            return s;
-        }
-
-        public Story StoryUpdateDetails(Story story)
-        {
-            // Check if it was updated by anyone else
-            if (HasPendingChanges(story))
-            {
-                throw new PendingChangeException();
-            }
-            Story s = client.StoryUpdateDetails(story.Id, story.SprintId, story.ExternalId, story.StoryTypeId, story.StatusId, story.Description, story.Estimate, story.BackColor, story.X, story.Y, story.Tag);
-            if (s != null)
-            {
-                // refresh data with all modifications
-                getStories();
-            }
-            return s;
-        }
-
-        public void StoryRemove(Story story)
-        {
-            if (HasPendingChanges(story))
-            {
-                throw new PendingChangeException();
-            }
-            Story s = client.StoryRemove(story.Id);
-            if (s != null)
-            {
-                // refresh data with all modifications
-                getStories();
-            }
+            storyCache.removeTodo(todo);
         }
     }
 }

@@ -32,7 +32,6 @@
             this.txtId = new System.Windows.Forms.TextBox();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtEstimate = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -42,6 +41,8 @@
             this.btnColor = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.cmbStoryType = new System.Windows.Forms.ComboBox();
+            this.txtEstimate = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.txtEstimate)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -76,13 +77,6 @@
             this.label2.Size = new System.Drawing.Size(63, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "Description:";
-            // 
-            // txtEstimate
-            // 
-            this.txtEstimate.Location = new System.Drawing.Point(72, 31);
-            this.txtEstimate.Name = "txtEstimate";
-            this.txtEstimate.Size = new System.Drawing.Size(68, 20);
-            this.txtEstimate.TabIndex = 3;
             // 
             // label3
             // 
@@ -158,6 +152,19 @@
             this.cmbStoryType.Size = new System.Drawing.Size(121, 21);
             this.cmbStoryType.TabIndex = 1;
             // 
+            // txtEstimate
+            // 
+            this.txtEstimate.Location = new System.Drawing.Point(72, 32);
+            this.txtEstimate.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.txtEstimate.Name = "txtEstimate";
+            this.txtEstimate.Size = new System.Drawing.Size(68, 20);
+            this.txtEstimate.TabIndex = 3;
+            this.txtEstimate.ThousandsSeparator = true;
+            // 
             // StoryDetail
             // 
             this.AcceptButton = this.btnOk;
@@ -165,6 +172,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(450, 275);
+            this.Controls.Add(this.txtEstimate);
             this.Controls.Add(this.cmbStoryType);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.btnColor);
@@ -172,7 +180,6 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
-            this.Controls.Add(this.txtEstimate);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.label2);
@@ -186,6 +193,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Story Detail";
+            ((System.ComponentModel.ISupportInitialize)(this.txtEstimate)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -197,7 +205,6 @@
         private System.Windows.Forms.TextBox txtId;
         private System.Windows.Forms.TextBox txtDescription;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtEstimate;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
@@ -207,5 +214,6 @@
         private System.Windows.Forms.Button btnColor;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox cmbStoryType;
+        private System.Windows.Forms.NumericUpDown txtEstimate;
     }
 }

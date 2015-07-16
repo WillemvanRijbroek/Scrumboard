@@ -15,7 +15,7 @@ namespace ScrumBoard.UI.Controls
     public partial class StickyTodo : StickyNote
     {
         private ScrumBoard.ScrumboardService.Todo todo;
-        
+
 
         public StickyTodo(ScrumboardService.Layout layout, Mover mover)
             : base(layout, mover)
@@ -25,7 +25,7 @@ namespace ScrumBoard.UI.Controls
             txtEstimate.Font = new Font(txtEstimate.Font.FontFamily, layout.FontSize);
             txtDescription.Font = new Font(txtDescription.Font.FontFamily, layout.FontSize);
         }
-        
+
         protected override void SetMoving(bool moving)
         {
             if (moving)
@@ -53,16 +53,20 @@ namespace ScrumBoard.UI.Controls
             TodoDetail form = new TodoDetail();
             form.Todo = todo;
             form.ShowDialog();
-            Todo = todo;
-            ((ScrumBoard.UI.Forms.ScrumBoardForm)this.Parent.Parent).ModifiedTodo(this);
         }
 
         private void Remove()
         {
             if (MessageBox.Show(this, string.Format("Are you sure to remove todo '{0}'?", todo.Description), "Question", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                Data.getInstance().TodoRemove(todo);
-                ((ScrumBoard.UI.Forms.ScrumBoardForm)this.Parent.Parent).ModifiedTodo(this);
+                try
+                {
+                    Data.getInstance().removeTodo(todo);
+                }
+                catch (PendingChangeException ex)
+                {
+                    MessageBox.Show(this, "Story is already changed by someone else, please retry");
+                }
             }
         }
 

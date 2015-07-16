@@ -44,11 +44,34 @@
               <s:element minOccurs="1" maxOccurs="1" name="ClosedDate" type="s:dateTime" />
               <s:element minOccurs="1" maxOccurs="1" name="Modified" type="s:dateTime" />
               <s:element minOccurs="1" maxOccurs="1" name="IsBurndownEnabled" type="s:boolean" />
+              <s:element minOccurs="0" maxOccurs="1" name="Todos" type="tns:ArrayOfTodo" />
             </s:sequence>
           </s:extension>
         </s:complexContent>
       </s:complexType>
       <s:complexType name="BO" abstract="true" />
+      <s:complexType name="Todo">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:BO">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="StoryId" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Estimate" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="BackColor" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="X" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Y" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Modified" type="s:dateTime" />
+              <s:element minOccurs="1" maxOccurs="1" name="IsRemoved" type="s:boolean" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfTodo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Todo" nillable="true" type="tns:Todo" />
+        </s:sequence>
+      </s:complexType>
       <s:element name="StoryUpdateDetails">
         <s:complexType>
           <s:sequence>
@@ -73,21 +96,6 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="StoryUpdateStatus">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
-            <s:element minOccurs="1" maxOccurs="1" name="statusId" type="s:int" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="StoryUpdateStatusResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="StoryUpdateStatusResult" type="tns:Story" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
       <s:element name="StoryRemove">
         <s:complexType>
           <s:sequence>
@@ -99,21 +107,6 @@
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="StoryRemoveResult" type="tns:Story" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="StoryGetByExternalId">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="sprintId" type="s:int" />
-            <s:element minOccurs="0" maxOccurs="1" name="externalId" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="StoryGetByExternalIdResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="StoryGetByExternalIdResult" type="tns:Story" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -148,22 +141,6 @@
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="StoryGetSprintModifiedStoriesResult" type="tns:ArrayOfStory" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="StoryGetPanelStories">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="sprintId" type="s:int" />
-            <s:element minOccurs="1" maxOccurs="1" name="storyTypeId" type="s:int" />
-            <s:element minOccurs="1" maxOccurs="1" name="statusId" type="s:int" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="StoryGetPanelStoriesResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="StoryGetPanelStoriesResult" type="tns:ArrayOfStory" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -676,23 +653,6 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:complexType name="Todo">
-        <s:complexContent mixed="false">
-          <s:extension base="tns:BO">
-            <s:sequence>
-              <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
-              <s:element minOccurs="1" maxOccurs="1" name="StoryId" type="s:int" />
-              <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
-              <s:element minOccurs="1" maxOccurs="1" name="Estimate" type="s:int" />
-              <s:element minOccurs="1" maxOccurs="1" name="BackColor" type="s:int" />
-              <s:element minOccurs="1" maxOccurs="1" name="X" type="s:int" />
-              <s:element minOccurs="1" maxOccurs="1" name="Y" type="s:int" />
-              <s:element minOccurs="1" maxOccurs="1" name="Modified" type="s:dateTime" />
-              <s:element minOccurs="1" maxOccurs="1" name="IsRemoved" type="s:boolean" />
-            </s:sequence>
-          </s:extension>
-        </s:complexContent>
-      </s:complexType>
       <s:element name="TodoUpdate">
         <s:complexType>
           <s:sequence>
@@ -755,11 +715,6 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:complexType name="ArrayOfTodo">
-        <s:sequence>
-          <s:element minOccurs="0" maxOccurs="unbounded" name="Todo" nillable="true" type="tns:Todo" />
-        </s:sequence>
-      </s:complexType>
     </s:schema>
   </wsdl:types>
   <wsdl:message name="StoryInsertSoapIn">
@@ -774,23 +729,11 @@
   <wsdl:message name="StoryUpdateDetailsSoapOut">
     <wsdl:part name="parameters" element="tns:StoryUpdateDetailsResponse" />
   </wsdl:message>
-  <wsdl:message name="StoryUpdateStatusSoapIn">
-    <wsdl:part name="parameters" element="tns:StoryUpdateStatus" />
-  </wsdl:message>
-  <wsdl:message name="StoryUpdateStatusSoapOut">
-    <wsdl:part name="parameters" element="tns:StoryUpdateStatusResponse" />
-  </wsdl:message>
   <wsdl:message name="StoryRemoveSoapIn">
     <wsdl:part name="parameters" element="tns:StoryRemove" />
   </wsdl:message>
   <wsdl:message name="StoryRemoveSoapOut">
     <wsdl:part name="parameters" element="tns:StoryRemoveResponse" />
-  </wsdl:message>
-  <wsdl:message name="StoryGetByExternalIdSoapIn">
-    <wsdl:part name="parameters" element="tns:StoryGetByExternalId" />
-  </wsdl:message>
-  <wsdl:message name="StoryGetByExternalIdSoapOut">
-    <wsdl:part name="parameters" element="tns:StoryGetByExternalIdResponse" />
   </wsdl:message>
   <wsdl:message name="StoryGetSprintStoriesSoapIn">
     <wsdl:part name="parameters" element="tns:StoryGetSprintStories" />
@@ -803,12 +746,6 @@
   </wsdl:message>
   <wsdl:message name="StoryGetSprintModifiedStoriesSoapOut">
     <wsdl:part name="parameters" element="tns:StoryGetSprintModifiedStoriesResponse" />
-  </wsdl:message>
-  <wsdl:message name="StoryGetPanelStoriesSoapIn">
-    <wsdl:part name="parameters" element="tns:StoryGetPanelStories" />
-  </wsdl:message>
-  <wsdl:message name="StoryGetPanelStoriesSoapOut">
-    <wsdl:part name="parameters" element="tns:StoryGetPanelStoriesResponse" />
   </wsdl:message>
   <wsdl:message name="SprintInsertSoapIn">
     <wsdl:part name="parameters" element="tns:SprintInsert" />
@@ -1011,17 +948,9 @@
       <wsdl:input message="tns:StoryUpdateDetailsSoapIn" />
       <wsdl:output message="tns:StoryUpdateDetailsSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="StoryUpdateStatus">
-      <wsdl:input message="tns:StoryUpdateStatusSoapIn" />
-      <wsdl:output message="tns:StoryUpdateStatusSoapOut" />
-    </wsdl:operation>
     <wsdl:operation name="StoryRemove">
       <wsdl:input message="tns:StoryRemoveSoapIn" />
       <wsdl:output message="tns:StoryRemoveSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="StoryGetByExternalId">
-      <wsdl:input message="tns:StoryGetByExternalIdSoapIn" />
-      <wsdl:output message="tns:StoryGetByExternalIdSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="StoryGetSprintStories">
       <wsdl:input message="tns:StoryGetSprintStoriesSoapIn" />
@@ -1030,10 +959,6 @@
     <wsdl:operation name="StoryGetSprintModifiedStories">
       <wsdl:input message="tns:StoryGetSprintModifiedStoriesSoapIn" />
       <wsdl:output message="tns:StoryGetSprintModifiedStoriesSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="StoryGetPanelStories">
-      <wsdl:input message="tns:StoryGetPanelStoriesSoapIn" />
-      <wsdl:output message="tns:StoryGetPanelStoriesSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="SprintInsert">
       <wsdl:input message="tns:SprintInsertSoapIn" />
@@ -1184,26 +1109,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="StoryUpdateStatus">
-      <soap:operation soapAction="http://tempuri.org/StoryUpdateStatus" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="StoryRemove">
       <soap:operation soapAction="http://tempuri.org/StoryRemove" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="StoryGetByExternalId">
-      <soap:operation soapAction="http://tempuri.org/StoryGetByExternalId" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1222,15 +1129,6 @@
     </wsdl:operation>
     <wsdl:operation name="StoryGetSprintModifiedStories">
       <soap:operation soapAction="http://tempuri.org/StoryGetSprintModifiedStories" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="StoryGetPanelStories">
-      <soap:operation soapAction="http://tempuri.org/StoryGetPanelStories" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1547,26 +1445,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="StoryUpdateStatus">
-      <soap12:operation soapAction="http://tempuri.org/StoryUpdateStatus" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="StoryRemove">
       <soap12:operation soapAction="http://tempuri.org/StoryRemove" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="StoryGetByExternalId">
-      <soap12:operation soapAction="http://tempuri.org/StoryGetByExternalId" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -1585,15 +1465,6 @@
     </wsdl:operation>
     <wsdl:operation name="StoryGetSprintModifiedStories">
       <soap12:operation soapAction="http://tempuri.org/StoryGetSprintModifiedStories" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="StoryGetPanelStories">
-      <soap12:operation soapAction="http://tempuri.org/StoryGetPanelStories" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

@@ -10,6 +10,8 @@ namespace ScrumBoard.Common
 {
     class Config
     {
+        public const int TODO_SPACING = 25;
+
         public static DirectoryInfo StoragePath
         {
             get
@@ -167,51 +169,6 @@ namespace ScrumBoard.Common
                 Registry.SetValue("HKEY_CURRENT_USER\\Scrumboard", "IssueTrackingSystemURL", value);
             }
         }
-
-        //public static int FontSize
-        //{
-        //    get
-        //    {
-        //        Object v = Registry.GetValue("HKEY_CURRENT_USER\\Scrumboard", "FontSize", null);
-        //        if (v == null)
-        //            v = 10;
-        //        return Int32.Parse(v.ToString());
-        //    }
-        //    set
-        //    {
-        //        Registry.SetValue("HKEY_CURRENT_USER\\Scrumboard", "FontSize", value);
-        //    }
-        //}
-
-        //public static int StoryHeight
-        //{
-        //    get
-        //    {
-        //        Object v = Registry.GetValue("HKEY_CURRENT_USER\\Scrumboard", "StoryHeight", null);
-        //        if (v == null)
-        //            v = 110;
-        //        return Int32.Parse(v.ToString());
-        //    }
-        //    set
-        //    {
-        //        Registry.SetValue("HKEY_CURRENT_USER\\Scrumboard", "StoryHeight", value);
-        //    }
-        //}
-
-        //public static int StoryWidth
-        //{
-        //    get
-        //    {
-        //        Object v = Registry.GetValue("HKEY_CURRENT_USER\\Scrumboard", "StoryWidth", null);
-        //        if (v == null)
-        //            v = 125;
-        //        return Int32.Parse(v.ToString());
-        //    }
-        //    set
-        //    {
-        //        Registry.SetValue("HKEY_CURRENT_USER\\Scrumboard", "StoryWidth", value);
-        //    }
-        //}
 
         public static FormWindowState MainWindowState
         {

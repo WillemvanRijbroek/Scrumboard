@@ -16,7 +16,7 @@ namespace ScrumBoard.UI.Forms
 {
     public partial class ScrumBoardForm : Form
     {
-        private Boolean autoRefresh = true;
+        private Boolean autoRefresh;
         private Timer refreshTimer = new Timer();
         private Mover mover = new Mover();
 
@@ -38,7 +38,7 @@ namespace ScrumBoard.UI.Forms
             refreshTimer.Tick += new EventHandler(refreshTimer_Tick);
         }
 
-        
+
 
         private void ScrumBoard_Load(object sender, EventArgs e)
         {
@@ -53,11 +53,6 @@ namespace ScrumBoard.UI.Forms
 
         private void showSprint()
         {
-            showSprint(false);
-        }
-
-        private void showSprint(Boolean completely)
-        {
             Cursor = Cursors.WaitCursor;
             try
             {
@@ -69,7 +64,7 @@ namespace ScrumBoard.UI.Forms
                     }
                 }
                 currentSprint = new Business.Sprint(Config.ActiveSprint);
-                Text = "Scrumboard v3.1            Sprint: " + currentSprint.Name + " Target: " + currentSprint.TargetDate.ToShortDateString() ;
+                Text = "Scrumboard v3.0.1            Sprint: " + currentSprint.Name + " Target: " + currentSprint.TargetDate.ToShortDateString();
                 if (currentSprint.Panels != null)
                 {
                     foreach (ScrumboardService.Panel pnl in currentSprint.Panels)
@@ -83,14 +78,15 @@ namespace ScrumBoard.UI.Forms
                             this.Controls.Add(new Burndown(currentSprint.Layout, pnl));
                         }
                     }
-                    RefreshSprint(completely);
+                    RefreshSprint();
                     autoResize();
                 }
-                checkRefresh();
+                checkRefresh(true);
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                MessageBox.Show(this, ex.Message + "\n\r" + ex.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             Cursor = Cursors.Default;
@@ -111,44 +107,6 @@ namespace ScrumBoard.UI.Forms
                 }
             }
             return null;
-        }
-
-        public void ModifiedTodo(StickyTodo todo)
-        {
-            Cursor = Cursors.WaitCursor;
-            RefreshSprint(true);
-            Cursor = Cursors.Default;
-        }
-
-        public void RemovedStory(StickyStory story)
-        {
-            if (!screenUpdates)
-            {
-                Cursor = Cursors.WaitCursor;
-                RefreshSprint(false);
-                //foreach (Control c in Controls)
-                //{
-                //    if (c is StatePanel && c.Controls.Contains(story))
-                //    {
-                //        c.Controls.Remove(story);
-                //    }
-                //}
-                Cursor = Cursors.Default;
-            }
-        }
-
-        public void RefreshStory(StickyStory story)
-        {
-            if (!screenUpdates)
-            {
-                Cursor = Cursors.WaitCursor;
-                RefreshSprint(false);
-                //if (story.Parent is StatePanel)
-                //{
-                //    ((StatePanel)story.Parent).AddOrUpdateStory(story.Story);
-                //}
-                Cursor = Cursors.Default;
-            }
         }
 
         private void SwitchSprint(bool up)
@@ -181,34 +139,25 @@ namespace ScrumBoard.UI.Forms
                             if (n < 0) n = sprints.Length - 1;
                             Config.ActiveSprint = sprints[n].Id;
                         }
-                        showSprint(true);
+                        showSprint();
                         break;
                     }
                 }
             }
         }
 
-        
-        public void RefreshSprint(Boolean completely)
+
+        public void RefreshSprint()
         {
             Cursor = Cursors.WaitCursor;
-            if (completely)
+            currentSprint = new Business.Sprint(Config.ActiveSprint);
+            Data.getInstance().clearCaches();
+            Data.getInstance().refreshStories();
+            for (int i = Controls.Count - 1; i >= 0; i--)
             {
-                Data.getInstance().clearCaches();
-currentSprint = new Business.Sprint(Config.ActiveSprint);
-            }
-            if (completely || Data.getInstance().HasPendingChanges())
-            {
-                for (int i = Controls.Count - 1; i >= 0; i--)
+                if (Controls[i] is Burndown)
                 {
-                    if (Controls[i] is StatePanel)
-                    {
-                        ((StatePanel)Controls[i]).RefreshStories();
-                    }
-                    else if (Controls[i] is Burndown)
-                    {
-                        ((Burndown)Controls[i]).DrawChart();
-                    }
+                    ((Burndown)Controls[i]).DrawChart();
                 }
             }
             Cursor = Cursors.Default;
@@ -232,12 +181,10 @@ currentSprint = new Business.Sprint(Config.ActiveSprint);
         {
             screenUpdates = true;
             Cursor = Cursors.WaitCursor;
-            RefreshSprint(false);
             for (int i = Controls.Count - 1; i >= 0; i--)
             {
                 if (Controls[i] is StatePanel)
                 {
-                    ((StatePanel)Controls[i]).RefreshStories();
                     ((StatePanel)Controls[i]).AutoResize();
                 }
                 else if (Controls[i] is Burndown)
@@ -252,7 +199,6 @@ currentSprint = new Business.Sprint(Config.ActiveSprint);
         private void autoAlignControls()
         {
             screenUpdates = true;
-            RefreshSprint(false);
             Cursor = Cursors.WaitCursor;
             for (int i = Controls.Count - 1; i >= 0; i--)
             {
@@ -274,7 +220,6 @@ currentSprint = new Business.Sprint(Config.ActiveSprint);
         private void addStoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             StoryDetail form = new StoryDetail();
-
             DialogResult r = form.ShowDialog(this);
             if (r == System.Windows.Forms.DialogResult.OK)
             {
@@ -283,11 +228,7 @@ currentSprint = new Business.Sprint(Config.ActiveSprint);
                     if (c is StatePanel)
                     {
                         StatePanel sp = ((StatePanel)c);
-                        if (sp.StoryTypeId == form.Story.StoryTypeId && sp.StateId == form.Story.StatusId)
-                        {
-                            sp.AddOrUpdateStory(form.Story);
-                            sp.AutoAlignStories();
-                        }
+                        sp.AutoAlignStories();
                     }
                 }
             }
@@ -301,7 +242,7 @@ currentSprint = new Business.Sprint(Config.ActiveSprint);
             currentSprint = new Business.Sprint(Config.ActiveSprint);
             if (id != currentSprint.Id)
             {
-                showSprint(true);
+                showSprint();
             }
         }
 
@@ -338,42 +279,42 @@ currentSprint = new Business.Sprint(Config.ActiveSprint);
                 Cursor = Cursors.WaitCursor;
                 FileInfo sprintFile = new FileInfo(dlgOpenFile.FileName);
                 Config.StoragePath = sprintFile.Directory;
-
                 currentSprint.ImportStories(sprintFile);
-
-                RefreshSprint(false);
-
                 Cursor = Cursors.Default;
             }
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RefreshSprint(true);
+            RefreshSprint();
         }
 
         private void autoRefreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            autoRefresh = !autoRefresh;
-            checkRefresh();
+            checkRefresh(!autoRefresh);
         }
         void refreshTimer_Tick(object sender, EventArgs e)
         {
-            RefreshSprint(false);
-            autoRefresh = false;
+            Cursor = Cursors.WaitCursor;
+            Data.getInstance().refreshStories();
+            Cursor = Cursors.Default;
         }
-        private void checkRefresh()
+        private void checkRefresh(Boolean refresh)
         {
-            if (!autoRefresh)
+            if (refresh != autoRefresh)
             {
-                autoRefreshToolStripMenuItem.Text = "Auto Refresh Off";
-                refreshTimer.Interval = 5000;
-                refreshTimer.Start();
-            }
-            else
-            {
-                autoRefreshToolStripMenuItem.Text = "Auto Refresh On";
-                refreshTimer.Stop();
+                autoRefresh = refresh;
+                if (refresh)
+                {
+                    autoRefreshToolStripMenuItem.Text = "Auto Refresh Off";
+                    refreshTimer.Interval = 5000;
+                    refreshTimer.Start();
+                }
+                else
+                {
+                    autoRefreshToolStripMenuItem.Text = "Auto Refresh On";
+                    refreshTimer.Stop();
+                }
             }
         }
 
@@ -418,7 +359,7 @@ currentSprint = new Business.Sprint(Config.ActiveSprint);
             currentSprint = new Business.Sprint(Config.ActiveSprint);
             if (currentSprint != null && currentSprint.Id >= 0)
             {
-                showSprint(true);
+                showSprint();
             }
             Cursor = Cursors.Default;
         }
@@ -454,7 +395,7 @@ currentSprint = new Business.Sprint(Config.ActiveSprint);
             }
             else if (keyData == (Keys.F5))
             {
-                RefreshSprint(false);
+                RefreshSprint();
                 Activate();
                 Focus();
             }

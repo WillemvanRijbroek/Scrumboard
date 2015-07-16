@@ -99,7 +99,7 @@ namespace ScrumBoard.Business
                         String desc = inf[1];
                         int estimate = Config.DefaultEstimate;
                         Int32.TryParse(inf[2], out estimate);
-                        Data.getInstance().StoryInsert(Id, extId, 1, 1, desc, estimate, Config.DefaultBackColor, 30, 30, "");
+                        Data.getInstance().insertStory(Id, extId, 1, 1, desc, estimate, Config.DefaultBackColor, 30, 30, "");
                     }
                     sr.Close();
                 }

@@ -70,10 +70,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Cache.cs" />
     <Compile Include="Common\Config.cs" />
     <Compile Include="Common\Data.cs" />
     <Compile Include="Common\PendingChangeException.cs" />
     <Compile Include="Common\ServiceConn.cs" />
+    <Compile Include="Common\StoryCache.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -174,7 +176,6 @@
     <Compile Include="UI\Controls\StickyStory.Designer.cs">
       <DependentUpon>StickyStory.cs</DependentUpon>
     </Compile>
-    <Compile Include="Business\Story.cs" />
     <Compile Include="UI\Forms\SelectSprint.cs">
       <SubType>Form</SubType>
     </Compile>

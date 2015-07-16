@@ -97,8 +97,9 @@ namespace ScrumboardWebService.Business
         #region Helpers
         protected String asSQLStringValue(String userInput)
         {
+            if (userInput == null) return "";
             // prevend sql injection here
-            return HttpUtility.HtmlEncode(userInput);
+            return HttpUtility.HtmlEncode(userInput.Replace("'", "''"));
         }
 
         protected String fromSQLStringValue(String dbValue)
@@ -108,7 +109,7 @@ namespace ScrumboardWebService.Business
 
         protected String asSQLDateValue(DateTime userInput)
         {
-            return userInput.ToString("yyyy-MM-dd HH:mm:ss");
+            return userInput.ToString("yyyy-MM-dd HH:mm:ss.fff");
         }
         #endregion
     }

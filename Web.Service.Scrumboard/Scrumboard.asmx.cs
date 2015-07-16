@@ -20,11 +20,41 @@ namespace ScrumboardWebService
     public class Scrumboard : System.Web.Services.WebService
     {
         #region Story
+        /// <summary>
+        /// Add a new story
+        /// </summary>
+        /// <param name="sprintId"></param>
+        /// <param name="externalId"></param>
+        /// <param name="storyTypeId"></param>
+        /// <param name="statusId"></param>
+        /// <param name="description"></param>
+        /// <param name="estimate"></param>
+        /// <param name="backcolor"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="tag"></param>
+        /// <returns></returns>
         [WebMethod]
         public Story StoryInsert(int sprintId, String externalId, int storyTypeId, int statusId, String description, int estimate, int backcolor, int x, int y, String tag)
         {
             return new Story().Insert(sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
         }
+
+        /// <summary>
+        /// Update a story
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="sprintId"></param>
+        /// <param name="externalId"></param>
+        /// <param name="storyTypeId"></param>
+        /// <param name="statusId"></param>
+        /// <param name="description"></param>
+        /// <param name="estimate"></param>
+        /// <param name="backcolor"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="tag"></param>
+        /// <returns></returns>
         [WebMethod]
         public Story StoryUpdateDetails(int id, int sprintId, String externalId, int storyTypeId, int statusId, String description, int estimate, int backcolor, int x, int y, String tag)
         {
@@ -32,23 +62,16 @@ namespace ScrumboardWebService
         }
 
         [WebMethod]
-        public Story StoryUpdateStatus(int id, int statusId)
-        {
-            return new Story().Update(id, statusId);
-        }
-
-        [WebMethod]
         public Story StoryRemove(int id)
         {
             return new Story().Remove(id);
         }
-
-        [WebMethod]
-        public Story StoryGetByExternalId(int sprintId, String externalId)
-        {
-            return new Story().Get(sprintId, externalId);
-        }
-
+        
+        /// <summary>
+        /// Retrieves a list of all sprint stories
+        /// </summary>
+        /// <param name="sprintId"></param>
+        /// <returns></returns>
         [WebMethod]
         public List<Story> StoryGetSprintStories(int sprintId)
         {
@@ -67,11 +90,6 @@ namespace ScrumboardWebService
             return new Story().Select(sprintId, modified);
         }
 
-        [WebMethod]
-        public List<Story> StoryGetPanelStories(int sprintId, int storyTypeId, int statusId)
-        {
-            return new Story().Select(sprintId, storyTypeId, statusId);
-        }
         #endregion
 
         #region Sprint
@@ -94,15 +112,7 @@ namespace ScrumboardWebService
         [WebMethod]
         public List<Sprint> SprintSelectAll()
         {
-            //TeamMember user = new TeamMember().Get(Thread.CurrentPrincipal.Identity.Name);
-            //if (user != null)
-            //{
-            //     return new Sprint().Select(user.TeamId);
-            // }
-            //  else
-            // {
             return new Sprint().Select();
-            // }
         }
         [WebMethod]
         public List<Sprint> SprintSelectByTeam(int teamId)

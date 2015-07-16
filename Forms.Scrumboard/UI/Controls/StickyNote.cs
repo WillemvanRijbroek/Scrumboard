@@ -109,10 +109,6 @@ namespace ScrumBoard.UI.Controls
                     {
                         MovedTo(movedToPanel);
                         BringToFront();
-                        if (this is StickyStory)
-                        {
-                            movedToPanel.AddOrUpdateStory(((StickyStory)this).Story);
-                        }
                     }
                     else if (movedToPanel != null && myPanel == movedToPanel)
                     {

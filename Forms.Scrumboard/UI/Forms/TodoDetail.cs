@@ -13,7 +13,7 @@ namespace ScrumBoard.UI.Forms
 {
     public partial class TodoDetail : Form
     {
-         private ScrumBoard.ScrumboardService.Todo todo;
+        private ScrumBoard.ScrumboardService.Todo todo;
 
         public TodoDetail()
         {
@@ -53,7 +53,7 @@ namespace ScrumBoard.UI.Forms
                 todo.Description = txtDescription.Text.Replace("'", "''");
                 todo.Estimate = Int32.Parse(txtEstimate.Text);
                 todo.BackColor = btnColor.BackColor.ToArgb();
-                Data.getInstance().TodoUpdate(todo);
+                Data.getInstance().updateTodo(todo);
             }
             else
             {
@@ -64,7 +64,7 @@ namespace ScrumBoard.UI.Forms
                 todo.BackColor = btnColor.BackColor.ToArgb();
                 todo.X = 30;
                 todo.Y = 30;
-                Data.getInstance().TodoInsert( todo);
+                Data.getInstance().insertTodo(todo);
             }
             this.Close();
         }

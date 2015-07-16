@@ -32,6 +32,7 @@
             // 
             // StatePanel
             // 
+            this.BackColor = System.Drawing.Color.Transparent;
             this.Move += new System.EventHandler(this.StatePanel_Move);
             this.ResumeLayout(false);
 

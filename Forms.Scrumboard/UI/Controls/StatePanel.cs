@@ -14,6 +14,7 @@ namespace ScrumBoard.UI.Controls
 {
     public partial class StatePanel : System.Windows.Forms.Panel
     {
+        
         private Dictionary<int, StickyStory> stories;
         private ScrumboardService.Panel panel;
         private ScrumboardService.Layout layout;
@@ -50,8 +51,10 @@ namespace ScrumBoard.UI.Controls
                 lblTitle.AutoSize = true;
                 Controls.Add(lblTitle);
             }
-
+            Data.getInstance().StoryChanged += StatePanel_StoryChanged;
         }
+
+
 
         public int StateId
         {
@@ -78,100 +81,111 @@ namespace ScrumBoard.UI.Controls
             Width = width;
         }
 
-        public void AddOrUpdateStory(Story story)
+        void StatePanel_StoryChanged(Story story)
         {
             Boolean exists = stories.ContainsKey(story.Id);
-            if (!exists)
+            Boolean storyMatchesPanel = (story.StatusId == StateId) && (story.StoryTypeId == StoryTypeId);
+            if (exists)
             {
-                StickyStory st = new StickyStory(layout, mover);
-                st.Story = story;
-                st.Width = layout.StoryWidth;
-                st.Height = layout.StoryHeight;
-                Controls.Add(st);
-                // Console.WriteLine("Dimensions: " + st.Width + ":" + st.Height);
-                Todo[] todos = Data.getInstance().getStoryTodos(story.Id);
-                if (todos != null)
-                {
-                    int x = 10;
-                    int y = 10;
-                    foreach (ScrumBoard.ScrumboardService.Todo t in todos)
-                    {
-                        StickyTodo std = new StickyTodo(layout, mover);
-                        t.X = story.X + x;
-                        t.Y = story.Y + y;
-                        std.Todo = t;
-                        x += 10;
-                        y += 10;
-                        std.BringToFront();
-                        std.Width = layout.StoryWidth;
-                        std.Height = layout.StoryHeight;
-                        Controls.Add(std);
-                        st.AddTodo(std);
-                    }
-                }
-                stories.Add(story.Id, st);
-                st.BringToFront();
-            }
-            else
-            {
+                // Remove the StickyStory
                 StickyStory st = stories[story.Id];
-                st.Story = story;
-                foreach (StickyTodo std in st.StickyTodos)
+                if (!storyMatchesPanel || story.IsRemoved)
                 {
-                    Controls.Remove(std);
-                }
-                Todo[] todos = Data.getInstance().getStoryTodos(story.Id);
-                if (todos != null)
-                {
-                    int x = 10;
-                    int y = 10;
-                    foreach (Todo t in todos)
+                    Controls.Remove(st);
+                    foreach (StickyTodo std in st.StickyTodos)
                     {
-                        StickyTodo std = new StickyTodo(layout, mover);
-                        t.X = story.X + x;
-                        t.Y = story.Y + y;
-                        std.Todo = t;
-                        x += 10;
-                        y += 10;
-                        std.BringToFront();
-                        Controls.Add(std);
+                        Controls.Remove(std);
                     }
+                    stories.Remove(story.Id);
                 }
-                st.BringToFront();
+                else
+                {
+                    UpdateStickyStory(st, story);
+                }
+            }
+            else if (storyMatchesPanel)
+            {
+                AddStickyStory(story);
             }
         }
-        public void RefreshStories()
+
+        private void AddStickyStory(Story story)
         {
-            ClearControls();
-            this.stories.Clear();
-            SortedList<int, Story> stories = Data.getInstance().getStories(panel.StoryTypeId, panel.StateId);
-            IEnumerator<KeyValuePair<int, Story>> enm = stories.GetEnumerator();
-            enm.MoveNext();
-            Story s = enm.Current.Value;
-            while (s != null)
+            StickyStory st = new StickyStory(layout, mover);
+            st.Story = story;
+            st.Width = layout.StoryWidth;
+            st.Height = layout.StoryHeight;
+            Controls.Add(st);
+            UpdateStickyTodos(st, story);
+            stories.Add(story.Id, st);
+            st.BringToFront();
+        }
+
+        private void UpdateStickyTodos(StickyStory st, Story story)
+        {
+            foreach (StickyTodo std in st.StickyTodos)
             {
-                AddOrUpdateStory(s);
-                enm.MoveNext();
-                s = enm.Current.Value;
+                Controls.Remove(std);
             }
-            // See if we need to remove controls
-            for (int i = Controls.Count - 1; i >= 0; i--)
+            if (story.Todos != null)
             {
-                if (Controls[i] is StickyStory)
+                int x = Config.TODO_SPACING;
+                int y = Config.TODO_SPACING;
+                foreach (ScrumBoard.ScrumboardService.Todo t in story.Todos)
                 {
-                    StickyStory st = ((StickyStory)Controls[i]);
-                    if (!stories.ContainsKey(st.Story.Id))
-                    {
-                        Controls.RemoveAt(i);
-                        foreach (StickyTodo td in st.StickyTodos)
-                        {
-                            Controls.Remove(td);
-                        }
-                    }
+                    StickyTodo std = new StickyTodo(layout, mover);
+                    t.X = story.X + x;
+                    t.Y = story.Y + y;
+                    std.Todo = t;
+                    x += Config.TODO_SPACING;
+                    y += Config.TODO_SPACING;
+                    std.BringToFront();
+                    std.Width = layout.StoryWidth;
+                    std.Height = layout.StoryHeight;
+                    Controls.Add(std);
+                    st.AddTodo(std);
                 }
             }
+        }
+        private void UpdateStickyStory(StickyStory st, Story story)
+        {
+            st.Story = story;
+            UpdateStickyTodos(st, story);
+            st.BringToFront();
 
         }
+        //public void RefreshStories()
+        //{
+        //    ClearControls();
+        //    this.stories.Clear();
+        //    SortedList<int, Story> stories = Data.getInstance().getStories(panel.StoryTypeId, panel.StateId);
+        //    IEnumerator<KeyValuePair<int, Story>> enm = stories.GetEnumerator();
+        //    enm.MoveNext();
+        //    Story s = enm.Current.Value;
+        //    while (s != null)
+        //    {
+        //        AddOrUpdateStory(s);
+        //        enm.MoveNext();
+        //        s = enm.Current.Value;
+        //    }
+        //    // See if we need to remove controls
+        //    for (int i = Controls.Count - 1; i >= 0; i--)
+        //    {
+        //        if (Controls[i] is StickyStory)
+        //        {
+        //            StickyStory st = ((StickyStory)Controls[i]);
+        //            if (!stories.ContainsKey(st.Story.Id))
+        //            {
+        //                Controls.RemoveAt(i);
+        //                foreach (StickyTodo td in st.StickyTodos)
+        //                {
+        //                    Controls.Remove(td);
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //}
 
 
         public void MovedToOtherPanel(StickyNote note)

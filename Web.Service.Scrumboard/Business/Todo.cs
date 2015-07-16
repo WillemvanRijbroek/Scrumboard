@@ -17,6 +17,11 @@ namespace ScrumboardWebService.Business
         public DateTime Modified { get; set; }
         public Boolean IsRemoved { get; set; }
 
+        private void setStoryModified(int storyId)
+        {
+            String sql = String.Format("UPDATE Story SET modified = GetDate() WHERE id = {0}", storyId);
+            executeScalar(sql);
+        }
         public Todo Insert(int storyId, String description, int estimate, int backcolor, int x, int y)
         {
             String sql = String.Format("INSERT INTO Todo (StoryID, Description, Estimate, Backcolor, X, Y, modified) VALUES ({0}, '{1}',{2},{3},{4},{5}, getDate())",
@@ -25,6 +30,7 @@ namespace ScrumboardWebService.Business
             int newId = -1;
             if (rt != null && Int32.TryParse(rt.ToString(), out newId))
             {
+                setStoryModified(storyId);
                 return Get(newId);
             }
             return null;
@@ -34,6 +40,7 @@ namespace ScrumboardWebService.Business
         {
             String sql = String.Format("UPDATE Todo SET storyId = {1}, description = '{2}', estimate = {3}, backcolor = {4}, x = {5}, y = {6}, modified = getDate() WHERE id = {0}", id, storyId, asSQLStringValue(description), estimate, backcolor, x, y);
             executeScalar(sql);
+            setStoryModified(storyId);
             return Get(id);
         }
 
@@ -41,7 +48,12 @@ namespace ScrumboardWebService.Business
         {
             String sql = String.Format("UPDATE Todo SET removed = 1 WHERE id = {0}", id);
             executeScalar(sql);
-            return Get(id);
+            Todo t = Get(id);
+            if (t != null)
+            {
+                setStoryModified(t.StoryId);
+            }
+            return t;
         }
 
         public List<Todo> Select(int storyId)
@@ -87,7 +99,7 @@ namespace ScrumboardWebService.Business
         public Todo Get(int id)
         {
             Todo s = null;
-            String sql = String.Format("SELECT id, storyid, description, estimate, backcolor, x, y, modified, removed FROM TODO WHERE id = {0} and removed <> 1", id);
+            String sql = String.Format("SELECT id, storyid, description, estimate, backcolor, x, y, modified, removed FROM TODO WHERE id = {0} ", id);
             OpenConnection();
             try
             {
