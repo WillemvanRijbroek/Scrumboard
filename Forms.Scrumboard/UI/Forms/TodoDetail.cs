@@ -50,7 +50,7 @@ namespace ScrumBoard.UI.Forms
             if (todo != null)
             {
                 todo.StoryId = this.StoryId;
-                todo.Description = txtDescription.Text.Replace("'", "''");
+                todo.Description = txtDescription.Text;
                 todo.Estimate = Int32.Parse(txtEstimate.Text);
                 todo.BackColor = btnColor.BackColor.ToArgb();
                 Data.getInstance().updateTodo(todo);
@@ -59,7 +59,7 @@ namespace ScrumBoard.UI.Forms
             {
                 todo = new ScrumboardService.Todo();
                 todo.StoryId = this.StoryId;
-                todo.Description = txtDescription.Text.Replace("'", "''");
+                todo.Description = txtDescription.Text;
                 todo.Estimate = Int32.Parse(txtEstimate.Text);
                 todo.BackColor = btnColor.BackColor.ToArgb();
                 todo.X = 30;

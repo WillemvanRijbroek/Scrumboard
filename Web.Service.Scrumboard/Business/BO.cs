@@ -98,13 +98,14 @@ namespace ScrumboardWebService.Business
         protected String asSQLStringValue(String userInput)
         {
             if (userInput == null) return "";
+            userInput = userInput.Replace("'", "['']");
             // prevend sql injection here
-            return HttpUtility.HtmlEncode(userInput.Replace("'", "''"));
+            return HttpUtility.HtmlEncode(userInput);
         }
 
         protected String fromSQLStringValue(String dbValue)
         {
-            return HttpUtility.HtmlDecode(dbValue);
+            return HttpUtility.HtmlDecode(dbValue).Replace("['']", "'");
         }
 
         protected String asSQLDateValue(DateTime userInput)
