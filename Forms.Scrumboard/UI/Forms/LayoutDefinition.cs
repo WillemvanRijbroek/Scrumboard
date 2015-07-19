@@ -71,7 +71,7 @@ namespace ScrumBoard.UI.Forms
                     }
                     else
                     {
-                        pnlExample.Controls.Add(new Burndown(layout, panel));
+                        pnlExample.Controls.Add(new BurndownPanel(layout, panel));
                     }
                 }
                 autoResize();
@@ -85,9 +85,9 @@ namespace ScrumBoard.UI.Forms
                 {
                     ((StatePanel)pnlExample.Controls[i]).AutoResize();
                 }
-                else if (pnlExample.Controls[i] is Burndown)
+                else if (pnlExample.Controls[i] is BurndownPanel)
                 {
-                    ((Burndown)pnlExample.Controls[i]).AutoResize();
+                    ((BurndownPanel)pnlExample.Controls[i]).AutoResize();
                 }
             }
         }

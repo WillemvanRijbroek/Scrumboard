@@ -12,18 +12,18 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace ScrumBoard.UI.Controls
 {
-    public partial class Burndown : UserControl
+    public partial class BurndownPanel : UserControl
     {
-        private ScrumboardSoapClient client;
         private ScrumBoard.Business.Sprint sprint;
         private ScrumboardService.Panel panel;
         private ScrumboardService.Layout layout;
+        private SortedList<int,Story> stories;
 
-        public Burndown()
+        public BurndownPanel()
         {
             InitializeComponent();
         }
-        public Burndown(ScrumboardService.Layout layout, ScrumboardService.Panel panel)
+        public BurndownPanel(ScrumboardService.Layout layout, ScrumboardService.Panel panel)
         {
             InitializeComponent();
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -32,16 +32,16 @@ namespace ScrumBoard.UI.Controls
             this.layout = layout;
 
         }
-
         public void AutoResize()
         {
-            int height = (Parent.Height / layout.TotalRows) * panel.Heigth;
-            int width = (Parent.Width / layout.TotalColumns) * panel.Width;
+            int height = (Parent.Height / layout.TotalRows);
+            int width = (Parent.Width / layout.TotalColumns);
             Top = height * panel.Row;
             Left = width * panel.Column;
-            Height = height;
-            Width = width;
+            Height = height * panel.Heigth;
+            Width = width * panel.Width;
         }
+
 
         private decimal CalculatePlanned(DateTime dt, decimal storyPoints)
         {
@@ -55,7 +55,7 @@ namespace ScrumBoard.UI.Controls
             return points;
         }
 
-        private decimal CalculateExpected(DateTime dt, decimal storyPoints, Story[] stories)
+        private decimal CalculateExpected(DateTime dt, decimal storyPoints, SortedList<int, Story> stories)
         {
             if (dt <= DateTime.Now)
                 return CalculateRealized(dt, storyPoints, stories);
@@ -65,10 +65,10 @@ namespace ScrumBoard.UI.Controls
             }
         }
 
-        private decimal CalculateRealized(DateTime dt, decimal storyPoints, Story[] stories)
+        private decimal CalculateRealized(DateTime dt, decimal storyPoints, SortedList<int, Story> stories)
         {
             decimal points = storyPoints;
-            foreach (Story s in stories)
+            foreach (Story s in stories.Values)
             {
                 if (s.IsBurndownEnabled)
                 {
@@ -82,56 +82,76 @@ namespace ScrumBoard.UI.Controls
                 points = 0;
             return points;
         }
-        private DataTable CreateTable(DateTime startDate, DateTime tillDate)
+
+        /// <summary>
+        /// Returns the total amount of story points for all stories
+        /// </summary>
+        private int TotalPlannedStoryPoints()
         {
-            if (client == null)
+            int points = 0;
+            foreach (Story story in stories.Values)
             {
-                client = ServiceConn.getClient();
+                // TODO: Burn up based on creation date of the story
+                if (story.IsBurndownEnabled && !story.IsRemoved)
+                {
+                    points += story.Estimate;
+                }
             }
-            Story[] stories = client.StoryGetSprintStories(Config.ActiveSprint);
+            return points;
+        }
+        
+        private DataTable CreateTable(DateTime startDate, DateTime targetDate, DateTime tillDate)
+        {   
             DataTable table = new DataTable("Realized");
-            table.Columns.Add("Date");
-            table.Columns.Add("Planned");
-            table.Columns.Add("Realized");
-            table.Columns.Add("Expected");
-            table.Columns.Add("Today");
+            table.Columns.Add("Date", typeof( DateTime));
+            table.Columns.Add("Planned", typeof(decimal));
+            table.Columns.Add("Realized", typeof(decimal));
+            table.Columns.Add("Expected", typeof(decimal));
+            table.Columns.Add("Today", typeof(decimal));
+            table.Columns.Add("Target", typeof(decimal));
+
             DateTime dt = startDate;
-            decimal pln = 0;
-            foreach (Story s in stories)
+            decimal planned = TotalPlannedStoryPoints();
+            decimal realized = planned;
+            decimal expected = planned;
+            decimal today = planned;
+            decimal target = planned;
+            while (expected > 0 && dt < tillDate)
             {
-                if (s.IsBurndownEnabled)
-                    pln += s.Estimate;
-            }
-            decimal rel = pln;
-            decimal exp = pln;
-            decimal today = pln;
-            while (exp > 0 && dt < tillDate)
-            {
-                if (dt.Date.Equals(DateTime.Now.Date))
-                    table.Rows.Add(new object[] { dt.ToShortDateString(), pln, rel, exp, today });
+                if (dt.Date.Equals(DateTime.Now.Date) && dt.Date.Equals(targetDate))
+                    table.Rows.Add(new object[] { dt, planned, realized, expected, today, target});
+                else if (dt.Date.Equals(DateTime.Now.Date))
+                    table.Rows.Add(new object[] { dt, planned, realized, expected, today, 0 });
+                else if (dt.Date.Equals(targetDate))
+                    table.Rows.Add(new object[] { dt, planned, realized, expected, 0, target});
                 else
-                    table.Rows.Add(new object[] { dt.ToShortDateString(), pln, rel, exp, 0 });
-                Console.WriteLine("{0} pln: {1} rel: {2} exp {3}", dt.ToShortDateString(), pln, rel, exp);
+                    table.Rows.Add(new object[] { dt, planned, realized, expected, 0, 0 });
+           
                 dt = dt.AddDays(1);
-                if (pln > 0)
-                    pln = CalculatePlanned(dt, pln);
-                if (exp > 0)
-                    exp = CalculateExpected(dt, exp, stories);
-                if (rel > 0)
-                    rel = CalculateRealized(dt, rel, stories);
+                if (planned > 0)
+                    planned = CalculatePlanned(dt, planned);
+                if (expected > 0)
+                    expected = CalculateExpected(dt, expected, stories);
+                if (realized > 0)
+                    realized = CalculateRealized(dt, realized, stories);
             }
-            if (dt.Date.Equals(DateTime.Now.Date))
-                table.Rows.Add(new object[] { dt.ToShortDateString(), pln, rel, exp, today });
+            if (dt.Date.Equals(DateTime.Now.Date) && dt.Date.Equals(targetDate))
+                table.Rows.Add(new object[] { dt, planned, realized, expected, today, target });
+            else if (dt.Date.Equals(DateTime.Now.Date))
+                table.Rows.Add(new object[] { dt, planned, realized, expected, today, 0 });
+            else if (dt.Date.Equals(targetDate))
+                table.Rows.Add(new object[] { dt, planned, realized, expected, 0, target });
             else
-                table.Rows.Add(new object[] { dt.ToShortDateString(), pln, rel, exp, 0 });
-            //Console.WriteLine("{0} pln: {1} rel: {2} exp {3}", dt.ToShortDateString(), pln, rel, exp);
+                table.Rows.Add(new object[] { dt, planned, realized, expected, 0, 0 });
+            
             return table;
         }
 
         public void DrawChart()
         {
-
             sprint = new ScrumBoard.Business.Sprint(Config.ActiveSprint);
+            stories = Data.getInstance().getSprintStories();
+
             burndownChart.Titles.Clear();
             burndownChart.Titles.Add("Burndown " + sprint.Name + " Target: " + sprint.TargetDate.ToShortDateString());
             burndownChart.Titles[0].Font = new Font(burndownChart.Titles[0].Font.FontFamily, 14, FontStyle.Bold);
@@ -139,37 +159,40 @@ namespace ScrumBoard.UI.Controls
 
             DataSet ds = new DataSet();
             DateTime endDate = sprint.TargetDate.AddDays(7);
-            ds.Tables.Add(CreateTable(dt, endDate));
+            ds.Tables.Add(CreateTable(dt, sprint.TargetDate, endDate));
 
             burndownChart.DataSource = ds.Tables[0].DefaultView;
+            // Defaults
+            ChartValueType xValueType = ChartValueType.Date;
+            SeriesChartType chartType = SeriesChartType.Line;
 
             burndownChart.Series.Clear();
             Series pln = burndownChart.Series.Add("Planned");
             pln.XValueMember = "Date";
             pln.YValueMembers = "Planned";
-            pln.ChartType = SeriesChartType.Line;
+            pln.ChartType = chartType;
             pln.ToolTip = "Planned";
             pln.LegendText = "Planned";
-            pln.XValueType = ChartValueType.Date;
-            //pln.BorderWidth = 2;
+            pln.XValueType = xValueType;
+            pln.BorderWidth = 2;
 
             Series exp = burndownChart.Series.Add("Expected");
             exp.XValueMember = "Date";
             exp.YValueMembers = "Expected";
-            exp.ChartType = SeriesChartType.Line;
+            exp.ChartType = chartType;
             exp.ToolTip = "Expected";
             exp.LegendText = "Expected";
-            exp.XValueType = ChartValueType.Date;
-            //exp.BorderWidth = 2;
+            exp.XValueType = xValueType;
+            exp.BorderWidth = 2;
 
             Series rea = burndownChart.Series.Add("Realized");
             rea.XValueMember = "Date";
             rea.YValueMembers = "Realized";
-            rea.ChartType = SeriesChartType.Line;
+            rea.ChartType = chartType;
             rea.ToolTip = "Realized";
             rea.LegendText = "Realized";
-            rea.XValueType = ChartValueType.Date;
-            //rea.BorderWidth = 2;
+            rea.XValueType = xValueType;
+            rea.BorderWidth = 2;
 
             Series today = burndownChart.Series.Add("Today");
             today.XValueMember = "Date";
@@ -178,9 +201,20 @@ namespace ScrumBoard.UI.Controls
             today.BorderWidth = 0;
             today.ToolTip = "Today";
             today.LegendText = "Today";
-            today.XValueType = ChartValueType.Date;
+            today.XValueType = xValueType;
             today.CustomProperties = "PointWidth=0.1";
 
+            //Series target = burndownChart.Series.Add("Target");
+            //target.XValueMember = "Date";
+            //target.YValueMembers = "Target";
+            //target.ChartType = SeriesChartType.Column;
+            //target.BorderWidth = 0;
+            //target.Color = Color.Green;
+            //target.ToolTip = "Target";
+            //target.LegendText = "Target";
+            //target.XValueType = xValueType;
+            //target.CustomProperties = "PointWidth=0.1";
+            
             burndownChart.DataBind();
         }
 

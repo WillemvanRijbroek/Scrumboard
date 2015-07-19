@@ -1,6 +1,6 @@
 ﻿namespace ScrumBoard.UI.Controls
 {
-    partial class Burndown
+    partial class BurndownPanel
     {
         /// <summary> 
         /// Required designer variable.
@@ -32,9 +32,6 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint1 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(4D, 82D);
             this.burndownChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.printToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,25 +56,15 @@
             this.burndownChart.Name = "burndownChart";
             this.burndownChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
             series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series1.CustomProperties = "IsXAxisQuantitative=False";
             series1.IsVisibleInLegend = false;
             series1.Legend = "Legend1";
             series1.LegendText = "expected";
             series1.Name = "Expected";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.Legend = "Legend1";
-            series2.Name = "Series2";
-            series3.ChartArea = "ChartArea1";
-            series3.CustomProperties = "PointWidth=0.1";
-            series3.IsVisibleInLegend = false;
-            series3.Legend = "Legend1";
-            series3.MarkerSize = 2;
-            series3.Name = "Series3";
-            series3.Points.Add(dataPoint1);
+            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Date;
+            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
             this.burndownChart.Series.Add(series1);
-            this.burndownChart.Series.Add(series2);
-            this.burndownChart.Series.Add(series3);
             this.burndownChart.Size = new System.Drawing.Size(378, 290);
             this.burndownChart.TabIndex = 0;
             this.burndownChart.TabStop = false;
@@ -105,12 +92,12 @@
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
-            // Burndown
+            // BurndownPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.burndownChart);
-            this.Name = "Burndown";
+            this.Name = "BurndownPanel";
             this.Size = new System.Drawing.Size(378, 290);
             ((System.ComponentModel.ISupportInitialize)(this.burndownChart)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);

@@ -42,6 +42,18 @@ namespace ScrumBoard.Common
         }
 
         /// <summary>
+        /// Gets a list of all (active) sprint stories sorted by External id, Id
+        /// </summary>
+        /// <param name="sprintId"></param>
+        /// <returns></returns>
+        public SortedList<int, Story> getSprintStories()
+        {
+            // Make sure all server side modifications are updated in our cache
+            update();
+            return cachedSprintStories[Config.ActiveSprint];
+        }
+
+        /// <summary>
         /// Gets a list of stories sorted by External id, Id
         /// </summary>
         /// <param name="storyTypeId"></param>
@@ -58,7 +70,7 @@ namespace ScrumBoard.Common
             {
                 foreach (Story story in stories.Values)
                 {
-                    if (story.StoryTypeId == storyTypeId && story.StatusId == statusId)
+                    if (!story.IsRemoved && story.StoryTypeId == storyTypeId && story.StatusId == statusId)
                     {
                         String key = story.ExternalId + "_" + story.Id;
                         list.Add(key, story);

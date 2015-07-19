@@ -80,6 +80,11 @@ namespace ScrumBoard.Common
             storyCache.insertStory(sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
         }
 
+        public SortedList<int, Story> getSprintStories()
+        {
+            return storyCache.getSprintStories();
+        }
+
         public void updateStory(Story story)
         {
             storyCache.updateStory(story);

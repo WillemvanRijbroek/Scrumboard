@@ -46,13 +46,13 @@ namespace ScrumBoard.UI.Forms
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            if (s.Id > -1)
+            if (s != null && s.Id > -1)
             {
-                client.StoryTypeUpdate(s.Id, s.Name, -256, chkBurndownEnabled.Checked);
+                client.StoryTypeUpdate(s.Id, txtName.Text, -256, chkBurndownEnabled.Checked);
             }
             else
             {
-                client.StoryTypeInsert(s.Name, -256, chkBurndownEnabled.Checked);
+                client.StoryTypeInsert(txtName.Text, -256, chkBurndownEnabled.Checked);
             }
             this.Close();
         }

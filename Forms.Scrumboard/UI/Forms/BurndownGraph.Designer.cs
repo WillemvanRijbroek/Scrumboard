@@ -29,7 +29,7 @@ namespace ScrumBoard.UI.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.burndown1 = new ScrumBoard.UI.Controls.Burndown();
+            this.burndown1 = new ScrumBoard.UI.Controls.BurndownPanel();
             this.SuspendLayout();
             // 
             // burndown1
@@ -56,6 +56,6 @@ namespace ScrumBoard.UI.Forms
 
         #endregion
 
-        private Controls.Burndown burndown1;
+        private Controls.BurndownPanel burndown1;
     }
 }

@@ -155,8 +155,15 @@ namespace ScrumBoard.UI.Forms
                 {
                     if (MessageBox.Show(this, "Are you sure to delete team " + t.Name + "?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        client.TeamRemove(t.Id);
-                        refreshTeams();
+                        try
+                        {
+                            client.TeamRemove(t.Id);
+                            refreshTeams();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(this, "Team cannot be removed, due to exception " + ex.Message);
+                        }
                     }
                 }
             }

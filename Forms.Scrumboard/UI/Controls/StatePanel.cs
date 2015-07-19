@@ -14,7 +14,7 @@ namespace ScrumBoard.UI.Controls
 {
     public partial class StatePanel : System.Windows.Forms.Panel
     {
-        
+        private const int STORY_PADDING = 2;
         private Dictionary<int, StickyStory> stories;
         private ScrumboardService.Panel panel;
         private ScrumboardService.Layout layout;
@@ -73,12 +73,12 @@ namespace ScrumBoard.UI.Controls
 
         public void AutoResize()
         {
-            int height = (Parent.Height / layout.TotalRows) * panel.Heigth;
-            int width = (Parent.Width / layout.TotalColumns) * panel.Width;
+            int height = (Parent.Height / layout.TotalRows);
+            int width = (Parent.Width / layout.TotalColumns);
             Top = height * panel.Row;
             Left = width * panel.Column;
-            Height = height;
-            Width = width;
+            Height = height * panel.Heigth;
+            Width = width * panel.Width;
         }
 
         void StatePanel_StoryChanged(Story story)
@@ -154,38 +154,6 @@ namespace ScrumBoard.UI.Controls
             st.BringToFront();
 
         }
-        //public void RefreshStories()
-        //{
-        //    ClearControls();
-        //    this.stories.Clear();
-        //    SortedList<int, Story> stories = Data.getInstance().getStories(panel.StoryTypeId, panel.StateId);
-        //    IEnumerator<KeyValuePair<int, Story>> enm = stories.GetEnumerator();
-        //    enm.MoveNext();
-        //    Story s = enm.Current.Value;
-        //    while (s != null)
-        //    {
-        //        AddOrUpdateStory(s);
-        //        enm.MoveNext();
-        //        s = enm.Current.Value;
-        //    }
-        //    // See if we need to remove controls
-        //    for (int i = Controls.Count - 1; i >= 0; i--)
-        //    {
-        //        if (Controls[i] is StickyStory)
-        //        {
-        //            StickyStory st = ((StickyStory)Controls[i]);
-        //            if (!stories.ContainsKey(st.Story.Id))
-        //            {
-        //                Controls.RemoveAt(i);
-        //                foreach (StickyTodo td in st.StickyTodos)
-        //                {
-        //                    Controls.Remove(td);
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //}
 
 
         public void MovedToOtherPanel(StickyNote note)
@@ -210,10 +178,9 @@ namespace ScrumBoard.UI.Controls
             {
                 Console.WriteLine();
             }
-            int i = 0;
             bool first = true;
-            int lastLeft = 2;
-            int lastTop = hasTitle ? 30 : 2;
+            int lastLeft = STORY_PADDING;
+            int lastTop = hasTitle ? 30 : STORY_PADDING;
             SortedList<String, StickyStory> sortedStories = new SortedList<string, StickyStory>();
             foreach (Control control in Controls)
             {
@@ -230,34 +197,32 @@ namespace ScrumBoard.UI.Controls
 
             while (stickyStory != null)
             {
-
                 if (stickyStory != null)
                 {
                     Story story = stickyStory.Story;
-
-                    if ((lastLeft + 2 + (2 * stickyStory.Width)) < Width)
+                    int newLeft = first ? STORY_PADDING : (lastLeft + STORY_PADDING + (stickyStory.Width));
+                    int newTop = lastTop;
+                    if (fitsSameLine(stickyStory, newLeft))
                     {
                         lastLeft = lastLeft + 2 + stickyStory.Width;
-                        stickyStory.Top = lastTop + this.AutoScrollPosition.Y;
-                        stickyStory.Left = lastLeft + this.AutoScrollPosition.X;
+                        stickyStory.Top = newTop; // +this.AutoScrollPosition.Y;
+                        stickyStory.Left = newLeft; // +this.AutoScrollPosition.X;
+                        lastLeft = newLeft;
                         if (first)
                         {
-                            stickyStory.Left = 2 + this.AutoScrollPosition.X;
                             first = false;
-                            lastLeft = 2;
                         }
                     }
                     else
                     {
-                        lastLeft = 2;
-                        i++;
-                        if (hasTitle)
-                            lastTop = 30 + (i * stickyStory.Height);
-                        else
-                            lastTop = 2 + (i * stickyStory.Height);
-                        stickyStory.Top = lastTop + this.AutoScrollPosition.Y;
-                        stickyStory.Left = lastLeft + this.AutoScrollPosition.X;
+                        newLeft = STORY_PADDING;
+                        newTop = lastTop + STORY_PADDING + (stickyStory.Height);
+                        
+                        stickyStory.Top = newTop;
+                        stickyStory.Left = newLeft;
 
+                        lastTop = newTop;
+                        lastLeft = newLeft;
                     }
                     //   Console.WriteLine(story.ExternalId + " (" + stickyStory.Top + ":" + stickyStory.Left + ")");
                     stickyStory.SavePosition();
@@ -265,6 +230,20 @@ namespace ScrumBoard.UI.Controls
                 enuma.MoveNext();
                 stickyStory = enuma.Current.Value;
             }
+        }
+
+        private Boolean fitsSameLine(StickyStory stickyStory, int x)
+        {
+            if (x == STORY_PADDING)
+            {
+                return true;
+            }
+            else if (x < Width - 30)
+            {
+                // if story needs to be aligned to the right of another story, we want it to be at least partially visible
+                return true;
+            }
+            return false;
         }
 
         private void ClearControls()

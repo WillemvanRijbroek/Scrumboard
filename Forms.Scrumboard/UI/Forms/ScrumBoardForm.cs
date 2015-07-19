@@ -58,7 +58,7 @@ namespace ScrumBoard.UI.Forms
             {
                 for (int i = Controls.Count - 1; i >= 0; i--)
                 {
-                    if (Controls[i] is StatePanel || Controls[i] is Burndown)
+                    if (Controls[i] is StatePanel || Controls[i] is BurndownPanel)
                     {
                         Controls.RemoveAt(i);
                     }
@@ -75,7 +75,7 @@ namespace ScrumBoard.UI.Forms
                         }
                         else
                         {
-                            this.Controls.Add(new Burndown(currentSprint.Layout, pnl));
+                            this.Controls.Add(new BurndownPanel(currentSprint.Layout, pnl));
                         }
                     }
                     RefreshSprint();
@@ -155,9 +155,9 @@ namespace ScrumBoard.UI.Forms
             Data.getInstance().refreshStories();
             for (int i = Controls.Count - 1; i >= 0; i--)
             {
-                if (Controls[i] is Burndown)
+                if (Controls[i] is BurndownPanel)
                 {
-                    ((Burndown)Controls[i]).DrawChart();
+                    ((BurndownPanel)Controls[i]).DrawChart();
                 }
             }
             Cursor = Cursors.Default;
@@ -168,9 +168,9 @@ namespace ScrumBoard.UI.Forms
             Cursor = Cursors.WaitCursor;
             for (int i = Controls.Count - 1; i >= 0; i--)
             {
-                if (Controls[i] is Burndown)
+                if (Controls[i] is BurndownPanel)
                 {
-                    ((Burndown)Controls[i]).DrawChart();
+                    ((BurndownPanel)Controls[i]).DrawChart();
                 }
             }
             Cursor = Cursors.Default;
@@ -187,9 +187,9 @@ namespace ScrumBoard.UI.Forms
                 {
                     ((StatePanel)Controls[i]).AutoResize();
                 }
-                else if (Controls[i] is Burndown)
+                else if (Controls[i] is BurndownPanel)
                 {
-                    ((Burndown)Controls[i]).AutoResize();
+                    ((BurndownPanel)Controls[i]).AutoResize();
                 }
             }
             Cursor = Cursors.Default;
