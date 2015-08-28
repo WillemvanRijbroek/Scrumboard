@@ -55,17 +55,17 @@ namespace ScrumBoard.UI.Controls
             return points;
         }
 
-        private decimal CalculateExpected(DateTime dt, decimal storyPoints, SortedList<int, Story> stories)
+        private decimal CalculateExpected(DateTime dt, decimal storyPoints, SortedList<int, Story> stories, bool withBurnup)
         {
             if (dt <= DateTime.Now)
-                return CalculateRealized(dt, storyPoints, stories);
+                return CalculateRealized(dt, storyPoints, stories, withBurnup);
             else
             {
                 return CalculatePlanned(dt, storyPoints);
             }
         }
 
-        private decimal CalculateRealized(DateTime dt, decimal storyPoints, SortedList<int, Story> stories)
+        private decimal CalculateRealized(DateTime dt, decimal storyPoints, SortedList<int, Story> stories, bool withBurnup)
         {
             decimal points = storyPoints;
             foreach (Story s in stories.Values)
@@ -73,9 +73,12 @@ namespace ScrumBoard.UI.Controls
                 if (s.IsBurndownEnabled)
                 {
                     // Burnup
-                    if (s.Created.Date.Equals(dt.Date) && (s.ClosedDate == DateTime.MinValue || s.ClosedDate.Date > dt.Date) && !s.IsRemoved)
+                    if (withBurnup)
                     {
-                        points += s.Estimate;
+                        if (s.Created.Date.Equals(dt.Date) && (s.ClosedDate == DateTime.MinValue || s.ClosedDate.Date > dt.Date) && !s.IsRemoved)
+                        {
+                            points += s.Estimate;
+                        }
                     }
                     // Burndown
                     if (s.ClosedDate != null && s.ClosedDate.Date.Equals(dt.Date) && !s.IsRemoved)
@@ -109,6 +112,19 @@ namespace ScrumBoard.UI.Controls
             return points;
         }
 
+        private int TotalStoryPoints()
+        {
+            int points = 0;
+            foreach (Story story in stories.Values)
+            {
+                if (story.IsBurndownEnabled && !story.IsRemoved)
+                {
+                    points += story.Estimate;
+                }
+            }
+            return points;
+        }
+
         private DataTable CreateTable(DateTime startDate, DateTime targetDate, DateTime tillDate)
         {
             DataTable table = new DataTable("Realized");
@@ -120,17 +136,19 @@ namespace ScrumBoard.UI.Controls
             table.Columns.Add("Target", typeof(decimal));
 
             DateTime dt = startDate;
+            decimal totalPoints = TotalStoryPoints();
             decimal planned = TotalPlannedStoryPoints(startDate);
             decimal realized = planned;
             decimal expected = planned;
-            decimal today = planned;
+            decimal today = totalPoints;
             decimal target = planned;
-            while (expected > 0 && dt < tillDate)
+            while (totalPoints > 0 && dt < tillDate)
             {
                 Console.WriteLine(dt.Date.ToString("ddd dd/MM/yy") + ":");
                 Console.Write("Planned " + planned);
                 Console.Write(" Expected " + expected);
-                Console.WriteLine(" Realized " + realized);
+                Console.Write(" Realized " + realized);
+                Console.WriteLine(" Points " + totalPoints);
                 if (dt.Date.Equals(DateTime.Now.Date) && dt.Date.Equals(targetDate))
                     table.Rows.Add(new object[] { dt, planned, realized, expected, today, target });
                 else if (dt.Date.Equals(DateTime.Now.Date))
@@ -141,12 +159,10 @@ namespace ScrumBoard.UI.Controls
                     table.Rows.Add(new object[] { dt, planned, realized, expected, 0, 0 });
 
                 dt = dt.AddDays(1);
-                if (planned > 0)
-                    planned = CalculatePlanned(dt, planned);
-                if (expected > 0)
-                    expected = CalculateExpected(dt, expected, stories);
-                if (realized > 0)
-                    realized = CalculateRealized(dt, realized, stories);
+                planned = CalculatePlanned(dt, planned);
+                totalPoints = CalculateExpected(dt, totalPoints, stories, false);
+                expected = CalculateExpected(dt, expected, stories, true);
+                realized = CalculateRealized(dt, realized, stories, true);
             }
             Console.WriteLine(dt.Date.ToString("ddd dd/MM/yy") + ":");
             Console.Write("Planned " + planned);

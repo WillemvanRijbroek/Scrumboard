@@ -64,7 +64,7 @@ namespace ScrumBoard.UI.Forms
                     }
                 }
                 currentSprint = new Business.Sprint(Config.ActiveSprint);
-                Text = "Scrumboard v3.0.1            Sprint: " + currentSprint.Name + " Target: " + currentSprint.TargetDate.ToShortDateString();
+                Text = "Scrumboard v3.0.2            Sprint: " + currentSprint.Name + " Target: " + currentSprint.TargetDate.ToShortDateString();
                 if (currentSprint.Panels != null)
                 {
                     foreach (ScrumboardService.Panel pnl in currentSprint.Panels)
