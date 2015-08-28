@@ -41,6 +41,7 @@
               <s:element minOccurs="1" maxOccurs="1" name="BackColor" type="s:int" />
               <s:element minOccurs="0" maxOccurs="1" name="Tag" type="s:string" />
               <s:element minOccurs="1" maxOccurs="1" name="IsRemoved" type="s:boolean" />
+              <s:element minOccurs="1" maxOccurs="1" name="Created" type="s:dateTime" />
               <s:element minOccurs="1" maxOccurs="1" name="ClosedDate" type="s:dateTime" />
               <s:element minOccurs="1" maxOccurs="1" name="Modified" type="s:dateTime" />
               <s:element minOccurs="1" maxOccurs="1" name="IsBurndownEnabled" type="s:boolean" />

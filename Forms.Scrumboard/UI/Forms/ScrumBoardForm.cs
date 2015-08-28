@@ -221,17 +221,17 @@ namespace ScrumBoard.UI.Forms
         {
             StoryDetail form = new StoryDetail();
             DialogResult r = form.ShowDialog(this);
-            if (r == System.Windows.Forms.DialogResult.OK)
-            {
-                foreach (Control c in Controls)
-                {
-                    if (c is StatePanel)
-                    {
-                        StatePanel sp = ((StatePanel)c);
-                        sp.AutoAlignStories();
-                    }
-                }
-            }
+            //if (r == System.Windows.Forms.DialogResult.OK)
+            //{
+            //    foreach (Control c in Controls)
+            //    {
+            //        if (c is StatePanel)
+            //        {
+            //            StatePanel sp = ((StatePanel)c);
+            //            sp.AutoAlignStories();
+            //        }
+            //    }
+            //}
         }
 
         private void openSprintToolStripMenuItem_Click(object sender, EventArgs e)

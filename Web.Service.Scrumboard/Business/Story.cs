@@ -19,6 +19,7 @@ namespace ScrumboardWebService.Business
         public int BackColor { get; set; }
         public String Tag { get; set; }
         public Boolean IsRemoved { get; set; }
+        public DateTime Created { get; set; }
         public DateTime ClosedDate { get; set; }
         public DateTime Modified { get; set; }
         public Boolean IsBurndownEnabled { get; set; }
@@ -73,6 +74,7 @@ namespace ScrumboardWebService.Business
             List<Story> lst = new List<Story>();
 
             String sql = String.Format("SELECT id,sprintid, externalid, storytypeid, statusid, description, estimate, backcolor, x, y, tag, " +
+                "(SELECT MIN(TransitionDate) FROM StateHistory WHERE StateHistory.StoryId = Story.ID) AS Created," +
                 "StateHistory.TransitionDate AS ClosedDate, " +
                 "(select 1 from StoryType st WHERE BurnDownEnabled = 1 and ID = StoryTypeId) as IsBurndownEnabled, Modified, Removed " +
                 "FROM STORY LEFT OUTER JOIN StateHistory on StateHistory.StoryId = Story.ID " +
@@ -114,21 +116,22 @@ namespace ScrumboardWebService.Business
                     s.Y = rdr.GetInt32(9);
                     s.Tag = fromSQLStringValue(rdr.GetString(10));
                     if (!rdr.IsDBNull(11))
-                        s.ClosedDate = rdr.GetDateTime(11);
-                    //if (!rdr.IsDBNull(12))
-                    //    s.IsBurndownEnabled = rdr.GetBoolean(12);
+                        s.Created = rdr.GetDateTime(11);
                     if (!rdr.IsDBNull(12))
-                    {
-                        int v = rdr.GetInt32(12);
-                        s.IsBurndownEnabled = (v == 1);
-                    }
+                        s.ClosedDate = rdr.GetDateTime(12);
+
                     if (!rdr.IsDBNull(13))
                     {
-                        s.Modified = rdr.GetDateTime(13);
+                        int v = rdr.GetInt32(13);
+                        s.IsBurndownEnabled = (v == 1);
                     }
                     if (!rdr.IsDBNull(14))
                     {
-                        String v = rdr.GetString(14);
+                        s.Modified = rdr.GetDateTime(14);
+                    }
+                    if (!rdr.IsDBNull(15))
+                    {
+                        String v = rdr.GetString(15);
                         s.IsRemoved = (v != "0");
                     }
                     s.Todos = todo.Select(s.Id);
@@ -147,7 +150,9 @@ namespace ScrumboardWebService.Business
         private Story Get(int storyId)
         {
             Story s = null;
-            String sql = String.Format("SELECT id,sprintid, externalid, storytypeid, statusid, description, estimate, backcolor, x, y, tag, StateHistory.TransitionDate AS ClosedDate, " +
+            String sql = String.Format("SELECT id,sprintid, externalid, storytypeid, statusid, description, estimate, backcolor, x, y, tag, " +
+                "(SELECT MIN(TransitionDate) FROM StateHistory WHERE StateHistory.StoryId = Story.ID) AS Created," +
+                "StateHistory.TransitionDate AS ClosedDate, " +
                 "(select 1 from StoryType st WHERE BurnDownEnabled = 1 and ID = StoryTypeId) as IsBurndownEnabled, Modified, Removed " +
                 "FROM STORY LEFT OUTER JOIN StateHistory on StateHistory.StoryId = Story.ID " +
                 "and StateHistory.StateId = Story.StatusID " +
@@ -180,19 +185,19 @@ namespace ScrumboardWebService.Business
                     s.Y = rdr.GetInt32(9);
                     s.Tag = fromSQLStringValue(rdr.GetString(10));
                     if (!rdr.IsDBNull(11))
-                        s.ClosedDate = rdr.GetDateTime(11);
-                    //if (!rdr.IsDBNull(12))
-                    //    s.IsBurndownEnabled = rdr.GetBoolean(12);
+                        s.Created = rdr.GetDateTime(11);
                     if (!rdr.IsDBNull(12))
-                    {
-                        int v = rdr.GetInt32(12);
-                        s.IsBurndownEnabled = (v == 1);
-                    }
+                        s.ClosedDate = rdr.GetDateTime(12);
                     if (!rdr.IsDBNull(13))
                     {
-                        s.Modified = rdr.GetDateTime(13);
+                        int v = rdr.GetInt32(13);
+                        s.IsBurndownEnabled = (v == 1);
                     }
-                    s.IsRemoved = (rdr.GetString(14)=="1");
+                    if (!rdr.IsDBNull(14))
+                    {
+                        s.Modified = rdr.GetDateTime(14);
+                    }
+                    s.IsRemoved = (rdr.GetString(15) == "1");
                     s.Todos = todo.Select(s.Id);
                 }
                 rdr.Close();

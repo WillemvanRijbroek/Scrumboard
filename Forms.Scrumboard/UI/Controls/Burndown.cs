@@ -17,7 +17,7 @@ namespace ScrumBoard.UI.Controls
         private ScrumBoard.Business.Sprint sprint;
         private ScrumboardService.Panel panel;
         private ScrumboardService.Layout layout;
-        private SortedList<int,Story> stories;
+        private SortedList<int, Story> stories;
 
         public BurndownPanel()
         {
@@ -72,6 +72,12 @@ namespace ScrumBoard.UI.Controls
             {
                 if (s.IsBurndownEnabled)
                 {
+                    // Burnup
+                    if (s.Created.Date.Equals(dt.Date) && (s.ClosedDate == DateTime.MinValue || s.ClosedDate.Date > dt.Date) && !s.IsRemoved)
+                    {
+                        points += s.Estimate;
+                    }
+                    // Burndown
                     if (s.ClosedDate != null && s.ClosedDate.Date.Equals(dt.Date) && !s.IsRemoved)
                     {
                         points -= s.Estimate;
@@ -86,24 +92,27 @@ namespace ScrumBoard.UI.Controls
         /// <summary>
         /// Returns the total amount of story points for all stories
         /// </summary>
-        private int TotalPlannedStoryPoints()
+        private int TotalPlannedStoryPoints(DateTime startDate)
         {
             int points = 0;
+            int totalStories = 0;
             foreach (Story story in stories.Values)
             {
-                // TODO: Burn up based on creation date of the story
-                if (story.IsBurndownEnabled && !story.IsRemoved)
+                // Burn up based on creation date of the story
+                if (story.IsBurndownEnabled && !story.IsRemoved && story.Created.Date <= startDate.Date)
                 {
                     points += story.Estimate;
+                    totalStories++;
                 }
             }
+            Console.WriteLine("Total planned stories: #" + totalStories + " total estimate: " + points);
             return points;
         }
-        
+
         private DataTable CreateTable(DateTime startDate, DateTime targetDate, DateTime tillDate)
-        {   
+        {
             DataTable table = new DataTable("Realized");
-            table.Columns.Add("Date", typeof( DateTime));
+            table.Columns.Add("Date", typeof(DateTime));
             table.Columns.Add("Planned", typeof(decimal));
             table.Columns.Add("Realized", typeof(decimal));
             table.Columns.Add("Expected", typeof(decimal));
@@ -111,22 +120,26 @@ namespace ScrumBoard.UI.Controls
             table.Columns.Add("Target", typeof(decimal));
 
             DateTime dt = startDate;
-            decimal planned = TotalPlannedStoryPoints();
+            decimal planned = TotalPlannedStoryPoints(startDate);
             decimal realized = planned;
             decimal expected = planned;
             decimal today = planned;
             decimal target = planned;
             while (expected > 0 && dt < tillDate)
             {
+                Console.WriteLine(dt.Date.ToString("ddd dd/MM/yy") + ":");
+                Console.Write("Planned " + planned);
+                Console.Write(" Expected " + expected);
+                Console.WriteLine(" Realized " + realized);
                 if (dt.Date.Equals(DateTime.Now.Date) && dt.Date.Equals(targetDate))
-                    table.Rows.Add(new object[] { dt, planned, realized, expected, today, target});
+                    table.Rows.Add(new object[] { dt, planned, realized, expected, today, target });
                 else if (dt.Date.Equals(DateTime.Now.Date))
                     table.Rows.Add(new object[] { dt, planned, realized, expected, today, 0 });
                 else if (dt.Date.Equals(targetDate))
-                    table.Rows.Add(new object[] { dt, planned, realized, expected, 0, target});
+                    table.Rows.Add(new object[] { dt, planned, realized, expected, 0, target });
                 else
                     table.Rows.Add(new object[] { dt, planned, realized, expected, 0, 0 });
-           
+
                 dt = dt.AddDays(1);
                 if (planned > 0)
                     planned = CalculatePlanned(dt, planned);
@@ -135,6 +148,10 @@ namespace ScrumBoard.UI.Controls
                 if (realized > 0)
                     realized = CalculateRealized(dt, realized, stories);
             }
+            Console.WriteLine(dt.Date.ToString("ddd dd/MM/yy") + ":");
+            Console.Write("Planned " + planned);
+            Console.Write(" Expected " + expected);
+            Console.WriteLine(" Realized " + realized);
             if (dt.Date.Equals(DateTime.Now.Date) && dt.Date.Equals(targetDate))
                 table.Rows.Add(new object[] { dt, planned, realized, expected, today, target });
             else if (dt.Date.Equals(DateTime.Now.Date))
@@ -143,7 +160,7 @@ namespace ScrumBoard.UI.Controls
                 table.Rows.Add(new object[] { dt, planned, realized, expected, 0, target });
             else
                 table.Rows.Add(new object[] { dt, planned, realized, expected, 0, 0 });
-            
+
             return table;
         }
 
@@ -159,6 +176,10 @@ namespace ScrumBoard.UI.Controls
 
             DataSet ds = new DataSet();
             DateTime endDate = sprint.TargetDate.AddDays(7);
+            if (endDate < DateTime.Now)
+            {
+                endDate = DateTime.Now.Date;
+            }
             ds.Tables.Add(CreateTable(dt, sprint.TargetDate, endDate));
 
             burndownChart.DataSource = ds.Tables[0].DefaultView;
@@ -214,7 +235,7 @@ namespace ScrumBoard.UI.Controls
             //target.LegendText = "Target";
             //target.XValueType = xValueType;
             //target.CustomProperties = "PointWidth=0.1";
-            
+
             burndownChart.DataBind();
         }
 

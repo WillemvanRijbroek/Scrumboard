@@ -233,6 +233,8 @@ namespace ScrumBoard.ScrumboardService {
         
         private bool isRemovedField;
         
+        private System.DateTime createdField;
+        
         private System.DateTime closedDateField;
         
         private System.DateTime modifiedField;
@@ -387,6 +389,18 @@ namespace ScrumBoard.ScrumboardService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=12)]
+        public System.DateTime Created {
+            get {
+                return this.createdField;
+            }
+            set {
+                this.createdField = value;
+                this.RaisePropertyChanged("Created");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
         public System.DateTime ClosedDate {
             get {
                 return this.closedDateField;
@@ -398,7 +412,7 @@ namespace ScrumBoard.ScrumboardService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
         public System.DateTime Modified {
             get {
                 return this.modifiedField;
@@ -410,7 +424,7 @@ namespace ScrumBoard.ScrumboardService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=15)]
         public bool IsBurndownEnabled {
             get {
                 return this.isBurndownEnabledField;
@@ -422,7 +436,7 @@ namespace ScrumBoard.ScrumboardService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=15)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order=16)]
         public Todo[] Todos {
             get {
                 return this.todosField;

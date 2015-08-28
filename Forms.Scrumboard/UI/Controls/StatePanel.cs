@@ -174,10 +174,6 @@ namespace ScrumBoard.UI.Controls
         }
         public void AutoAlignStories()
         {
-            if (Controls.Count == 2)
-            {
-                Console.WriteLine();
-            }
             bool first = true;
             int lastLeft = STORY_PADDING;
             int lastTop = hasTitle ? 30 : STORY_PADDING;
@@ -202,9 +198,11 @@ namespace ScrumBoard.UI.Controls
                     Story story = stickyStory.Story;
                     int newLeft = first ? STORY_PADDING : (lastLeft + STORY_PADDING + (stickyStory.Width));
                     int newTop = lastTop;
+                    bool isChanged = false;
                     if (fitsSameLine(stickyStory, newLeft))
                     {
                         lastLeft = lastLeft + 2 + stickyStory.Width;
+                        isChanged = (stickyStory.Top != newTop) || (stickyStory.Left != newLeft);
                         stickyStory.Top = newTop; // +this.AutoScrollPosition.Y;
                         stickyStory.Left = newLeft; // +this.AutoScrollPosition.X;
                         lastLeft = newLeft;
@@ -217,7 +215,7 @@ namespace ScrumBoard.UI.Controls
                     {
                         newLeft = STORY_PADDING;
                         newTop = lastTop + STORY_PADDING + (stickyStory.Height);
-                        
+                        isChanged = (stickyStory.Top != newTop) || (stickyStory.Left != newLeft);
                         stickyStory.Top = newTop;
                         stickyStory.Left = newLeft;
 
@@ -225,7 +223,10 @@ namespace ScrumBoard.UI.Controls
                         lastLeft = newLeft;
                     }
                     //   Console.WriteLine(story.ExternalId + " (" + stickyStory.Top + ":" + stickyStory.Left + ")");
-                    stickyStory.SavePosition();
+                    if (isChanged)
+                    {
+                        stickyStory.SavePosition();
+                    }
                 }
                 enuma.MoveNext();
                 stickyStory = enuma.Current.Value;
