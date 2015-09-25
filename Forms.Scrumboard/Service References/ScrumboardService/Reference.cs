@@ -18,12 +18,12 @@ namespace ScrumBoard.ScrumboardService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/StoryInsert", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
-        ScrumBoard.ScrumboardService.Story StoryInsert(int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag);
+        ScrumBoard.ScrumboardService.Story StoryInsert(int sprintId, string externalId, int storyTypeId, int statusId, string description, decimal estimate, int backcolor, int x, int y, string tag);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/StoryUpdateDetails", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
-        ScrumBoard.ScrumboardService.Story StoryUpdateDetails(int id, int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag);
+        ScrumBoard.ScrumboardService.Story StoryUpdateDetails(int id, int sprintId, string externalId, int storyTypeId, int statusId, string description, decimal estimate, int backcolor, int x, int y, string tag);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/StoryRemove", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -178,12 +178,12 @@ namespace ScrumBoard.ScrumboardService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/TodoInsert", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
-        ScrumBoard.ScrumboardService.Todo TodoInsert(int storyId, string description, int estimate, int backcolor, int x, int y);
+        ScrumBoard.ScrumboardService.Todo TodoInsert(int storyId, string description, decimal estimate, int backcolor, int x, int y);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/TodoUpdate", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
-        ScrumBoard.ScrumboardService.Todo TodoUpdate(int id, int storyId, string description, int estimate, int backcolor, int x, int y);
+        ScrumBoard.ScrumboardService.Todo TodoUpdate(int id, int storyId, string description, decimal estimate, int backcolor, int x, int y);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/TodoRemove", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -219,7 +219,7 @@ namespace ScrumBoard.ScrumboardService {
         
         private string descriptionField;
         
-        private int estimateField;
+        private decimal estimateField;
         
         private int statusIdField;
         
@@ -305,7 +305,7 @@ namespace ScrumBoard.ScrumboardService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=5)]
-        public int Estimate {
+        public decimal Estimate {
             get {
                 return this.estimateField;
             }
@@ -462,7 +462,7 @@ namespace ScrumBoard.ScrumboardService {
         
         private string descriptionField;
         
-        private int estimateField;
+        private decimal estimateField;
         
         private int backColorField;
         
@@ -512,7 +512,7 @@ namespace ScrumBoard.ScrumboardService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=3)]
-        public int Estimate {
+        public decimal Estimate {
             get {
                 return this.estimateField;
             }
@@ -1208,11 +1208,11 @@ namespace ScrumBoard.ScrumboardService {
                 base(binding, remoteAddress) {
         }
         
-        public ScrumBoard.ScrumboardService.Story StoryInsert(int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag) {
+        public ScrumBoard.ScrumboardService.Story StoryInsert(int sprintId, string externalId, int storyTypeId, int statusId, string description, decimal estimate, int backcolor, int x, int y, string tag) {
             return base.Channel.StoryInsert(sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
         }
         
-        public ScrumBoard.ScrumboardService.Story StoryUpdateDetails(int id, int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag) {
+        public ScrumBoard.ScrumboardService.Story StoryUpdateDetails(int id, int sprintId, string externalId, int storyTypeId, int statusId, string description, decimal estimate, int backcolor, int x, int y, string tag) {
             return base.Channel.StoryUpdateDetails(id, sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
         }
         
@@ -1336,11 +1336,11 @@ namespace ScrumBoard.ScrumboardService {
             base.Channel.TeamRemove(id);
         }
         
-        public ScrumBoard.ScrumboardService.Todo TodoInsert(int storyId, string description, int estimate, int backcolor, int x, int y) {
+        public ScrumBoard.ScrumboardService.Todo TodoInsert(int storyId, string description, decimal estimate, int backcolor, int x, int y) {
             return base.Channel.TodoInsert(storyId, description, estimate, backcolor, x, y);
         }
         
-        public ScrumBoard.ScrumboardService.Todo TodoUpdate(int id, int storyId, string description, int estimate, int backcolor, int x, int y) {
+        public ScrumBoard.ScrumboardService.Todo TodoUpdate(int id, int storyId, string description, decimal estimate, int backcolor, int x, int y) {
             return base.Channel.TodoUpdate(id, storyId, description, estimate, backcolor, x, y);
         }
         

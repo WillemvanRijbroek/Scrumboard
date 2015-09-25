@@ -10,7 +10,7 @@
             <s:element minOccurs="1" maxOccurs="1" name="storyTypeId" type="s:int" />
             <s:element minOccurs="1" maxOccurs="1" name="statusId" type="s:int" />
             <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="estimate" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="estimate" type="s:decimal" />
             <s:element minOccurs="1" maxOccurs="1" name="backcolor" type="s:int" />
             <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
             <s:element minOccurs="1" maxOccurs="1" name="y" type="s:int" />
@@ -34,7 +34,7 @@
               <s:element minOccurs="1" maxOccurs="1" name="SprintId" type="s:int" />
               <s:element minOccurs="1" maxOccurs="1" name="StoryTypeId" type="s:int" />
               <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
-              <s:element minOccurs="1" maxOccurs="1" name="Estimate" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Estimate" type="s:decimal" />
               <s:element minOccurs="1" maxOccurs="1" name="StatusId" type="s:int" />
               <s:element minOccurs="1" maxOccurs="1" name="X" type="s:int" />
               <s:element minOccurs="1" maxOccurs="1" name="Y" type="s:int" />
@@ -58,7 +58,7 @@
               <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
               <s:element minOccurs="1" maxOccurs="1" name="StoryId" type="s:int" />
               <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
-              <s:element minOccurs="1" maxOccurs="1" name="Estimate" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Estimate" type="s:decimal" />
               <s:element minOccurs="1" maxOccurs="1" name="BackColor" type="s:int" />
               <s:element minOccurs="1" maxOccurs="1" name="X" type="s:int" />
               <s:element minOccurs="1" maxOccurs="1" name="Y" type="s:int" />
@@ -82,7 +82,7 @@
             <s:element minOccurs="1" maxOccurs="1" name="storyTypeId" type="s:int" />
             <s:element minOccurs="1" maxOccurs="1" name="statusId" type="s:int" />
             <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="estimate" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="estimate" type="s:decimal" />
             <s:element minOccurs="1" maxOccurs="1" name="backcolor" type="s:int" />
             <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
             <s:element minOccurs="1" maxOccurs="1" name="y" type="s:int" />
@@ -640,7 +640,7 @@
           <s:sequence>
             <s:element minOccurs="1" maxOccurs="1" name="storyId" type="s:int" />
             <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="estimate" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="estimate" type="s:decimal" />
             <s:element minOccurs="1" maxOccurs="1" name="backcolor" type="s:int" />
             <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
             <s:element minOccurs="1" maxOccurs="1" name="y" type="s:int" />
@@ -660,7 +660,7 @@
             <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
             <s:element minOccurs="1" maxOccurs="1" name="storyId" type="s:int" />
             <s:element minOccurs="0" maxOccurs="1" name="description" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="estimate" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="estimate" type="s:decimal" />
             <s:element minOccurs="1" maxOccurs="1" name="backcolor" type="s:int" />
             <s:element minOccurs="1" maxOccurs="1" name="x" type="s:int" />
             <s:element minOccurs="1" maxOccurs="1" name="y" type="s:int" />

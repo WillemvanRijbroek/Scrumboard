@@ -80,7 +80,7 @@ namespace ScrumBoard.Common
             return list;
         }
 
-        public void insertStory(int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag)
+        public void insertStory(int sprintId, string externalId, int storyTypeId, int statusId, string description, decimal estimate, int backcolor, int x, int y, string tag)
         {
             // Make sure all server side modifications are updated in our cache
             update();

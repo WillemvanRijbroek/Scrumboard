@@ -75,7 +75,7 @@ namespace ScrumBoard.Common
             storyCache.update();
         }
 
-        public void insertStory(int sprintId, string externalId, int storyTypeId, int statusId, string description, int estimate, int backcolor, int x, int y, string tag)
+        public void insertStory(int sprintId, string externalId, int storyTypeId, int statusId, string description, decimal estimate, int backcolor, int x, int y, string tag)
         {
             storyCache.insertStory(sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
         }

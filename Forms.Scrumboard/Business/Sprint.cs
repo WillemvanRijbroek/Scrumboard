@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using ScrumBoard.Common;
 using ScrumBoard.ScrumboardService;
+using System.Globalization;
 
 namespace ScrumBoard.Business
 {
@@ -89,23 +90,27 @@ namespace ScrumBoard.Business
             {
                 if (sprintFile.Exists)
                 {
-
+                    int lineNr = 0;
                     StreamReader sr = sprintFile.OpenText();
                     while (!sr.EndOfStream)
                     {
+                        lineNr++;
                         String line = sr.ReadLine();
                         String[] inf = line.Split('\t');
                         String extId = inf[0];
                         String desc = inf[1];
-                        int estimate = Config.DefaultEstimate;
-                        Int32.TryParse(inf[2], out estimate);
+                        decimal estimate = Config.DefaultEstimate;
+                        if (!Decimal.TryParse(inf[2], System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-US").NumberFormat, out estimate))
+                        {
+                            throw new FormatException("Estimate has invalid format, use 0 or 0.0 at line " + lineNr);
+                        }
                         Data.getInstance().insertStory(Id, extId, 1, 1, desc, estimate, Config.DefaultBackColor, 30, 30, "");
                     }
                     sr.Close();
                 }
             }
         }
-
+        
         public void ExportStories(FileInfo file)
         {
             if (file != null)

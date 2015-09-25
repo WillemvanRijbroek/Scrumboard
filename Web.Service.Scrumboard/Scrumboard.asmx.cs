@@ -35,7 +35,7 @@ namespace ScrumboardWebService
         /// <param name="tag"></param>
         /// <returns></returns>
         [WebMethod]
-        public Story StoryInsert(int sprintId, String externalId, int storyTypeId, int statusId, String description, int estimate, int backcolor, int x, int y, String tag)
+        public Story StoryInsert(int sprintId, String externalId, int storyTypeId, int statusId, String description, decimal estimate, int backcolor, int x, int y, String tag)
         {
             return new Story().Insert(sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
         }
@@ -56,7 +56,7 @@ namespace ScrumboardWebService
         /// <param name="tag"></param>
         /// <returns></returns>
         [WebMethod]
-        public Story StoryUpdateDetails(int id, int sprintId, String externalId, int storyTypeId, int statusId, String description, int estimate, int backcolor, int x, int y, String tag)
+        public Story StoryUpdateDetails(int id, int sprintId, String externalId, int storyTypeId, int statusId, String description, decimal estimate, int backcolor, int x, int y, String tag)
         {
             return new Story().Update(id, sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
         }
@@ -253,12 +253,12 @@ namespace ScrumboardWebService
 
         #region Todo's
         [WebMethod]
-        public Todo TodoInsert(int storyId, String description, int estimate, int backcolor, int x, int y)
+        public Todo TodoInsert(int storyId, String description, decimal estimate, int backcolor, int x, int y)
         {
             return new Todo().Insert(storyId, description, estimate, backcolor, x, y);
         }
         [WebMethod]
-        public Todo TodoUpdate(int id, int storyId, String description, int estimate, int backcolor, int x, int y)
+        public Todo TodoUpdate(int id, int storyId, String description, decimal estimate, int backcolor, int x, int y)
         {
             return new Todo().Update(id, storyId, description, estimate, backcolor, x, y);
         }

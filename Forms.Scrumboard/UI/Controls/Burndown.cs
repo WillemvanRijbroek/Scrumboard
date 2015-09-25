@@ -95,10 +95,10 @@ namespace ScrumBoard.UI.Controls
         /// <summary>
         /// Returns the total amount of story points for all stories
         /// </summary>
-        private int TotalPlannedStoryPoints(DateTime startDate)
+        private decimal TotalPlannedStoryPoints(DateTime startDate)
         {
-            int points = 0;
-            int totalStories = 0;
+            decimal points = 0;
+            decimal totalStories = 0;
             foreach (Story story in stories.Values)
             {
                 // Burn up based on creation date of the story
@@ -112,9 +112,9 @@ namespace ScrumBoard.UI.Controls
             return points;
         }
 
-        private int TotalStoryPoints()
+        private decimal TotalStoryPoints()
         {
-            int points = 0;
+            decimal points = 0;
             foreach (Story story in stories.Values)
             {
                 if (story.IsBurndownEnabled && !story.IsRemoved)

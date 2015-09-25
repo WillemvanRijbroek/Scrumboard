@@ -12,7 +12,7 @@ namespace ScrumboardWebService.Business
         public int SprintId { get; set; }
         public int StoryTypeId { get; set; }
         public String Description { get; set; }
-        public int Estimate { get; set; }
+        public decimal Estimate { get; set; }
         public int StatusId { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
@@ -26,7 +26,7 @@ namespace ScrumboardWebService.Business
         public List<Todo> Todos { get; set; }
 
 
-        public Story Insert(int sprintId, String externalId, int storyTypeId, int statusId, String description, int estimate, int backcolor, int x, int y, String tag)
+        public Story Insert(int sprintId, String externalId, int storyTypeId, int statusId, String description, decimal estimate, int backcolor, int x, int y, String tag)
         {
             String sql = String.Format("INSERT INTO Story (sprintid, externalid, storytypeid, statusid, description, estimate, backcolor, x, y, tag, modified) VALUES ({0}, '{1}',{2},{3},'{4}',{5},{6},{7},{8},'{9}', GetDate())",
                 sprintId, asSQLStringValue(externalId), storyTypeId, statusId, asSQLStringValue(description), estimate, backcolor, x, y, asSQLStringValue(tag));
@@ -40,7 +40,7 @@ namespace ScrumboardWebService.Business
             return null;
         }
 
-        public Story Update(int id, int sprintId, String externalId, int storyTypeId, int statusId, String description, int estimate, int backcolor, int x, int y, String tag)
+        public Story Update(int id, int sprintId, String externalId, int storyTypeId, int statusId, String description, decimal estimate, int backcolor, int x, int y, String tag)
         {
             String sql = String.Format("UPDATE Story SET statusid = {1}, externalid = '{2}', storyTypeId = {3}, description = '{4}', estimate = {5}, backcolor = {6}, x = {7}, y = {8}, tag = '{9}', modified = GetDate() WHERE id = {0}", id, statusId, asSQLStringValue(externalId), storyTypeId, asSQLStringValue(description), estimate, backcolor, x, y, asSQLStringValue(tag));
             InsertStateTransition(id, statusId);
@@ -110,7 +110,7 @@ namespace ScrumboardWebService.Business
                     s.StoryTypeId = rdr.GetInt32(3);
                     s.StatusId = rdr.GetInt32(4);
                     s.Description = fromSQLStringValue(rdr.GetString(5));
-                    s.Estimate = rdr.GetInt32(6);
+                    s.Estimate = rdr.GetDecimal(6);
                     s.BackColor = rdr.GetInt32(7);
                     s.X = rdr.GetInt32(8);
                     s.Y = rdr.GetInt32(9);
@@ -179,7 +179,7 @@ namespace ScrumboardWebService.Business
                     s.StoryTypeId = rdr.GetInt32(3);
                     s.StatusId = rdr.GetInt32(4);
                     s.Description = fromSQLStringValue(rdr.GetString(5));
-                    s.Estimate = rdr.GetInt32(6);
+                    s.Estimate = rdr.GetDecimal(6);
                     s.BackColor = rdr.GetInt32(7);
                     s.X = rdr.GetInt32(8);
                     s.Y = rdr.GetInt32(9);

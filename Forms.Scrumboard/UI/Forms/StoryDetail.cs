@@ -73,7 +73,7 @@ namespace ScrumBoard.UI.Forms
                     s.ExternalId = txtId.Text;
                     s.StoryTypeId = Int32.Parse(cmbStoryType.SelectedValue.ToString());
                     s.Description = txtDescription.Text;
-                    s.Estimate = Decimal.ToInt32(txtEstimate.Value);
+                    s.Estimate = (txtEstimate.Value);
                     s.Tag = txtTag.Text;
                     s.BackColor = btnColor.BackColor.ToArgb();
                     Data.getInstance().updateStory(s);

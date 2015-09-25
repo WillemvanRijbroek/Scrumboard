@@ -10,7 +10,7 @@ namespace ScrumboardWebService.Business
         public int Id { get; set; }
         public int StoryId { get; set; }
         public String Description { get; set; }
-        public int Estimate { get; set; }
+        public decimal Estimate { get; set; }
         public int BackColor { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
@@ -22,7 +22,7 @@ namespace ScrumboardWebService.Business
             String sql = String.Format("UPDATE Story SET modified = GetDate() WHERE id = {0}", storyId);
             executeScalar(sql);
         }
-        public Todo Insert(int storyId, String description, int estimate, int backcolor, int x, int y)
+        public Todo Insert(int storyId, String description, decimal estimate, int backcolor, int x, int y)
         {
             String sql = String.Format("INSERT INTO Todo (StoryID, Description, Estimate, Backcolor, X, Y, modified) VALUES ({0}, '{1}',{2},{3},{4},{5}, getDate())",
                 storyId, asSQLStringValue(description), estimate, backcolor, x, y);
@@ -36,7 +36,7 @@ namespace ScrumboardWebService.Business
             return null;
         }
 
-        public Todo Update(int id, int storyId, String description, int estimate, int backcolor, int x, int y)
+        public Todo Update(int id, int storyId, String description, decimal estimate, int backcolor, int x, int y)
         {
             String sql = String.Format("UPDATE Todo SET storyId = {1}, description = '{2}', estimate = {3}, backcolor = {4}, x = {5}, y = {6}, modified = getDate() WHERE id = {0}", id, storyId, asSQLStringValue(description), estimate, backcolor, x, y);
             executeScalar(sql);
@@ -116,7 +116,7 @@ namespace ScrumboardWebService.Business
                     s.Id = rdr.GetInt32(0);
                     s.StoryId = rdr.GetInt32(1);
                     s.Description = fromSQLStringValue(rdr.GetString(2));
-                    s.Estimate = rdr.GetInt32(3);
+                    s.Estimate = rdr.GetDecimal(3);
                     s.BackColor = rdr.GetInt32(4);
                     s.X = rdr.GetInt32(5);
                     s.Y = rdr.GetInt32(6);
