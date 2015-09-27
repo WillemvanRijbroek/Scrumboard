@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Data.SqlClient;
 using ScrumboardWebService.Common;
+using System.Globalization;
 
 namespace ScrumboardWebService.Business
 {
@@ -95,6 +96,17 @@ namespace ScrumboardWebService.Business
             }
         }
         #region Helpers
+        protected String asSQLDecimalValue(Decimal value)
+        {
+            if (value == null)
+            {
+                return "0.0";
+            }
+            else
+            {
+                return value.ToString(CultureInfo.GetCultureInfo("en-US").NumberFormat);
+            }
+        }
         protected String asSQLStringValue(String userInput)
         {
             if (userInput == null) return "";

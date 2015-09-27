@@ -153,7 +153,7 @@
             <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
             <s:element minOccurs="1" maxOccurs="1" name="startDate" type="s:dateTime" />
             <s:element minOccurs="1" maxOccurs="1" name="target" type="s:dateTime" />
-            <s:element minOccurs="1" maxOccurs="1" name="velocity" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="velocity" type="s:decimal" />
             <s:element minOccurs="1" maxOccurs="1" name="focusFactor" type="s:int" />
           </s:sequence>
         </s:complexType>
@@ -174,7 +174,7 @@
             <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
             <s:element minOccurs="1" maxOccurs="1" name="startDate" type="s:dateTime" />
             <s:element minOccurs="1" maxOccurs="1" name="target" type="s:dateTime" />
-            <s:element minOccurs="1" maxOccurs="1" name="velocity" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="velocity" type="s:decimal" />
             <s:element minOccurs="1" maxOccurs="1" name="focusFactor" type="s:int" />
           </s:sequence>
         </s:complexType>
@@ -206,7 +206,7 @@
               <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
               <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
               <s:element minOccurs="1" maxOccurs="1" name="TargetDate" type="s:dateTime" />
-              <s:element minOccurs="1" maxOccurs="1" name="Velocity" type="s:int" />
+              <s:element minOccurs="1" maxOccurs="1" name="Velocity" type="s:decimal" />
               <s:element minOccurs="1" maxOccurs="1" name="FocusFactor" type="s:int" />
             </s:sequence>
           </s:extension>

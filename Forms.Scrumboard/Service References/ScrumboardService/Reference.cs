@@ -43,12 +43,12 @@ namespace ScrumBoard.ScrumboardService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SprintInsert", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
-        int SprintInsert(int layoutId, int teamId, string name, System.DateTime startDate, System.DateTime target, int velocity, int focusFactor);
+        int SprintInsert(int layoutId, int teamId, string name, System.DateTime startDate, System.DateTime target, decimal velocity, int focusFactor);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SprintUpdate", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(BO))]
-        void SprintUpdate(int id, int layoutId, int teamId, string name, System.DateTime startDate, System.DateTime target, int velocity, int focusFactor);
+        void SprintUpdate(int id, int layoutId, int teamId, string name, System.DateTime startDate, System.DateTime target, decimal velocity, int focusFactor);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SprintGet", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -1080,7 +1080,7 @@ namespace ScrumBoard.ScrumboardService {
         
         private System.DateTime targetDateField;
         
-        private int velocityField;
+        private decimal velocityField;
         
         private int focusFactorField;
         
@@ -1158,7 +1158,7 @@ namespace ScrumBoard.ScrumboardService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=6)]
-        public int Velocity {
+        public decimal Velocity {
             get {
                 return this.velocityField;
             }
@@ -1228,11 +1228,11 @@ namespace ScrumBoard.ScrumboardService {
             return base.Channel.StoryGetSprintModifiedStories(sprintId, modified);
         }
         
-        public int SprintInsert(int layoutId, int teamId, string name, System.DateTime startDate, System.DateTime target, int velocity, int focusFactor) {
+        public int SprintInsert(int layoutId, int teamId, string name, System.DateTime startDate, System.DateTime target, decimal velocity, int focusFactor) {
             return base.Channel.SprintInsert(layoutId, teamId, name, startDate, target, velocity, focusFactor);
         }
         
-        public void SprintUpdate(int id, int layoutId, int teamId, string name, System.DateTime startDate, System.DateTime target, int velocity, int focusFactor) {
+        public void SprintUpdate(int id, int layoutId, int teamId, string name, System.DateTime startDate, System.DateTime target, decimal velocity, int focusFactor) {
             base.Channel.SprintUpdate(id, layoutId, teamId, name, startDate, target, velocity, focusFactor);
         }
         

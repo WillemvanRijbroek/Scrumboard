@@ -154,7 +154,7 @@
             // 
             // txtEstimate
             // 
-            this.txtEstimate.DecimalPlaces = 1;
+            this.txtEstimate.DecimalPlaces = 2;
             this.txtEstimate.Location = new System.Drawing.Point(72, 32);
             this.txtEstimate.Maximum = new decimal(new int[] {
             10000,

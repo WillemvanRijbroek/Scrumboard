@@ -80,7 +80,7 @@ namespace ScrumBoard.UI.Forms
                 }
                 else
                 {
-                    Data.getInstance().insertStory(Config.ActiveSprint, txtId.Text, Int32.Parse(cmbStoryType.SelectedValue.ToString()), state, txtDescription.Text, Decimal.ToInt32(txtEstimate.Value), btnColor.BackColor.ToArgb(), 30, 30, txtTag.Text);
+                    Data.getInstance().insertStory(Config.ActiveSprint, txtId.Text, Int32.Parse(cmbStoryType.SelectedValue.ToString()), state, txtDescription.Text, txtEstimate.Value, btnColor.BackColor.ToArgb(), 30, 30, txtTag.Text);
                 }
                 this.Close();
             }

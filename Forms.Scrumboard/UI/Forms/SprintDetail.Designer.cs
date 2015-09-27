@@ -165,6 +165,7 @@
             // 
             // numVelocity
             // 
+            this.numVelocity.DecimalPlaces = 2;
             this.numVelocity.Location = new System.Drawing.Point(88, 157);
             this.numVelocity.Name = "numVelocity";
             this.numVelocity.Size = new System.Drawing.Size(200, 20);

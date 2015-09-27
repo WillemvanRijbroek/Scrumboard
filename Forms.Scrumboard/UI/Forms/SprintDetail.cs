@@ -72,13 +72,13 @@ namespace ScrumBoard.UI.Forms
                 s.TargetDate = dtTarget.Value.Date;
                 s.LayoutId = (int)cmbLayout.SelectedValue;
                 s.TeamId = (int)cmbTeam.SelectedValue;
-                s.Velocity = (int)numVelocity.Value;
+                s.Velocity = numVelocity.Value;
                 s.FocusFactor = (int)numFocusFactor.Value;
                 client.SprintUpdate(s.Id, s.LayoutId, s.TeamId, s.Name, s.StartDate, s.TargetDate, s.Velocity,s.FocusFactor);
             }
             else
             {
-                Config.ActiveSprint = client.SprintInsert((int)cmbLayout.SelectedValue, (int)cmbTeam.SelectedValue, txtName.Text, dtStartdate.Value.Date, dtTarget.Value.Date, (int)numVelocity.Value, (int)numFocusFactor.Value);
+                Config.ActiveSprint = client.SprintInsert((int)cmbLayout.SelectedValue, (int)cmbTeam.SelectedValue, txtName.Text, dtStartdate.Value.Date, dtTarget.Value.Date, numVelocity.Value, (int)numFocusFactor.Value);
             }
             this.Close();
         }

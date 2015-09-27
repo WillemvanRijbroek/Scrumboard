@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web;
 using System.Data.SqlClient;
+using ScrumboardWebService.Common;
 
 namespace ScrumboardWebService.Business
 {
@@ -13,27 +14,45 @@ namespace ScrumboardWebService.Business
         public String Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime TargetDate { get; set; }
-        public int Velocity { get; set; }
+        public decimal Velocity { get; set; }
         public int FocusFactor { get; set; }
 
-        public int Insert(int layoutId, int teamId, String name, DateTime startDate, DateTime target, int velocity, int focusFactor)
+        public int Insert(int layoutId, int teamId, String name, DateTime startDate, DateTime target, decimal velocity, int focusFactor)
         {
-            String sql = String.Format("INSERT INTO Sprint (LayoutID, TeamId, Name, StartDate, Target, Velocity, FocusFactor) VALUES ({0}, {1}, '{2}','{3}','{4}', {5}, {6})",
-                layoutId, teamId, asSQLStringValue(name), asSQLDateValue(startDate), asSQLDateValue(target), velocity, focusFactor);
-            Object rt = executeInsert(sql);
-            int newId = -1;
-            if (rt != null && Int32.TryParse(rt.ToString(), out newId))
-                return newId;
+            String sql = null;
+            try
+            {
+                sql = String.Format("INSERT INTO Sprint (LayoutID, TeamId, Name, StartDate, Target, Velocity, FocusFactor) VALUES ({0}, {1}, '{2}','{3}','{4}', {5}, {6})",
+                layoutId, teamId, asSQLStringValue(name), asSQLDateValue(startDate), asSQLDateValue(target), asSQLDecimalValue(velocity), focusFactor);
+                Object rt = executeInsert(sql);
+                int newId = -1;
+                if (rt != null && Int32.TryParse(rt.ToString(), out newId))
+                    return newId;
 
-            return -1;
+                return -1;
+            }
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
         }
 
 
-        public void Update(int id, int layoutId, int teamId, String name, DateTime startDate, DateTime target, int velocity, int focusFactor)
+        public void Update(int id, int layoutId, int teamId, String name, DateTime startDate, DateTime target, decimal velocity, int focusFactor)
         {
-            String sql = String.Format("UPDATE Sprint SET layoutId = {1}, name = '{2}', target = '{3}', teamid = {4}, StartDate = '{5}', Velocity = {6}, FocusFactor = {7} WHERE id = {0}"
-                , id, layoutId, asSQLStringValue(name), asSQLDateValue(target), teamId, asSQLDateValue(startDate), velocity, focusFactor);
-            executeScalar(sql);
+            String sql = null;
+            try
+            {
+                sql = String.Format("UPDATE Sprint SET layoutId = {1}, name = '{2}', target = '{3}', teamid = {4}, StartDate = '{5}', Velocity = {6}, FocusFactor = {7} WHERE id = {0}"
+                  , id, layoutId, asSQLStringValue(name), asSQLDateValue(target), teamId, asSQLDateValue(startDate), asSQLDecimalValue(velocity), focusFactor);
+                executeScalar(sql);
+            }
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
         }
 
         public Sprint Get(int sprintId)
@@ -60,13 +79,17 @@ namespace ScrumboardWebService.Business
                     sprint.TargetDate = rdr.GetDateTime(4);
                     sprint.StartDate = rdr.GetDateTime(5);
                     if (!rdr.IsDBNull(6))
-                        sprint.Velocity = rdr.GetInt32(6);
+                        sprint.Velocity = rdr.GetDecimal(6);
                     if (!rdr.IsDBNull(7))
                         sprint.FocusFactor = rdr.GetInt32(7);
                 }
                 rdr.Close();
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
             finally
             {
                 CloseConnection();
@@ -98,14 +121,18 @@ namespace ScrumboardWebService.Business
                     s.TargetDate = rdr.GetDateTime(4);
                     s.StartDate = rdr.GetDateTime(5);
                     if (!rdr.IsDBNull(6))
-                        s.Velocity = rdr.GetInt32(6);
+                        s.Velocity = rdr.GetDecimal(6);
                     if (!rdr.IsDBNull(7))
                         s.FocusFactor = rdr.GetInt32(7);
                     lst.Add(s);
                 }
                 rdr.Close();
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
             finally
             {
                 CloseConnection();
@@ -136,14 +163,18 @@ namespace ScrumboardWebService.Business
                     s.TargetDate = rdr.GetDateTime(4);
                     s.StartDate = rdr.GetDateTime(5);
                     if (!rdr.IsDBNull(6))
-                        s.Velocity = rdr.GetInt32(6);
+                        s.Velocity = rdr.GetDecimal(6);
                     if (!rdr.IsDBNull(7))
                         s.FocusFactor = rdr.GetInt32(7);
                     lst.Add(s);
                 }
                 rdr.Close();
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
             finally
             {
                 CloseConnection();

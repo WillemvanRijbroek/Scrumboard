@@ -34,7 +34,7 @@ namespace ScrumBoard.UI.Forms
             set
             {
                 this.StoryId = value.StoryId;
-                txtEstimate.Text = value.Estimate.ToString();
+                txtEstimate.Value = value.Estimate;
                 txtDescription.Text = value.Description;
                 try
                 {
@@ -51,7 +51,7 @@ namespace ScrumBoard.UI.Forms
             {
                 todo.StoryId = this.StoryId;
                 todo.Description = txtDescription.Text;
-                todo.Estimate = Int32.Parse(txtEstimate.Text);
+                todo.Estimate = txtEstimate.Value;
                 todo.BackColor = btnColor.BackColor.ToArgb();
                 Data.getInstance().updateTodo(todo);
             }
@@ -60,7 +60,7 @@ namespace ScrumBoard.UI.Forms
                 todo = new ScrumboardService.Todo();
                 todo.StoryId = this.StoryId;
                 todo.Description = txtDescription.Text;
-                todo.Estimate = Int32.Parse(txtEstimate.Text);
+                todo.Estimate = txtEstimate.Value;
                 todo.BackColor = btnColor.BackColor.ToArgb();
                 todo.X = 30;
                 todo.Y = 30;

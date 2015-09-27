@@ -29,7 +29,7 @@ namespace ScrumBoard.UI.Forms
         {
             InitializeComponent();
             mover.Visible = false;
-            this.Controls.Add(mover);
+            panel.Controls.Add(mover);
             autoAlignStoriesToolStripMenuItem.Enabled = !Config.ViewOnly;
             addStoryToolStripMenuItem.Enabled = !Config.ViewOnly;
             importSprintToolStripMenuItem1.Enabled = !Config.ViewOnly;
@@ -56,11 +56,11 @@ namespace ScrumBoard.UI.Forms
             Cursor = Cursors.WaitCursor;
             try
             {
-                for (int i = Controls.Count - 1; i >= 0; i--)
+                for (int i = panel.Controls.Count - 1; i >= 0; i--)
                 {
-                    if (Controls[i] is StatePanel || Controls[i] is BurndownPanel)
+                    if (panel.Controls[i] is StatePanel || panel.Controls[i] is BurndownPanel)
                     {
-                        Controls.RemoveAt(i);
+                        panel.Controls.RemoveAt(i);
                     }
                 }
                 currentSprint = new Business.Sprint(Config.ActiveSprint);
@@ -71,11 +71,11 @@ namespace ScrumBoard.UI.Forms
                     {
                         if (!"Burndown".Equals(pnl.Title))
                         {
-                            this.Controls.Add(new StatePanel(mover, currentSprint.Layout, pnl));
+                            panel.Controls.Add(new StatePanel(mover, currentSprint.Layout, pnl));
                         }
                         else
                         {
-                            this.Controls.Add(new BurndownPanel(currentSprint.Layout, pnl));
+                            panel.Controls.Add(new BurndownPanel(currentSprint.Layout, pnl));
                         }
                     }
                     RefreshSprint();
@@ -94,11 +94,11 @@ namespace ScrumBoard.UI.Forms
 
         public StatePanel getPanel(int X, int Y)
         {
-            for (int i = Controls.Count - 1; i >= 0; i--)
+            for (int i = panel.Controls.Count - 1; i >= 0; i--)
             {
-                if (Controls[i] is StatePanel)
+                if (panel.Controls[i] is StatePanel)
                 {
-                    StatePanel p = ((StatePanel)Controls[i]);
+                    StatePanel p = ((StatePanel)panel.Controls[i]);
                     if ((p.Top < Y) && ((p.Top + p.Height) >= Y)
                         && (p.Left < X) && ((p.Left + p.Width) >= X))
                     {
@@ -153,11 +153,11 @@ namespace ScrumBoard.UI.Forms
             currentSprint = new Business.Sprint(Config.ActiveSprint);
             Data.getInstance().clearCaches();
             Data.getInstance().refreshStories();
-            for (int i = Controls.Count - 1; i >= 0; i--)
+            for (int i = panel.Controls.Count - 1; i >= 0; i--)
             {
-                if (Controls[i] is BurndownPanel)
+                if (panel.Controls[i] is BurndownPanel)
                 {
-                    ((BurndownPanel)Controls[i]).DrawChart();
+                    ((BurndownPanel)panel.Controls[i]).DrawChart();
                 }
             }
             Cursor = Cursors.Default;
@@ -166,50 +166,45 @@ namespace ScrumBoard.UI.Forms
         public void RefreshBurndown()
         {
             Cursor = Cursors.WaitCursor;
-            for (int i = Controls.Count - 1; i >= 0; i--)
+            for (int i = panel.Controls.Count - 1; i >= 0; i--)
             {
-                if (Controls[i] is BurndownPanel)
+                if (panel.Controls[i] is BurndownPanel)
                 {
-                    ((BurndownPanel)Controls[i]).DrawChart();
+                    ((BurndownPanel)panel.Controls[i]).DrawChart();
                 }
             }
             Cursor = Cursors.Default;
         }
 
-        private bool screenUpdates = false;
         private void autoResize()
         {
-            screenUpdates = true;
             Cursor = Cursors.WaitCursor;
-            for (int i = Controls.Count - 1; i >= 0; i--)
+            for (int i = panel.Controls.Count - 1; i >= 0; i--)
             {
-                if (Controls[i] is StatePanel)
+                if (panel.Controls[i] is StatePanel)
                 {
-                    ((StatePanel)Controls[i]).AutoResize();
+                    ((StatePanel)panel.Controls[i]).AutoResize();
                 }
-                else if (Controls[i] is BurndownPanel)
+                else if (panel.Controls[i] is BurndownPanel)
                 {
-                    ((BurndownPanel)Controls[i]).AutoResize();
+                    ((BurndownPanel)panel.Controls[i]).AutoResize();
                 }
             }
             Cursor = Cursors.Default;
-            screenUpdates = false;
         }
 
         private void autoAlignControls()
         {
-            screenUpdates = true;
             Cursor = Cursors.WaitCursor;
-            for (int i = Controls.Count - 1; i >= 0; i--)
+            for (int i = panel.Controls.Count - 1; i >= 0; i--)
             {
-                if (Controls[i] is StatePanel)
+                if (panel.Controls[i] is StatePanel)
                 {
-                    ((StatePanel)Controls[i]).AutoAlignStories();
+                    ((StatePanel)panel.Controls[i]).AutoAlignStories();
 
                 }
             }
             Cursor = Cursors.Default;
-            screenUpdates = false;
         }
 
         private void ScrumBoard_SizeChanged(object sender, EventArgs e)
@@ -223,7 +218,7 @@ namespace ScrumBoard.UI.Forms
             DialogResult r = form.ShowDialog(this);
             //if (r == System.Windows.Forms.DialogResult.OK)
             //{
-            //    foreach (Control c in Controls)
+            //    foreach (Control c in panel.Controls)
             //    {
             //        if (c is StatePanel)
             //        {
@@ -287,6 +282,7 @@ namespace ScrumBoard.UI.Forms
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             RefreshSprint();
+            RefreshBurndown();
         }
 
         private void autoRefreshToolStripMenuItem_Click(object sender, EventArgs e)

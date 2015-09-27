@@ -45,6 +45,7 @@
             this.autoRefreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.burndownChartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dlgOpenFile = new System.Windows.Forms.OpenFileDialog();
+            this.panel = new System.Windows.Forms.Panel();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,7 +66,7 @@
             this.autoRefreshToolStripMenuItem,
             this.burndownChartToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(170, 280);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(170, 258);
             // 
             // importSprintToolStripMenuItem
             // 
@@ -158,6 +159,15 @@
             // 
             this.dlgOpenFile.FileName = "openFileDialog1";
             // 
+            // panel
+            // 
+            this.panel.BackColor = System.Drawing.Color.Transparent;
+            this.panel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel.Location = new System.Drawing.Point(0, 0);
+            this.panel.Name = "panel";
+            this.panel.Size = new System.Drawing.Size(555, 335);
+            this.panel.TabIndex = 1;
+            // 
             // ScrumBoardForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -165,6 +175,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(555, 335);
             this.ContextMenuStrip = this.contextMenuStrip1;
+            this.Controls.Add(this.panel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "ScrumBoardForm";
@@ -196,6 +207,7 @@
         private System.Windows.Forms.ToolStripMenuItem editSprintToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem burndownChartToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportStoriesToolStripMenuItem;
+        private System.Windows.Forms.Panel panel;
     }
 }
 

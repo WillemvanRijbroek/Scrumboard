@@ -30,12 +30,13 @@
         {
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtEstimate = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.btnColor = new System.Windows.Forms.Button();
+            this.txtEstimate = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.txtEstimate)).BeginInit();
             this.SuspendLayout();
             // 
             // txtDescription
@@ -54,13 +55,6 @@
             this.label2.Size = new System.Drawing.Size(63, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "Description:";
-            // 
-            // txtEstimate
-            // 
-            this.txtEstimate.Location = new System.Drawing.Point(72, 4);
-            this.txtEstimate.Name = "txtEstimate";
-            this.txtEstimate.Size = new System.Drawing.Size(68, 20);
-            this.txtEstimate.TabIndex = 0;
             // 
             // label3
             // 
@@ -103,6 +97,19 @@
             this.btnColor.UseVisualStyleBackColor = true;
             this.btnColor.Click += new System.EventHandler(this.btnColor_Click);
             // 
+            // txtEstimate
+            // 
+            this.txtEstimate.DecimalPlaces = 2;
+            this.txtEstimate.Location = new System.Drawing.Point(72, 5);
+            this.txtEstimate.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.txtEstimate.Name = "txtEstimate";
+            this.txtEstimate.Size = new System.Drawing.Size(68, 20);
+            this.txtEstimate.TabIndex = 6;
+            // 
             // TodoDetail
             // 
             this.AcceptButton = this.btnOk;
@@ -110,10 +117,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(450, 243);
+            this.Controls.Add(this.txtEstimate);
             this.Controls.Add(this.btnColor);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
-            this.Controls.Add(this.txtEstimate);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.label2);
@@ -125,6 +132,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Story Detail";
+            ((System.ComponentModel.ISupportInitialize)(this.txtEstimate)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -134,11 +142,11 @@
 
         private System.Windows.Forms.TextBox txtDescription;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtEstimate;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.Button btnColor;
+        private System.Windows.Forms.NumericUpDown txtEstimate;
     }
 }

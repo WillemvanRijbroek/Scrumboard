@@ -104,7 +104,7 @@ namespace ScrumBoard.UI.Controls
                 StatePanel myPanel = (StatePanel)Parent;
                 if (myPanel != null)
                 {
-                    StatePanel movedToPanel = ((ScrumBoard.UI.Forms.ScrumBoardForm)Parent.Parent).getPanel(Mover.Left, Mover.Top);
+                    StatePanel movedToPanel = ((ScrumBoard.UI.Forms.ScrumBoardForm)Parent.Parent.Parent).getPanel(Mover.Left, Mover.Top);
                     if (movedToPanel != null && myPanel != movedToPanel)
                     {
                         MovedTo(movedToPanel);

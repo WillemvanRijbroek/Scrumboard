@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web;
 using System.Data.SqlClient;
+using ScrumboardWebService.Common;
 
 namespace ScrumboardWebService.Business
 {
@@ -19,41 +20,77 @@ namespace ScrumboardWebService.Business
 
         private void setStoryModified(int storyId)
         {
-            String sql = String.Format("UPDATE Story SET modified = GetDate() WHERE id = {0}", storyId);
-            executeScalar(sql);
+            String sql = null;
+            try
+            {
+                sql = String.Format("UPDATE Story SET modified = GetDate() WHERE id = {0}", storyId);
+                executeScalar(sql);
+            }
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
         }
         public Todo Insert(int storyId, String description, decimal estimate, int backcolor, int x, int y)
         {
-            String sql = String.Format("INSERT INTO Todo (StoryID, Description, Estimate, Backcolor, X, Y, modified) VALUES ({0}, '{1}',{2},{3},{4},{5}, getDate())",
-                storyId, asSQLStringValue(description), estimate, backcolor, x, y);
-            Object rt = executeInsert(sql);
-            int newId = -1;
-            if (rt != null && Int32.TryParse(rt.ToString(), out newId))
+            String sql = null;
+            try
             {
-                setStoryModified(storyId);
-                return Get(newId);
+                sql = String.Format("INSERT INTO Todo (StoryID, Description, Estimate, Backcolor, X, Y, modified) VALUES ({0}, '{1}',{2},{3},{4},{5}, getDate())",
+                    storyId, asSQLStringValue(description), asSQLDecimalValue(estimate), backcolor, x, y);
+                Object rt = executeInsert(sql);
+                int newId = -1;
+                if (rt != null && Int32.TryParse(rt.ToString(), out newId))
+                {
+                    setStoryModified(storyId);
+                    return Get(newId);
+                }
+                return null;
             }
-            return null;
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
         }
 
         public Todo Update(int id, int storyId, String description, decimal estimate, int backcolor, int x, int y)
         {
-            String sql = String.Format("UPDATE Todo SET storyId = {1}, description = '{2}', estimate = {3}, backcolor = {4}, x = {5}, y = {6}, modified = getDate() WHERE id = {0}", id, storyId, asSQLStringValue(description), estimate, backcolor, x, y);
-            executeScalar(sql);
-            setStoryModified(storyId);
-            return Get(id);
+            String sql = null;
+            try
+            {
+                sql = String.Format("UPDATE Todo SET storyId = {1}, description = '{2}', estimate = {3}, backcolor = {4}, x = {5}, y = {6}, modified = getDate() WHERE id = {0}", id, storyId, asSQLStringValue(description), asSQLDecimalValue(estimate), backcolor, x, y);
+                executeScalar(sql);
+                setStoryModified(storyId);
+                return Get(id);
+            }
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
         }
 
         public Todo Remove(int id)
         {
-            String sql = String.Format("UPDATE Todo SET removed = 1 WHERE id = {0}", id);
-            executeScalar(sql);
-            Todo t = Get(id);
-            if (t != null)
+            String sql = null;
+            try
             {
-                setStoryModified(t.StoryId);
+                sql = String.Format("UPDATE Todo SET removed = 1 WHERE id = {0}", id);
+                executeScalar(sql);
+                Todo t = Get(id);
+                if (t != null)
+                {
+                    setStoryModified(t.StoryId);
+                }
+                return t;
             }
-            return t;
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
         }
 
         public List<Todo> Select(int storyId)
@@ -72,11 +109,10 @@ namespace ScrumboardWebService.Business
                 while (rdr.Read())
                 {
                     Todo s = new Todo();
-
                     s.Id = rdr.GetInt32(0);
                     s.StoryId = rdr.GetInt32(1);
                     s.Description = fromSQLStringValue(rdr.GetString(2));
-                    s.Estimate = rdr.GetInt32(3);
+                    s.Estimate = rdr.GetDecimal(3);
                     s.BackColor = rdr.GetInt32(4);
                     s.X = rdr.GetInt32(5);
                     s.Y = rdr.GetInt32(6);
@@ -88,7 +124,11 @@ namespace ScrumboardWebService.Business
                 }
                 rdr.Close();
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
             finally
             {
                 CloseConnection();
@@ -128,7 +168,11 @@ namespace ScrumboardWebService.Business
                 }
                 rdr.Close();
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
             finally
             {
                 CloseConnection();

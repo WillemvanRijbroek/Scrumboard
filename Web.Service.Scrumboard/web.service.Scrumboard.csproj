@@ -76,6 +76,7 @@
     <Compile Include="Business\StoryType.cs" />
     <Compile Include="Business\Team.cs" />
     <Compile Include="Common\Config.cs" />
+    <Compile Include="Common\Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scrumboard.asmx.cs">
       <DependentUpon>Scrumboard.asmx</DependentUpon>

@@ -125,8 +125,18 @@ namespace ScrumBoard.UI.Controls
             return points;
         }
 
-        private DataTable CreateTable(DateTime startDate, DateTime targetDate, DateTime tillDate)
+        private struct Summary
         {
+            public decimal Planned { get; set; }
+            public decimal Expected { get; set; }
+            public decimal Realized { get; set; }
+            public DateTime ExpectedDone { get; set; }
+
+        }
+
+        private DataTable createTable(DateTime startDate, DateTime targetDate, DateTime tillDate, out Summary summary)
+        {
+            summary = new Summary();
             DataTable table = new DataTable("Realized");
             table.Columns.Add("Date", typeof(DateTime));
             table.Columns.Add("Planned", typeof(decimal));
@@ -137,6 +147,7 @@ namespace ScrumBoard.UI.Controls
 
             DateTime dt = startDate;
             decimal totalPoints = TotalStoryPoints();
+            summary.Planned = totalPoints;
             decimal planned = TotalPlannedStoryPoints(startDate);
             decimal realized = planned;
             decimal expected = planned;
@@ -144,39 +155,66 @@ namespace ScrumBoard.UI.Controls
             decimal target = planned;
             while (totalPoints > 0 && dt < tillDate)
             {
-                Console.WriteLine(dt.Date.ToString("ddd dd/MM/yy") + ":");
-                Console.Write("Planned " + planned);
-                Console.Write(" Expected " + expected);
-                Console.Write(" Realized " + realized);
-                Console.WriteLine(" Points " + totalPoints);
+                //Console.WriteLine(dt.Date.ToString("ddd dd/MM/yy") + ":");
+                //Console.Write("Planned " + planned);
+                //Console.Write(" Expected " + expected);
+                //Console.Write(" Realized " + realized);
+                //Console.WriteLine(" Points " + totalPoints);
                 if (dt.Date.Equals(DateTime.Now.Date) && dt.Date.Equals(targetDate))
+                {
+                    summary.Expected = expected;
                     table.Rows.Add(new object[] { dt, planned, realized, expected, today, target });
+                }
                 else if (dt.Date.Equals(DateTime.Now.Date))
+                {
+                    summary.Expected = expected;
                     table.Rows.Add(new object[] { dt, planned, realized, expected, today, 0 });
+                }
                 else if (dt.Date.Equals(targetDate))
+                {
                     table.Rows.Add(new object[] { dt, planned, realized, expected, 0, target });
+                }
                 else
+                {
                     table.Rows.Add(new object[] { dt, planned, realized, expected, 0, 0 });
-
+                }
+                if (expected <= 0)
+                {
+                    summary.ExpectedDone = dt;
+                }
                 dt = dt.AddDays(1);
                 planned = CalculatePlanned(dt, planned);
                 totalPoints = CalculateExpected(dt, totalPoints, stories, false);
                 expected = CalculateExpected(dt, expected, stories, true);
                 realized = CalculateRealized(dt, realized, stories, true);
             }
-            Console.WriteLine(dt.Date.ToString("ddd dd/MM/yy") + ":");
-            Console.Write("Planned " + planned);
-            Console.Write(" Expected " + expected);
-            Console.WriteLine(" Realized " + realized);
+            //Console.WriteLine(dt.Date.ToString("ddd dd/MM/yy") + ":");
+            //Console.Write("Planned " + planned);
+            //Console.Write(" Expected " + expected);
+            //Console.WriteLine(" Realized " + realized);
             if (dt.Date.Equals(DateTime.Now.Date) && dt.Date.Equals(targetDate))
+            {
+                summary.Expected = expected;
                 table.Rows.Add(new object[] { dt, planned, realized, expected, today, target });
+            }
             else if (dt.Date.Equals(DateTime.Now.Date))
+            {
+                summary.Expected = expected;
                 table.Rows.Add(new object[] { dt, planned, realized, expected, today, 0 });
+            }
             else if (dt.Date.Equals(targetDate))
+            {
                 table.Rows.Add(new object[] { dt, planned, realized, expected, 0, target });
+            }
             else
+            {
                 table.Rows.Add(new object[] { dt, planned, realized, expected, 0, 0 });
-
+            }
+            summary.Realized = summary.Planned - realized;
+            if (expected <= 0)
+            {
+                summary.ExpectedDone = dt;
+            }
             return table;
         }
 
@@ -186,7 +224,8 @@ namespace ScrumBoard.UI.Controls
             stories = Data.getInstance().getSprintStories();
 
             burndownChart.Titles.Clear();
-            burndownChart.Titles.Add("Burndown " + sprint.Name + " Target: " + sprint.TargetDate.ToShortDateString());
+            burndownChart.Titles.Add("Burndown " + sprint.Name + " target: " + sprint.TargetDate.ToShortDateString());
+
             burndownChart.Titles[0].Font = new Font(burndownChart.Titles[0].Font.FontFamily, 14, FontStyle.Bold);
             DateTime dt = sprint.StartDate;
 
@@ -196,8 +235,9 @@ namespace ScrumBoard.UI.Controls
             {
                 endDate = DateTime.Now.Date;
             }
-            ds.Tables.Add(CreateTable(dt, sprint.TargetDate, endDate));
-
+            Summary summary;
+            ds.Tables.Add(createTable(dt, sprint.TargetDate, endDate, out summary));
+            burndownChart.Titles.Add(String.Format("Planned: {0}, realized: {1}, expected: {2}, velocity: {3}", summary.Planned, summary.Realized, summary.ExpectedDone.ToShortDateString(), sprint.Velocity));
             burndownChart.DataSource = ds.Tables[0].DefaultView;
             // Defaults
             ChartValueType xValueType = ChartValueType.Date;

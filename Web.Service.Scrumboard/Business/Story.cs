@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web;
 using System.Data.SqlClient;
+using ScrumboardWebService.Common;
 
 namespace ScrumboardWebService.Business
 {
@@ -28,41 +29,77 @@ namespace ScrumboardWebService.Business
 
         public Story Insert(int sprintId, String externalId, int storyTypeId, int statusId, String description, decimal estimate, int backcolor, int x, int y, String tag)
         {
-            String sql = String.Format("INSERT INTO Story (sprintid, externalid, storytypeid, statusid, description, estimate, backcolor, x, y, tag, modified) VALUES ({0}, '{1}',{2},{3},'{4}',{5},{6},{7},{8},'{9}', GetDate())",
-                sprintId, asSQLStringValue(externalId), storyTypeId, statusId, asSQLStringValue(description), estimate, backcolor, x, y, asSQLStringValue(tag));
-            Object rt = executeInsert(sql);
-            int newId = -1;
-            if (rt != null && Int32.TryParse(rt.ToString(), out newId))
+            String sql = null;
+            try
             {
-                InsertStateTransition(newId, statusId);
-                return Get(newId);
+                sql = String.Format("INSERT INTO Story (sprintid, externalid, storytypeid, statusid, description, estimate, backcolor, x, y, tag, modified) VALUES ({0}, '{1}',{2},{3},'{4}',{5},{6},{7},{8},'{9}', GetDate())",
+                    sprintId, asSQLStringValue(externalId), storyTypeId, statusId, asSQLStringValue(description), asSQLDecimalValue(estimate), backcolor, x, y, asSQLStringValue(tag));
+                Object rt = executeInsert(sql);
+                int newId = -1;
+                if (rt != null && Int32.TryParse(rt.ToString(), out newId))
+                {
+                    InsertStateTransition(newId, statusId);
+                    return Get(newId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
             }
             return null;
         }
 
         public Story Update(int id, int sprintId, String externalId, int storyTypeId, int statusId, String description, decimal estimate, int backcolor, int x, int y, String tag)
         {
-            String sql = String.Format("UPDATE Story SET statusid = {1}, externalid = '{2}', storyTypeId = {3}, description = '{4}', estimate = {5}, backcolor = {6}, x = {7}, y = {8}, tag = '{9}', modified = GetDate() WHERE id = {0}", id, statusId, asSQLStringValue(externalId), storyTypeId, asSQLStringValue(description), estimate, backcolor, x, y, asSQLStringValue(tag));
-            InsertStateTransition(id, statusId);
-            executeScalar(sql);
-            return Get(id);
+            String sql = null;
+            try
+            {
+                sql = String.Format("UPDATE Story SET statusid = {1}, externalid = '{2}', storyTypeId = {3}, description = '{4}', estimate = {5}, backcolor = {6}, x = {7}, y = {8}, tag = '{9}', modified = GetDate() WHERE id = {0}", id, statusId, asSQLStringValue(externalId), storyTypeId, asSQLStringValue(description), asSQLDecimalValue(estimate), backcolor, x, y, asSQLStringValue(tag));
+                InsertStateTransition(id, statusId);
+                executeScalar(sql);
+                return Get(id);
+            }
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
         }
 
         public Story Update(int id, int statusId)
         {
-            String sql = String.Format("UPDATE Story SET statusid = {1}, modified = GetDate() WHERE id = {0}", id, statusId);
-            InsertStateTransition(id, statusId);
-            executeScalar(sql);
-            return Get(id);
+            String sql = null;
+            try
+            {
+                sql = String.Format("UPDATE Story SET statusid = {1}, modified = GetDate() WHERE id = {0}", id, statusId);
+                InsertStateTransition(id, statusId);
+                executeScalar(sql);
+                return Get(id);
+            }
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
         }
 
         public Story Remove(int id)
         {
-            String sql = String.Format("UPDATE Todo SET removed = 1 WHERE storyId = {0}", id);
-            executeScalar(sql);
-            sql = String.Format("UPDATE Story SET removed = 1, modified = GetDate() WHERE id = {0}", id);
-            executeScalar(sql);
-            return Get(id);
+            String sql = null;
+            try
+            {
+                sql = String.Format("UPDATE Todo SET removed = 1 WHERE storyId = {0}", id);
+                executeScalar(sql);
+                sql = String.Format("UPDATE Story SET removed = 1, modified = GetDate() WHERE id = {0}", id);
+                executeScalar(sql);
+                return Get(id);
+            }
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
         }
 
         public List<Story> Select(int sprintId)
@@ -139,7 +176,11 @@ namespace ScrumboardWebService.Business
                 }
                 rdr.Close();
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
             finally
             {
                 CloseConnection();
@@ -202,7 +243,11 @@ namespace ScrumboardWebService.Business
                 }
                 rdr.Close();
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
             finally
             {
                 CloseConnection();
@@ -214,9 +259,18 @@ namespace ScrumboardWebService.Business
         #region State history
         public void InsertStateTransition(int storyId, int statusId)
         {
-            String sql = String.Format("if (not exists (select StateId from StateHistory where StateId = {1} and TransitionDate = (select MAX(transitiondate) FROM StateHistory where StoryId={0}))) INSERT INTO StateHistory (storyId, stateid, TransitionDate) VALUES ({0}, {1}, GetDate())",
-                storyId, statusId);
-            executeInsert(sql);
+            String sql = null;
+            try
+            {
+                sql = String.Format("if (not exists (select StateId from StateHistory where StateId = {1} and TransitionDate = (select MAX(transitiondate) FROM StateHistory where StoryId={0}))) INSERT INTO StateHistory (storyId, stateid, TransitionDate) VALUES ({0}, {1}, GetDate())",
+                    storyId, statusId);
+                executeInsert(sql);
+            }
+            catch (Exception ex)
+            {
+                Log.logMessage("Executed sql: " + sql);
+                throw ex;
+            }
         }
         #endregion
     }

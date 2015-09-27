@@ -6,6 +6,8 @@ using ScrumboardWebService.Business;
 using System.Threading;
 using System.Web.Security;
 using System.Globalization;
+using System.IO;
+using ScrumboardWebService.Common;
 
 namespace ScrumboardWebService
 {
@@ -37,7 +39,15 @@ namespace ScrumboardWebService
         [WebMethod]
         public Story StoryInsert(int sprintId, String externalId, int storyTypeId, int statusId, String description, decimal estimate, int backcolor, int x, int y, String tag)
         {
-            return new Story().Insert(sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
+            try
+            {
+                return new Story().Insert(sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
 
         /// <summary>
@@ -58,15 +68,31 @@ namespace ScrumboardWebService
         [WebMethod]
         public Story StoryUpdateDetails(int id, int sprintId, String externalId, int storyTypeId, int statusId, String description, decimal estimate, int backcolor, int x, int y, String tag)
         {
-            return new Story().Update(id, sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
+            try
+            {
+                return new Story().Update(id, sprintId, externalId, storyTypeId, statusId, description, estimate, backcolor, x, y, tag);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
 
         [WebMethod]
         public Story StoryRemove(int id)
         {
-            return new Story().Remove(id);
+            try
+            {
+                return new Story().Remove(id);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
-        
+
         /// <summary>
         /// Retrieves a list of all sprint stories
         /// </summary>
@@ -75,7 +101,15 @@ namespace ScrumboardWebService
         [WebMethod]
         public List<Story> StoryGetSprintStories(int sprintId)
         {
-            return new Story().Select(sprintId);
+            try
+            {
+                return new Story().Select(sprintId);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
 
         /// <summary>
@@ -87,37 +121,85 @@ namespace ScrumboardWebService
         [WebMethod]
         public List<Story> StoryGetSprintModifiedStories(int sprintId, DateTime modified)
         {
-            return new Story().Select(sprintId, modified);
+            try
+            {
+                return new Story().Select(sprintId, modified);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
 
         #endregion
 
         #region Sprint
         [WebMethod]
-        public int SprintInsert(int layoutId, int teamId, String name, DateTime startDate, DateTime target, int velocity, int focusFactor)
+        public int SprintInsert(int layoutId, int teamId, String name, DateTime startDate, DateTime target, decimal velocity, int focusFactor)
         {
-            return new Sprint().Insert(layoutId, teamId, name, startDate, target, velocity, focusFactor);
+            try
+            {
+                return new Sprint().Insert(layoutId, teamId, name, startDate, target, velocity, focusFactor);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
-        public void SprintUpdate(int id, int layoutId, int teamId, String name, DateTime startDate, DateTime target, int velocity, int focusFactor)
+        public void SprintUpdate(int id, int layoutId, int teamId, String name, DateTime startDate, DateTime target, decimal velocity, int focusFactor)
         {
-            new Sprint().Update(id, layoutId, teamId, name, startDate, target, velocity, focusFactor);
+            try
+            {
+                new Sprint().Update(id, layoutId, teamId, name, startDate, target, velocity, focusFactor);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public Sprint SprintGet(int sprintId)
         {
-            return new Sprint().Get(sprintId);
+            try
+            {
+                return new Sprint().Get(sprintId);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
 
         [WebMethod]
         public List<Sprint> SprintSelectAll()
         {
-            return new Sprint().Select();
+            try
+            {
+                return new Sprint().Select();
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public List<Sprint> SprintSelectByTeam(int teamId)
         {
-            return new Sprint().Select(teamId);
+            try
+            {
+                return new Sprint().Select(teamId);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         #endregion
 
@@ -125,22 +207,54 @@ namespace ScrumboardWebService
         [WebMethod]
         public List<State> StateSelectAll()
         {
-            return new State().Select();
+            try
+            {
+                return new State().Select();
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public State StateGet(int id)
         {
-            return new State().Get(id);
+            try
+            {
+                return new State().Get(id);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public int StateInsert(String name, Boolean isInitial, Boolean isFinal)
         {
-            return new State().Insert(name, isInitial, isFinal);
+            try
+            {
+                return new State().Insert(name, isInitial, isFinal);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public void StateUpdate(int id, String name, Boolean isInitial, Boolean isFinal)
         {
-            new State().Update(id, name, isInitial, isFinal);
+            try
+            {
+                new State().Update(id, name, isInitial, isFinal);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         #endregion
 
@@ -148,22 +262,54 @@ namespace ScrumboardWebService
         [WebMethod]
         public List<StoryType> StoryTypeSelectAll()
         {
-            return new StoryType().Select();
+            try
+            {
+                return new StoryType().Select();
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public StoryType StoryTypeGet(int id)
         {
-            return new StoryType().Get(id);
+            try
+            {
+                return new StoryType().Get(id);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public int StoryTypeInsert(String name, int defaultBackColor, Boolean isBurnDownEnabled)
         {
-            return new StoryType().Insert(name, defaultBackColor, isBurnDownEnabled);
+            try
+            {
+                return new StoryType().Insert(name, defaultBackColor, isBurnDownEnabled);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public void StoryTypeUpdate(int id, String name, int defaultBackColor, Boolean isBurnDownEnabled)
         {
-            new StoryType().Update(id, name, defaultBackColor, isBurnDownEnabled);
+            try
+            {
+                new StoryType().Update(id, name, defaultBackColor, isBurnDownEnabled);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         #endregion
 
@@ -171,25 +317,57 @@ namespace ScrumboardWebService
         [WebMethod]
         public List<Layout> LayoutSelectAll()
         {
-            return new Layout().Select();
+            try
+            {
+                return new Layout().Select();
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
 
         [WebMethod]
         public int LayoutInsert(String name, int totalColumns, int totalRows, int fontSize, int storyWidth, int storyHeight)
         {
-            return new Layout().Insert(name, totalColumns, totalRows, fontSize, storyWidth, storyHeight);
+            try
+            {
+                return new Layout().Insert(name, totalColumns, totalRows, fontSize, storyWidth, storyHeight);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
 
         [WebMethod]
         public void LayoutUpdate(int id, String name, int totalColumns, int totalRows, int fontSize, int storyWidth, int storyHeight)
         {
-            new Layout().Update(id, name, totalColumns, totalRows, fontSize, storyWidth, storyHeight);
+            try
+            {
+                new Layout().Update(id, name, totalColumns, totalRows, fontSize, storyWidth, storyHeight);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
 
         [WebMethod]
         public Layout LayoutGet(int id)
         {
-            return new Layout().Get(id);
+            try
+            {
+                return new Layout().Get(id);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         #endregion
 
@@ -197,29 +375,69 @@ namespace ScrumboardWebService
         [WebMethod]
         public List<Panel> LayoutPanelSelectByLayout(int layoutId)
         {
-            return new Panel().Select(layoutId);
+            try
+            {
+                return new Panel().Select(layoutId);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
 
         [WebMethod]
         public Panel LayoutPanelGet(int id)
         {
-            return new Panel().Get(id);
+            try
+            {
+                return new Panel().Get(id);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
 
         [WebMethod]
         public int LayoutPanelInsert(int layoutId, int stateId, String title, int storyTypeId, int column, int row, int height, int width)
         {
-            return new Panel().Insert(layoutId, stateId, title, storyTypeId, column, row, height, width);
+            try
+            {
+                return new Panel().Insert(layoutId, stateId, title, storyTypeId, column, row, height, width);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public void LayoutPanelUpdate(int id, int stateId, String title, int storyTypeId, int column, int row, int height, int width)
         {
-            new Panel().Update(id, stateId, title, storyTypeId, column, row, height, width);
+            try
+            {
+                new Panel().Update(id, stateId, title, storyTypeId, column, row, height, width);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public void LayoutPanelRemove(int id)
         {
-            new Panel().Remove(id);
+            try
+            {
+                new Panel().Remove(id);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         #endregion
 
@@ -227,27 +445,67 @@ namespace ScrumboardWebService
         [WebMethod]
         public List<Team> TeamSelectAll()
         {
-            return new Team().Select();
+            try
+            {
+                return new Team().Select();
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public Team TeamGet(int id)
         {
-            return new Team().Get(id);
+            try
+            {
+                return new Team().Get(id);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public int TeamInsert(String name)
         {
-            return new Team().Insert(name);
+            try
+            {
+                return new Team().Insert(name);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public void TeamUpdate(int id, String name)
         {
-            new Team().Update(id, name);
+            try
+            {
+                new Team().Update(id, name);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public void TeamRemove(int id)
         {
-            new Team().Remove(id);
+            try
+            {
+                new Team().Remove(id);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         #endregion
 
@@ -255,29 +513,70 @@ namespace ScrumboardWebService
         [WebMethod]
         public Todo TodoInsert(int storyId, String description, decimal estimate, int backcolor, int x, int y)
         {
-            return new Todo().Insert(storyId, description, estimate, backcolor, x, y);
+            try
+            {
+                return new Todo().Insert(storyId, description, estimate, backcolor, x, y);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public Todo TodoUpdate(int id, int storyId, String description, decimal estimate, int backcolor, int x, int y)
         {
-            return new Todo().Update(id, storyId, description, estimate, backcolor, x, y);
+            try
+            {
+                return new Todo().Update(id, storyId, description, estimate, backcolor, x, y);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public Todo TodoRemove(int id)
         {
-            return new Todo().Remove(id);
+            try
+            {
+                return new Todo().Remove(id);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public Todo TodoGet(int id)
         {
-            return new Todo().Get(id);
+            try
+            {
+                return new Todo().Get(id);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         [WebMethod]
         public List<Todo> TodoSelect(int storyId)
         {
-            return new Todo().Select(storyId);
+            try
+            {
+                return new Todo().Select(storyId);
+            }
+            catch (Exception ex)
+            {
+                Log.logException(ex);
+                throw new System.Web.HttpException(500, "Internal error");
+            }
         }
         #endregion
 
+        
     }
 }
