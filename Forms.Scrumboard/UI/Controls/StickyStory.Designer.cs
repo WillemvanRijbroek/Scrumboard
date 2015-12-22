@@ -85,7 +85,10 @@
             this.lblTag.Name = "lblTag";
             this.lblTag.Size = new System.Drawing.Size(117, 14);
             this.lblTag.TabIndex = 5;
+            this.lblTag.MouseDown += new System.Windows.Forms.MouseEventHandler(this.StickyStory_MouseDown);
             this.lblTag.MouseHover += new System.EventHandler(this.lblTag_MouseHover);
+            this.lblTag.MouseMove += new System.Windows.Forms.MouseEventHandler(this.StickyStory_MouseMove);
+            this.lblTag.MouseUp += new System.Windows.Forms.MouseEventHandler(this.StickyStory_MouseUp);
             // 
             // lblId
             // 
@@ -135,7 +138,10 @@
             this.txtDescription.Size = new System.Drawing.Size(115, 67);
             this.txtDescription.TabIndex = 6;
             this.txtDescription.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.txtDescription_MouseDoubleClick);
+            this.txtDescription.MouseDown += new System.Windows.Forms.MouseEventHandler(this.StickyStory_MouseDown);
             this.txtDescription.MouseHover += new System.EventHandler(this.txtDescription_MouseHover);
+            this.txtDescription.MouseMove += new System.Windows.Forms.MouseEventHandler(this.StickyStory_MouseMove);
+            this.txtDescription.MouseUp += new System.Windows.Forms.MouseEventHandler(this.StickyStory_MouseUp);
             // 
             // StickyStory
             // 
