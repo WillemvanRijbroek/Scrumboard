@@ -112,6 +112,21 @@ namespace ScrumBoard.Common
             }
         }
 
+        public static int DefaultBoardBackColor
+        {
+            get
+            {
+                Object v = Registry.GetValue("HKEY_CURRENT_USER\\Scrumboard", "DefaultBoardBackColor", null);
+                if (v == null)
+                    v = System.Drawing.Color.White.ToArgb();
+                return Int32.Parse(v.ToString());
+            }
+            set
+            {
+                Registry.SetValue("HKEY_CURRENT_USER\\Scrumboard", "DefaultBoardBackColor", value);
+            }
+        }
+
         public static int DefaultBackColor
         {
             get

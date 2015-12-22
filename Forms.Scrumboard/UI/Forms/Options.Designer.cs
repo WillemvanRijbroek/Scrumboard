@@ -63,6 +63,7 @@
             this.btnEditStoryType = new System.Windows.Forms.Button();
             this.btnNewStoryType = new System.Windows.Forms.Button();
             this.lvwStoryTypes = new System.Windows.Forms.ListView();
+            this.btnBoardBackColor = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numEstimate)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -190,6 +191,7 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.btnBoardBackColor);
             this.groupBox2.Controls.Add(this.chkEditDetails);
             this.groupBox2.Controls.Add(this.chkViewModus);
             this.groupBox2.Location = new System.Drawing.Point(12, 12);
@@ -427,6 +429,16 @@
             this.lvwStoryTypes.UseCompatibleStateImageBehavior = false;
             this.lvwStoryTypes.View = System.Windows.Forms.View.List;
             // 
+            // btnBackColor
+            // 
+            this.btnBoardBackColor.Location = new System.Drawing.Point(295, 16);
+            this.btnBoardBackColor.Name = "btnBackColor";
+            this.btnBoardBackColor.Size = new System.Drawing.Size(103, 23);
+            this.btnBoardBackColor.TabIndex = 8;
+            this.btnBoardBackColor.Text = "Back color";
+            this.btnBoardBackColor.UseVisualStyleBackColor = true;
+            this.btnBoardBackColor.Click += new System.EventHandler(this.btnBackColor_Click);
+            // 
             // Options
             // 
             this.AcceptButton = this.btnOk;
@@ -501,6 +513,7 @@
         private System.Windows.Forms.Button btnEditStoryType;
         private System.Windows.Forms.Button btnNewStoryType;
         private System.Windows.Forms.ListView lvwStoryTypes;
+        private System.Windows.Forms.Button btnBoardBackColor;
 
     }
 }

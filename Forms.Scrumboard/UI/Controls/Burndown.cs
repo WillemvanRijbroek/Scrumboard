@@ -30,7 +30,7 @@ namespace ScrumBoard.UI.Controls
             this.AutoScroll = true;
             this.panel = panel;
             this.layout = layout;
-
+            BackColor = Color.Transparent;
         }
         public void AutoResize()
         {
@@ -155,11 +155,11 @@ namespace ScrumBoard.UI.Controls
             decimal target = planned;
             while (totalPoints > 0 && dt < tillDate)
             {
-                //Console.WriteLine(dt.Date.ToString("ddd dd/MM/yy") + ":");
-                //Console.Write("Planned " + planned);
-                //Console.Write(" Expected " + expected);
-                //Console.Write(" Realized " + realized);
-                //Console.WriteLine(" Points " + totalPoints);
+                Console.WriteLine(dt.Date.ToString("ddd dd/MM/yy") + ":");
+                Console.Write("Planned " + planned);
+                Console.Write(" Expected " + expected);
+                Console.Write(" Realized " + realized);
+                Console.WriteLine(" Points " + totalPoints);
                 if (dt.Date.Equals(DateTime.Now.Date) && dt.Date.Equals(targetDate))
                 {
                     summary.Expected = expected;
@@ -188,10 +188,10 @@ namespace ScrumBoard.UI.Controls
                 expected = CalculateExpected(dt, expected, stories, true);
                 realized = CalculateRealized(dt, realized, stories, true);
             }
-            //Console.WriteLine(dt.Date.ToString("ddd dd/MM/yy") + ":");
-            //Console.Write("Planned " + planned);
-            //Console.Write(" Expected " + expected);
-            //Console.WriteLine(" Realized " + realized);
+            Console.WriteLine(dt.Date.ToString("ddd dd/MM/yy") + ":");
+            Console.Write("Planned " + planned);
+            Console.Write(" Expected " + expected);
+            Console.WriteLine(" Realized " + realized);
             if (dt.Date.Equals(DateTime.Now.Date) && dt.Date.Equals(targetDate))
             {
                 summary.Expected = expected;
@@ -222,7 +222,7 @@ namespace ScrumBoard.UI.Controls
         {
             sprint = new ScrumBoard.Business.Sprint(Config.ActiveSprint);
             stories = Data.getInstance().getSprintStories();
-
+            burndownChart.BackColor = Color.Transparent;// .FromArgb(Config.DefaultBoardBackColor);
             burndownChart.Titles.Clear();
             burndownChart.Titles.Add("Burndown " + sprint.Name + " target: " + sprint.TargetDate.ToShortDateString());
 

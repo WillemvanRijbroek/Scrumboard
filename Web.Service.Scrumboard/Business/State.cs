@@ -20,7 +20,7 @@ namespace ScrumboardWebService.Business
             int newId = -1;
             if (rt != null && Int32.TryParse(rt.ToString(), out newId))
                 return newId;
-
+            
             return -1;
         }
 

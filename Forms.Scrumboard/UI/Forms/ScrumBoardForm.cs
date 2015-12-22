@@ -28,6 +28,7 @@ namespace ScrumBoard.UI.Forms
         public ScrumBoardForm()
         {
             InitializeComponent();
+            BackColor = Color.FromArgb(Config.DefaultBoardBackColor);
             mover.Visible = false;
             panel.Controls.Add(mover);
             autoAlignStoriesToolStripMenuItem.Enabled = !Config.ViewOnly;
@@ -54,6 +55,7 @@ namespace ScrumBoard.UI.Forms
         private void showSprint()
         {
             Cursor = Cursors.WaitCursor;
+            
             try
             {
                 for (int i = panel.Controls.Count - 1; i >= 0; i--)
@@ -64,7 +66,7 @@ namespace ScrumBoard.UI.Forms
                     }
                 }
                 currentSprint = new Business.Sprint(Config.ActiveSprint);
-                Text = "Scrumboard v3.0.2            Sprint: " + currentSprint.Name + " Target: " + currentSprint.TargetDate.ToShortDateString();
+                Text = "Scrumboard v" + Application.ProductVersion + "            Sprint: " + currentSprint.Name + " Target: " + currentSprint.TargetDate.ToShortDateString();
                 if (currentSprint.Panels != null)
                 {
                     foreach (ScrumboardService.Panel pnl in currentSprint.Panels)
@@ -252,6 +254,7 @@ namespace ScrumBoard.UI.Forms
             DialogResult r = f.ShowDialog(this);
             if (r == System.Windows.Forms.DialogResult.OK)
             {
+                BackColor = Color.FromArgb(Config.DefaultBoardBackColor);
                 autoAlignStoriesToolStripMenuItem.Enabled = !Config.ViewOnly;
                 addStoryToolStripMenuItem.Enabled = !Config.ViewOnly;
                 importSprintToolStripMenuItem1.Enabled = !Config.ViewOnly;

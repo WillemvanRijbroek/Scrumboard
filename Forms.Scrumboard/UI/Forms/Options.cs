@@ -23,6 +23,7 @@ namespace ScrumBoard.UI.Forms
             txtIssueTrackingURL.Text = Config.IssueTrackingSystemURL;
             chkViewModus.Checked = Config.ViewOnly;
             chkEditDetails.Checked = Config.AutoEditDetails;
+            btnBoardBackColor.BackColor = Color.FromArgb(Config.DefaultBoardBackColor);
             btnColor.BackColor = Color.FromArgb(Config.DefaultBackColor);
             btnTodoBackColor.BackColor = Color.FromArgb(Config.DefaultTodoBackColor);
 
@@ -55,6 +56,7 @@ namespace ScrumBoard.UI.Forms
                 Config.DefaultEstimate = (int)numEstimate.Value;
             }
             catch { }
+            Config.DefaultBoardBackColor = btnBoardBackColor.BackColor.ToArgb();
             Config.DefaultBackColor = btnColor.BackColor.ToArgb();
             Config.DefaultTodoBackColor = btnTodoBackColor.BackColor.ToArgb();
             Config.ViewOnly = chkViewModus.Checked;
@@ -257,6 +259,14 @@ namespace ScrumBoard.UI.Forms
             }
         }
         #endregion
+
+        private void btnBackColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                btnBoardBackColor.BackColor = colorDialog1.Color;
+            }
+        }
 
     }
 }

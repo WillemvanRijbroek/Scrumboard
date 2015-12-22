@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScrumBoard.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +15,7 @@ namespace ScrumBoard.UI.Forms
         public BurndownGraph()
         {
             InitializeComponent();
+            BackColor = Color.FromArgb(Config.DefaultBoardBackColor);
             burndown1.DrawChart();
         }
 

@@ -65,11 +65,13 @@ namespace ScrumBoard.UI.Controls
             {
                 lblId.Text = value.ExternalId.ToString();
                 txtEstimate.Text = value.Estimate.ToString();
-                txtDescription.Text = value.Description + (value.Tag != null ? "\r\n" + value.Tag : "");
+                txtDescription.Text = value.Description;
+                lblTag.Text = value.Tag ;
                 this.BackColor = Color.FromArgb(value.BackColor);
                 value.BackColor = this.BackColor.ToArgb();
                 txtEstimate.BackColor = this.BackColor;
                 txtDescription.BackColor = this.BackColor;
+                lblTag.BackColor = this.BackColor;
                 s = value;
                 Location = new Point(s.X, s.Y);
                 initMenus();
@@ -103,6 +105,7 @@ namespace ScrumBoard.UI.Controls
                 BackColor = txtDescription.BackColor;
             lblId.Visible = !moving;
             txtDescription.Visible = !moving;
+            lblTag.Visible = !moving;
             txtEstimate.Visible = !moving;
         }
         protected override void MovedTo(StatePanel movedToPanel)
@@ -171,10 +174,6 @@ namespace ScrumBoard.UI.Controls
         private void StickyStory_MouseUp(object sender, MouseEventArgs e)
         {
             onMouseUp(e);
-            foreach (StickyTodo std in todos)
-            {
-                std.BringToFront();
-            }
             BringToFront();
         }
 
@@ -222,29 +221,17 @@ namespace ScrumBoard.UI.Controls
 
         private void lblId_MouseHover(object sender, EventArgs e)
         {
-            foreach (StickyTodo std in todos)
-            {
-                std.BringToFront();
-            }
-            this.BringToFront();
+            BringToFront();
         }
 
         private void txtEstimate_MouseHover(object sender, EventArgs e)
         {
-            foreach (StickyTodo std in todos)
-            {
-                std.BringToFront();
-            }
-            this.BringToFront();
+            BringToFront();
         }
 
         private void txtDescription_MouseHover(object sender, EventArgs e)
         {
-            foreach (StickyTodo std in todos)
-            {
-                std.BringToFront();
-            }
-            this.BringToFront();
+            BringToFront();
         }
 
         public void AddTodo(StickyTodo todo)
@@ -257,5 +244,19 @@ namespace ScrumBoard.UI.Controls
         }
 
         public List<StickyTodo> StickyTodos { get { return todos; } }
+
+        public void BringToFront()
+        {
+            foreach (StickyTodo std in todos)
+            {
+                std.BringToFront();
+            }
+            base.BringToFront();
+        }
+
+        private void lblTag_MouseHover(object sender, EventArgs e)
+        {
+            BringToFront();
+        }
     }
 }

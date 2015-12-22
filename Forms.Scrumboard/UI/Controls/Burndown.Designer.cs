@@ -42,14 +42,17 @@
             // 
             // burndownChart
             // 
-            this.burndownChart.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.TopBottom;
+            this.burndownChart.BackColor = System.Drawing.Color.Transparent;
             this.burndownChart.BackSecondaryColor = System.Drawing.Color.White;
             this.burndownChart.BorderlineColor = System.Drawing.Color.Black;
+            chartArea1.BackColor = System.Drawing.Color.Transparent;
+            chartArea1.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.TopBottom;
             chartArea1.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
             chartArea1.Name = "ChartArea1";
             this.burndownChart.ChartAreas.Add(chartArea1);
             this.burndownChart.ContextMenuStrip = this.contextMenuStrip1;
             this.burndownChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend1.BackColor = System.Drawing.Color.Transparent;
             legend1.Name = "Legend1";
             this.burndownChart.Legends.Add(legend1);
             this.burndownChart.Location = new System.Drawing.Point(0, 0);
@@ -68,7 +71,6 @@
             this.burndownChart.Size = new System.Drawing.Size(378, 290);
             this.burndownChart.TabIndex = 0;
             this.burndownChart.TabStop = false;
-            this.burndownChart.Text = "test";
             // 
             // contextMenuStrip1
             // 
