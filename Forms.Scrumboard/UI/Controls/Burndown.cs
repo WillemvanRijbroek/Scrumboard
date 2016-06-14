@@ -153,8 +153,10 @@ namespace ScrumBoard.UI.Controls
             decimal expected = planned;
             decimal today = totalPoints;
             decimal target = planned;
-            while (totalPoints > 0 && dt < tillDate)
+            decimal lastExpected = 0;
+            while (totalPoints > 0 && (dt < tillDate || (lastExpected > expected && expected > 0)))
             {
+               
                 Console.WriteLine(dt.Date.ToString("ddd dd/MM/yy") + ":");
                 Console.Write("Planned " + planned);
                 Console.Write(" Expected " + expected);
@@ -182,7 +184,12 @@ namespace ScrumBoard.UI.Controls
                 {
                     summary.ExpectedDone = dt;
                 }
+                
                 dt = dt.AddDays(1);
+                if (dt.DayOfWeek != DayOfWeek.Saturday && dt.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    lastExpected = expected;
+                }
                 planned = CalculatePlanned(dt, planned);
                 totalPoints = CalculateExpected(dt, totalPoints, stories, false);
                 expected = CalculateExpected(dt, expected, stories, true);
@@ -237,7 +244,7 @@ namespace ScrumBoard.UI.Controls
             }
             Summary summary;
             ds.Tables.Add(createTable(dt, sprint.TargetDate, endDate, out summary));
-            burndownChart.Titles.Add(String.Format("Planned: {0}, realized: {1}, expected: {2}, velocity: {3}", summary.Planned, summary.Realized, summary.ExpectedDone.ToShortDateString(), sprint.Velocity));
+            burndownChart.Titles.Add(String.Format("Planned: {0}, realized: {1}, expected: {2}, daily drop: {3}", summary.Planned, summary.Realized, summary.ExpectedDone.ToShortDateString(), sprint.Velocity));
             burndownChart.DataSource = ds.Tables[0].DefaultView;
             // Defaults
             ChartValueType xValueType = ChartValueType.Date;

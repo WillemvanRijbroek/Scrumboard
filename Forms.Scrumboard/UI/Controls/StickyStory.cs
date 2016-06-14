@@ -258,5 +258,10 @@ namespace ScrumBoard.UI.Controls
         {
             BringToFront();
         }
+        
+        private void txtDescription_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            onLinkClicked(e.LinkText);
+        }
     }
 }

@@ -53,7 +53,7 @@ namespace ScrumBoard.UI.Controls
 
         protected void onMouseDown(MouseEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left && !Config.ViewOnly)
+            if (!linkClicked && e.Button == System.Windows.Forms.MouseButtons.Left && !Config.ViewOnly)
             {
                 SetMoving(true);
                 startTop = Top;
@@ -65,6 +65,7 @@ namespace ScrumBoard.UI.Controls
                 Mover.Height = Height;
                 Mover.BringToFront();
             }
+            linkClicked = false;
         }
         protected void onMouseMove(MouseEventArgs e)
         {
@@ -98,24 +99,35 @@ namespace ScrumBoard.UI.Controls
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Left && !Config.ViewOnly)
             {
-                Mover.Visible = false;
-                moving = 0;
-                SetMoving(false);
-                StatePanel myPanel = (StatePanel)Parent;
-                if (myPanel != null)
+                onMouseUp();
+            }
+        }
+
+        protected void onMouseUp()
+        {
+            Mover.Visible = false;
+            moving = 0;
+            SetMoving(false);
+            StatePanel myPanel = (StatePanel)Parent;
+            if (myPanel != null)
+            {
+                StatePanel movedToPanel = ((ScrumBoard.UI.Forms.ScrumBoardForm)Parent.Parent.Parent).getPanel(Mover.Left, Mover.Top);
+                if (movedToPanel != null && myPanel != movedToPanel)
                 {
-                    StatePanel movedToPanel = ((ScrumBoard.UI.Forms.ScrumBoardForm)Parent.Parent.Parent).getPanel(Mover.Left, Mover.Top);
-                    if (movedToPanel != null && myPanel != movedToPanel)
-                    {
-                        MovedTo(movedToPanel);
-                        BringToFront();
-                    }
-                    else if (movedToPanel != null && myPanel == movedToPanel)
-                    {
-                        NoteLocationChanged(Mover.Left - Parent.Left, Mover.Top - Parent.Top, true);
-                    }
+                    MovedTo(movedToPanel);
+                    BringToFront();
+                }
+                else if (movedToPanel != null && myPanel == movedToPanel)
+                {
+                    NoteLocationChanged(Mover.Left - Parent.Left, Mover.Top - Parent.Top, true);
                 }
             }
+        }
+        private Boolean linkClicked = false;
+        protected void onLinkClicked(String url)
+        {
+            linkClicked = true;
+            System.Diagnostics.Process.Start(url);
         }
 
         private void StickyNote_MouseDown(object sender, MouseEventArgs e)

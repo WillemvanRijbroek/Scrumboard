@@ -22,11 +22,12 @@ namespace ScrumBoard.UI.Forms
 
 
         Business.Sprint currentSprint = null;
-        bool init = false;
+        bool initialized = false;
         ScrumboardService.ScrumboardSoapClient client = ServiceConn.getClient();
 
         public ScrumBoardForm()
         {
+           
             InitializeComponent();
             BackColor = Color.FromArgb(Config.DefaultBoardBackColor);
             mover.Visible = false;
@@ -36,26 +37,24 @@ namespace ScrumBoard.UI.Forms
             importSprintToolStripMenuItem1.Enabled = !Config.ViewOnly;
             newSprintToolStripMenuItem.Enabled = !Config.ViewOnly;
             editSprintToolStripMenuItem.Enabled = !Config.ViewOnly;
-            refreshTimer.Tick += new EventHandler(refreshTimer_Tick);
+            refreshTimer.Tick += new EventHandler(refreshTimer_Tick); 
         }
-
 
 
         private void ScrumBoard_Load(object sender, EventArgs e)
         {
-            init = true;
             this.WindowState = Config.MainWindowState;
-            Left = Config.MainWindowLeft;
-            Top = Config.MainWindowTop;
-            Width = Config.MainWindowWidth > 0 ? Config.MainWindowWidth : Width;
-            Height = Config.MainWindowHeight > 0 ? Config.MainWindowHeight : Height;
-            init = false;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                Width = Config.MainWindowWidth > 0 ? Config.MainWindowWidth : Width;
+                Height = Config.MainWindowHeight > 0 ? Config.MainWindowHeight : Height;
+            }
+            initialized = true;
         }
-
         private void showSprint()
         {
             Cursor = Cursors.WaitCursor;
-            
+
             try
             {
                 for (int i = panel.Controls.Count - 1; i >= 0; i--)
@@ -211,6 +210,12 @@ namespace ScrumBoard.UI.Forms
 
         private void ScrumBoard_SizeChanged(object sender, EventArgs e)
         {
+            if (initialized)
+            {
+                Config.MainWindowState = this.WindowState;
+                Config.MainWindowWidth = this.Width;
+                Config.MainWindowHeight = this.Height;
+            }
             autoResize();
         }
 
@@ -342,16 +347,13 @@ namespace ScrumBoard.UI.Forms
 
         private void ScrumBoardForm_ResizeEnd(object sender, EventArgs e)
         {
-            if (!init)
+            if (initialized)
             {
                 Config.MainWindowState = this.WindowState;
-                Config.MainWindowLeft = this.Left;
-                Config.MainWindowTop = this.Top;
                 Config.MainWindowWidth = this.Width;
                 Config.MainWindowHeight = this.Height;
             }
         }
-
         private void ScrumBoardForm_Shown(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;

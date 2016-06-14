@@ -187,7 +187,6 @@
             this.SizeChanged += new System.EventHandler(this.ScrumBoard_SizeChanged);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         #endregion

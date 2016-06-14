@@ -37,7 +37,7 @@
             this.lblTag = new System.Windows.Forms.Label();
             this.lblId = new System.Windows.Forms.LinkLabel();
             this.txtEstimate = new System.Windows.Forms.TextBox();
-            this.txtDescription = new System.Windows.Forms.TextBox();
+            this.txtDescription = new System.Windows.Forms.RichTextBox();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,6 +80,7 @@
             // 
             // lblTag
             // 
+            this.lblTag.ContextMenuStrip = this.contextMenuStrip1;
             this.lblTag.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lblTag.Location = new System.Drawing.Point(1, 93);
             this.lblTag.Name = "lblTag";
@@ -110,6 +111,7 @@
             this.txtEstimate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.txtEstimate.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtEstimate.ContextMenuStrip = this.contextMenuStrip1;
+            this.txtEstimate.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.txtEstimate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtEstimate.Location = new System.Drawing.Point(80, 4);
             this.txtEstimate.Name = "txtEstimate";
@@ -131,15 +133,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDescription.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.txtDescription.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtDescription.ContextMenuStrip = this.contextMenuStrip1;
             this.txtDescription.Location = new System.Drawing.Point(2, 26);
-            this.txtDescription.Multiline = true;
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.ReadOnly = true;
             this.txtDescription.Size = new System.Drawing.Size(115, 67);
-            this.txtDescription.TabIndex = 6;
+            this.txtDescription.TabIndex = 7;
+            this.txtDescription.Text = "";
+            this.txtDescription.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.txtDescription_LinkClicked);
             this.txtDescription.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.txtDescription_MouseDoubleClick);
             this.txtDescription.MouseDown += new System.Windows.Forms.MouseEventHandler(this.StickyStory_MouseDown);
-            this.txtDescription.MouseHover += new System.EventHandler(this.txtDescription_MouseHover);
             this.txtDescription.MouseMove += new System.Windows.Forms.MouseEventHandler(this.StickyStory_MouseMove);
             this.txtDescription.MouseUp += new System.Windows.Forms.MouseEventHandler(this.StickyStory_MouseUp);
             // 
@@ -176,7 +179,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuAddTodo;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.Label lblTag;
-        private System.Windows.Forms.TextBox txtDescription;
+        private System.Windows.Forms.RichTextBox txtDescription;
 
     }
 }

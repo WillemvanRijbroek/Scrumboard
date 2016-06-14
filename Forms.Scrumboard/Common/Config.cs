@@ -200,36 +200,6 @@ namespace ScrumBoard.Common
             }
         }
 
-        public static int MainWindowLeft
-        {
-            get
-            {
-                Object v = Registry.GetValue("HKEY_CURRENT_USER\\Scrumboard", "MainWindowLeft", null);
-                if (v == null)
-                    v = 0;
-                return Int32.Parse(v.ToString());
-            }
-            set
-            {
-                Registry.SetValue("HKEY_CURRENT_USER\\Scrumboard", "MainWindowLeft", value);
-            }
-        }
-
-        public static int MainWindowTop
-        {
-            get
-            {
-                Object v = Registry.GetValue("HKEY_CURRENT_USER\\Scrumboard", "MainWindowTop", null);
-                if (v == null)
-                    v = 0;
-                return Int32.Parse(v.ToString());
-            }
-            set
-            {
-                Registry.SetValue("HKEY_CURRENT_USER\\Scrumboard", "MainWindowTop", value);
-            }
-        }
-
         public static int MainWindowWidth
         {
             get
